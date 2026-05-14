@@ -63,10 +63,8 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 
 <section id="players" class="section">
   <h2>🏆 선수 소개</h2>
-  <div class="grid">
-<div id="playerList" class="grid">
-  <div class="card">선수 불러오는 중...</div>
-</div>
+  <div id="playerList" class="grid">
+    <div class="card">선수 불러오는 중...</div>
   </div>
 </section>
 
@@ -151,10 +149,31 @@ window.toggleLogin = toggleLogin;
 window.checkLogin = checkLogin;
 
 async function loadNotices(){
+
+  const noticeList = document.getElementById("noticeList");
+  const querySnapshot = await getDocs(collection(db, "notices"));
+
+  noticeList.innerHTML = "";
+
+  if (querySnapshot.empty) {
+    noticeList.innerHTML = '<div class="card">등록된 공지가 없습니다.</div>';
+    return;
+  }
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${data.title}</h3>
+      <p>${data.content}</p>
+    `;
+    noticeList.appendChild(card);
+  });
+}
+
 async function loadPlayers(){
-
   const playerList = document.getElementById("playerList");
-
   const querySnapshot = await getDocs(collection(db, "players"));
 
   playerList.innerHTML = "";
@@ -165,51 +184,17 @@ async function loadPlayers(){
   }
 
   querySnapshot.forEach((doc)=>{
-
     const data = doc.data();
-
     const card = document.createElement("div");
-
     card.className = "card";
-
     card.innerHTML = `
       <h3>${data.name}</h3>
       <p>${data.grade}</p>
       <p>${data.style || ""}</p>
       <p>${data.award || ""}</p>
     `;
-
     playerList.appendChild(card);
-
   });
-
-}
-  const noticeList = document.getElementById("noticeList");
-
-  const querySnapshot = await getDocs(collection(db, "notices"));
-
-  noticeList.innerHTML = "";
-if (querySnapshot.empty) {
-  noticeList.innerHTML = '<div class="card">등록된 공지가 없습니다.</div>';
-  return;
-}
-  querySnapshot.forEach((doc) => {
-
-    const data = doc.data();
-
-    const card = document.createElement("div");
-
-    card.className = "card";
-
-    card.innerHTML = `
-      <h3>${data.title}</h3>
-      <p>${data.content}</p>
-    `;
-
-    noticeList.appendChild(card);
-
-  });
-
 }
 
 loadNotices();
