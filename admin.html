@@ -35,7 +35,31 @@
     <h2>📋 저장된 공지</h2>
     <div id="noticeList">불러오는 중...</div>
   </section>
+<section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
+  <h2>🏓 선수 추가</h2>
 
+  <input id="playerName" type="text" placeholder="선수 이름"
+  style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+
+  <input id="playerGrade" type="text" placeholder="학년"
+  style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+
+  <input id="playerStyle" type="text" placeholder="전형"
+  style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+
+  <input id="playerAward" type="text" placeholder="수상 기록"
+  style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+
+  <button onclick="savePlayer()"
+  style="padding:12px 30px; border:none; border-radius:10px; background:#7c3aed; color:white;">
+    선수 저장
+  </button>
+</section>
+
+<section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
+  <h2>👥 저장된 선수</h2>
+  <div id="playerList">불러오는 중...</div>
+</section>
   <div style="text-align:center;">
     <a href="index.html">
       <button style="padding:12px 30px; border:none; border-radius:10px;">
@@ -120,6 +144,86 @@ async function deleteNotice(id) {
 }
 
 window.saveNotice = saveNotice;
+  async function savePlayer() {
+
+  const name = document.getElementById("playerName").value;
+  const grade = document.getElementById("playerGrade").value;
+  const style = document.getElementById("playerStyle").value;
+  const award = document.getElementById("playerAward").value;
+
+  if (!name || !grade) {
+    alert("선수 이름과 학년을 입력해주세요.");
+    return;
+  }
+
+  await addDoc(collection(db, "players"), {
+    name,
+    grade,
+    style,
+    award
+  });
+
+  alert("선수 저장 완료!");
+
+  document.getElementById("playerName").value = "";
+  document.getElementById("playerGrade").value = "";
+  document.getElementById("playerStyle").value = "";
+  document.getElementById("playerAward").value = "";
+
+  loadPlayers();
+}
+
+async function loadPlayers() {
+
+  const list = document.getElementById("playerList");
+
+  list.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "players"));
+
+  if (querySnapshot.empty) {
+    list.innerHTML = "저장된 선수가 없습니다.";
+    return;
+  }
+
+  querySnapshot.forEach((playerDoc) => {
+
+    const data = playerDoc.data();
+
+    const box = document.createElement("div");
+
+    box.style.background = "#f9fafb";
+    box.style.padding = "15px";
+    box.style.marginBottom = "10px";
+    box.style.borderRadius = "12px";
+
+    box.innerHTML = `
+      <h3>${data.name}</h3>
+      <p>${data.grade}</p>
+      <p>${data.style || ""}</p>
+      <p>${data.award || ""}</p>
+      <button onclick="deletePlayer('${playerDoc.id}')">삭제</button>
+    `;
+
+    list.appendChild(box);
+
+  });
+
+}
+
+async function deletePlayer(id) {
+
+  await deleteDoc(doc(db, "players", id));
+
+  alert("선수 삭제 완료!");
+
+  loadPlayers();
+}
+
+window.savePlayer = savePlayer;
+window.deletePlayer = deletePlayer;
+
+loadPlayers();
 window.deleteNotice = deleteNotice;
 
 loadNotices();
