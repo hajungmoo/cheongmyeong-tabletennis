@@ -56,11 +56,9 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 
 <section id="notice" class="section">
   <h2>📢 공지사항</h2>
-  <div class="grid">
-    <div class="card"><h3>무료 체험수업 모집</h3><p>1~3학년 여학생 환영</p></div>
-    <div class="card"><h3>대회 일정 안내</h3><p>전국대회 준비중</p></div>
-    <div class="card"><h3>훈련 준비물</h3><p>운동복, 실내화, 물병</p></div>
-  </div>
+ <div id="noticeList" class="grid">
+  <div class="card">공지 불러오는 중...</div>
+</div>
 </section>
 
 <section id="players" class="section">
@@ -94,8 +92,10 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 
 <section id="photos" class="section">
   <h2>📸 활동 사진</h2>
-<div id="noticeList" class="grid">
-  <div class="card">공지 불러오는 중...</div>
+<div class="grid">
+  <div class="photo">훈련 사진</div>
+  <div class="photo">대회 사진</div>
+  <div class="photo">수상 사진</div>
 </div>
 </section>
 
@@ -188,35 +188,3 @@ loadNotices();
 
 </body>
 </html>
-</script>
-
-</body>
-</html>
-async function loadNotices(){
-
-  const noticeList = document.getElementById("noticeList");
-
-  const querySnapshot = await getDocs(collection(db, "notices"));
-
-  noticeList.innerHTML = "";
-
-  querySnapshot.forEach((doc) => {
-
-    const data = doc.data();
-
-    const card = document.createElement("div");
-
-    card.className = "card";
-
-    card.innerHTML = `
-      <h3>${data.title}</h3>
-      <p>${data.content}</p>
-    `;
-
-    noticeList.appendChild(card);
-
-  });
-
-}
-
-loadNotices();
