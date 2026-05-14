@@ -60,13 +60,41 @@
   </section>
 
 <div style="text-align:center; padding:20px; font-size:12px; color:#999;">
-  <details>
-    <summary style="cursor:pointer;">관리자</summary>
 
-    <div style="margin-top:15px;">
-   
+  <button onclick="toggleLogin()"
+  style="padding:6px 15px; border:none; border-radius:8px; cursor:pointer;">
+    관리자
+  </button>
+
+  <div id="loginBox" style="display:none; margin-top:15px;">
+
+    <input type="text" placeholder="아이디"
+    style="padding:8px; margin:5px; width:180px;"><br>
+
+    <input type="password" placeholder="비밀번호"
+    style="padding:8px; margin:5px; width:180px;"><br>
+
+    <a href="admin.html">
+      <button style="padding:8px 20px; margin-top:8px;">
+        로그인
+      </button>
+    </a>
+
+  </div>
+
 </div>
 
+<script>
+function toggleLogin() {
+  var x = document.getElementById("loginBox");
+
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 <footer style="text-align:center; padding:30px; color:#666;">
   📞 문의: 교담실 탁구부 코치님
 </footer>
