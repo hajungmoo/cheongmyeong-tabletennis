@@ -94,7 +94,7 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 
 <section id="photos" class="section">
   <h2>📸 활동 사진</h2>
- <div id="noticeList" class="grid">
+<div id="noticeList" class="grid">
   <div class="card">공지 불러오는 중...</div>
 </div>
 </section>
@@ -152,6 +152,42 @@ function checkLogin(){
 
 window.toggleLogin = toggleLogin;
 window.checkLogin = checkLogin;
+window.toggleLogin = toggleLogin;
+window.checkLogin = checkLogin;
+
+async function loadNotices(){
+
+  const noticeList = document.getElementById("noticeList");
+
+  const querySnapshot = await getDocs(collection(db, "notices"));
+
+  noticeList.innerHTML = "";
+
+  querySnapshot.forEach((doc) => {
+
+    const data = doc.data();
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${data.title}</h3>
+      <p>${data.content}</p>
+    `;
+
+    noticeList.appendChild(card);
+
+  });
+
+}
+
+loadNotices();
+
+</script>
+
+</body>
+</html>
 </script>
 
 </body>
