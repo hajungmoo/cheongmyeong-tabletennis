@@ -74,17 +74,17 @@
     <input type="password" placeholder="비밀번호"
     style="padding:8px; margin:5px; width:180px;"><br>
 
-    <a href="admin.html">
-      <button style="padding:8px 20px; margin-top:8px;">
-        로그인
-      </button>
-    </a>
+    <button onclick="checkLogin()"
+style="padding:8px 20px; margin-top:8px;">
+  로그인
+</button>
 
   </div>
 
 </div>
 
 <script>
+
 function toggleLogin() {
   var x = document.getElementById("loginBox");
 
@@ -94,6 +94,20 @@ function toggleLogin() {
     x.style.display = "none";
   }
 }
+
+function checkLogin() {
+
+  var id = document.querySelector('input[type="text"]').value;
+  var pw = document.querySelector('input[type="password"]').value;
+
+  if(id === "gkwjdan" && pw === "akdlfem1@3$") {
+    window.location.href = "admin.html";
+  } else {
+    alert("아이디 또는 비밀번호가 틀렸습니다.");
+  }
+
+}
+
 </script>
 <footer style="text-align:center; padding:30px; color:#666;">
   📞 문의: 교담실 탁구부 코치님
