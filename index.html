@@ -64,11 +64,9 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 <section id="players" class="section">
   <h2>🏆 선수 소개</h2>
   <div class="grid">
-    <div class="card"><h3>팡제이</h3><p>6학년 / 오른손 쉐이크핸드</p><p>🥉 2026 전국초등학교 회장기 개인 3위</p></div>
-    <div class="card"><h3>강다윤</h3><p>6학년 / 오른손 쉐이크핸드</p></div>
-    <div class="card"><h3>이수빈</h3><p>5학년 / 오른손 이질러버</p></div>
-    <div class="card"><h3>천윤슬</h3><p>3학년 / 오른손 쉐이크핸드</p></div>
-    <div class="card"><h3>양하은</h3><p>2학년 / 오른손 쉐이크핸드</p></div>
+<div id="playerList" class="grid">
+  <div class="card">선수 불러오는 중...</div>
+</div>
   </div>
 </section>
 
@@ -153,7 +151,39 @@ window.toggleLogin = toggleLogin;
 window.checkLogin = checkLogin;
 
 async function loadNotices(){
+async function loadPlayers(){
 
+  const playerList = document.getElementById("playerList");
+
+  const querySnapshot = await getDocs(collection(db, "players"));
+
+  playerList.innerHTML = "";
+
+  if(querySnapshot.empty){
+    playerList.innerHTML = '<div class="card">등록된 선수가 없습니다.</div>';
+    return;
+  }
+
+  querySnapshot.forEach((doc)=>{
+
+    const data = doc.data();
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${data.name}</h3>
+      <p>${data.grade}</p>
+      <p>${data.style || ""}</p>
+      <p>${data.award || ""}</p>
+    `;
+
+    playerList.appendChild(card);
+
+  });
+
+}
   const noticeList = document.getElementById("noticeList");
 
   const querySnapshot = await getDocs(collection(db, "notices"));
@@ -183,7 +213,7 @@ if (querySnapshot.empty) {
 }
 
 loadNotices();
-
+loadPlayers();
 </script>
 
 </body>
