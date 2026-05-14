@@ -122,7 +122,6 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 </footer>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
 const firebaseConfig = {
@@ -134,20 +133,26 @@ const firebaseConfig = {
   appId: "1:712801821489:web:501d20626d8cd12dc98610"
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 function toggleLogin(){
   const box=document.getElementById("loginBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+}
 
-  if(box.style.display==="none"){
-    box.style.display="block";
+function checkLogin(){
+  const id=document.getElementById("adminId").value;
+  const pw=document.getElementById("adminPw").value;
+
+  if(id==="gkwjdan" && pw==="akdlfem1@3$"){
+    window.location.href="admin.html";
   }else{
-    box.style.display="none";
+    alert("아이디 또는 비밀번호가 틀렸습니다.");
   }
 }
 
 window.toggleLogin = toggleLogin;
-
+window.checkLogin = checkLogin;
 </script>
 
 </body>
