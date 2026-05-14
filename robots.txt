@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cheongmyeong-tabletennis-2ut6wp11b-gkwjdan-6728s-projects.vercel.app/sitemap.xml
