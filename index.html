@@ -121,20 +121,33 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
   📞 문의: 교담실 탁구부 코치님
 </footer>
 
-<script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI",
+  authDomain: "cheongmyeong-tabletennis.firebaseapp.com",
+  projectId: "cheongmyeong-tabletennis",
+  storageBucket: "cheongmyeong-tabletennis.firebasestorage.app",
+  messagingSenderId: "712801821489",
+  appId: "1:712801821489:web:501d20626d8cd12dc98610"
+};
+
+const app = initializeApp(firebaseConfig);
+
 function toggleLogin(){
   const box=document.getElementById("loginBox");
-  box.style.display=box.style.display==="none"?"block":"none";
-}
-function checkLogin(){
-  const id=document.getElementById("adminId").value;
-  const pw=document.getElementById("adminPw").value;
-  if(id==="gkwjdan" && pw==="akdlfem1@3$"){
-    location.href="admin.html";
+
+  if(box.style.display==="none"){
+    box.style.display="block";
   }else{
-    alert("아이디 또는 비밀번호가 틀렸습니다.");
+    box.style.display="none";
   }
 }
+
+window.toggleLogin = toggleLogin;
+
 </script>
 
 </body>
