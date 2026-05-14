@@ -94,11 +94,9 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 
 <section id="photos" class="section">
   <h2>📸 활동 사진</h2>
-  <div class="grid">
-    <div class="photo">훈련 사진</div>
-    <div class="photo">대회 사진</div>
-    <div class="photo">수상 사진</div>
-  </div>
+ <div id="noticeList" class="grid">
+  <div class="card">공지 불러오는 중...</div>
+</div>
 </section>
 
 <section id="trial" class="section">
@@ -123,7 +121,7 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI",
   authDomain: "cheongmyeong-tabletennis.firebaseapp.com",
@@ -134,7 +132,8 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 function toggleLogin(){
   const box=document.getElementById("loginBox");
   box.style.display = box.style.display === "none" ? "block" : "none";
@@ -157,3 +156,31 @@ window.checkLogin = checkLogin;
 
 </body>
 </html>
+async function loadNotices(){
+
+  const noticeList = document.getElementById("noticeList");
+
+  const querySnapshot = await getDocs(collection(db, "notices"));
+
+  noticeList.innerHTML = "";
+
+  querySnapshot.forEach((doc) => {
+
+    const data = doc.data();
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${data.title}</h3>
+      <p>${data.content}</p>
+    `;
+
+    noticeList.appendChild(card);
+
+  });
+
+}
+
+loadNotices();
