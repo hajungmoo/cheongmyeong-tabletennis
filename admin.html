@@ -61,6 +61,28 @@
   <div id="playerList">불러오는 중...</div>
 </section>
   <section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
+  <h2>📅 훈련 일정 관리</h2>
+
+  <input id="scheduleDay" type="text" placeholder="요일"
+  style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+
+  <input id="scheduleTitle" type="text" placeholder="훈련 내용"
+  style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+
+  <input id="scheduleTime" type="text" placeholder="훈련 시간"
+  style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+
+  <button onclick="saveSchedule()"
+  style="padding:12px 30px; border:none; border-radius:10px; background:#2563eb; color:white;">
+    일정 저장
+  </button>
+</section>
+
+<section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
+  <h2>📋 저장된 일정</h2>
+  <div id="scheduleList">불러오는 중...</div>
+</section>
+  <section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
   <h2>📝 체험 신청 확인</h2>
   <div id="trialList">불러오는 중...</div>
 </section>
@@ -225,6 +247,13 @@ async function deletePlayer(id) {
 }
 
 window.savePlayer = savePlayer;
+  window.savePlayer = savePlayer;
+
+loadPlayers();
+
+async function saveSchedule(){
+
+  const day = document.getElementById("scheduleDay").value;
 window.deletePlayer = deletePlayer;
 
 loadPlayers();
