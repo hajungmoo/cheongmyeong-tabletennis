@@ -98,7 +98,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI",
@@ -137,7 +137,8 @@ async function loadNotices() {
   const list = document.getElementById("noticeList");
   list.innerHTML = "";
 
-  const querySnapshot = await getDocs(collection(db, "notices"));
+  const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
+const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
     list.innerHTML = "아직 저장된 공지가 없습니다.";
