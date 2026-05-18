@@ -585,9 +585,50 @@ async function saveTrial(){
 }
 
 window.saveTrial = saveTrial;
+
+async function loadSchedules(){
+
+  const scheduleContainer =
+  document.getElementById("scheduleContainer");
+
+  const querySnapshot =
+  await getDocs(collection(db, "schedules"));
+
+  scheduleContainer.innerHTML = "";
+
+  if(querySnapshot.empty){
+
+    scheduleContainer.innerHTML =
+    '<div class="card">등록된 일정이 없습니다.</div>';
+
+    return;
+  }
+
+  querySnapshot.forEach((docItem)=>{
+
+    const data = docItem.data();
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${data.day}</h3>
+      <p>🏓 ${data.title}</p>
+      <p>⏰ ${data.time}</p>
+    `;
+
+    scheduleContainer.appendChild(card);
+
+  });
+
+}
+
 loadNotices();
 loadPlayers();
-  let slideIndex = 0;
+loadSchedules();
+
+let slideIndex = 0;
 
 function showSlides() {
 
