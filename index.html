@@ -123,7 +123,7 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI",
   authDomain: "cheongmyeong-tabletennis.firebaseapp.com",
@@ -202,7 +202,31 @@ async function loadPlayers(){
     playerList.appendChild(card);
   });
 }
+async function saveTrial(){
 
+  const name = document.getElementById("trialName").value;
+  const grade = document.getElementById("trialGrade").value;
+  const phone = document.getElementById("trialPhone").value;
+
+  if(!name || !grade || !phone){
+    alert("모든 정보를 입력해주세요.");
+    return;
+  }
+
+  await addDoc(collection(db, "trials"), {
+    name,
+    grade,
+    phone
+  });
+
+  alert("체험 신청이 완료되었습니다!");
+
+  document.getElementById("trialName").value = "";
+  document.getElementById("trialGrade").value = "";
+  document.getElementById("trialPhone").value = "";
+}
+
+window.saveTrial = saveTrial;
 loadNotices();
 loadPlayers();
 </script>
