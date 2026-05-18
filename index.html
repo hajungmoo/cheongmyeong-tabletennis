@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>수원청명초 엘리트 탁구 꿈나무</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#fdf2f8,#eff6ff,#ffffff);color:#111}
+body{  margin:0;
+  font-family:Arial,sans-serif;
+  background:
+  radial-gradient(circle at top left,#7c3aed 0%,transparent 25%),
+  radial-gradient(circle at top right,#2563eb 0%,transparent 25%),
+  radial-gradient(circle at bottom,#ec4899 0%,transparent 25%),
+  linear-gradient(180deg,#0f172a,#111827,#1e293b);
+  color:white;
+}
 nav{position:sticky;
   top:0;
   z-index:999;
@@ -43,12 +51,49 @@ nav a:hover{
 .btn.white{background:white;color:#7c3aed}
 .btn.dark{background:#111827;color:white;border:1px solid white}
 .wrap{max-width:1100px;margin:auto;padding:35px 20px}
-.section{background:rgba(255,255,255,.9);border-radius:28px;padding:32px;margin-bottom:30px;box-shadow:0 10px 30px rgba(96,165,250,.18);border:1px solid rgba(255,255,255,.8)}
+.section{.section{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(18px);
+  border-radius:32px;
+  padding:34px;
+  margin-bottom:34px;
+  box-shadow:0 12px 35px rgba(0,0,0,.28);
+}
 h2{font-size:32px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
-.card{background:linear-gradient(180deg,#ffffff,#f9fafb);border-radius:24px;padding:24px;box-shadow:0 8px 22px rgba(0,0,0,.08);border:1px solid #eef2ff}
-.card:hover{transform:translateY(-5px);transition:.25s}
-.photo{height:220px;background:linear-gradient(135deg,#dbeafe,#fae8ff,#fef3c7);border-radius:24px;display:flex;align-items:center;justify-content:center;color:#555;font-weight:bold;box-shadow:inset 0 0 20px rgba(255,255,255,.8)}
+.card{
+  background:linear-gradient(135deg,
+  rgba(124,58,237,.45),
+  rgba(37,99,235,.35),
+  rgba(236,72,153,.35));
+  border-radius:28px;
+  padding:24px;
+  box-shadow:0 10px 28px rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(12px);
+  transition:.25s;
+}
+.card:hover{.card:hover{
+  transform:translateY(-6px) scale(1.03);
+  box-shadow:0 18px 40px rgba(124,58,237,.35);
+}
+.photo{.photo{
+  height:240px;
+  border-radius:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:22px;
+  color:white;
+  background:
+  linear-gradient(135deg,
+  rgba(124,58,237,.55),
+  rgba(37,99,235,.45),
+  rgba(236,72,153,.45));
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
+}
 input{padding:12px;margin:6px;width:220px;border-radius:12px;border:1px solid #ddd}
 button{padding:11px 26px;border:none;border-radius:999px;cursor:pointer;background:#7c3aed;color:white;font-weight:bold}
 footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align:center;padding:32px}
