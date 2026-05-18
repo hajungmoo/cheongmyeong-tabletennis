@@ -25,7 +25,61 @@ h2{font-size:32px}
 input{padding:12px;margin:6px;width:220px;border-radius:12px;border:1px solid #ddd}
 button{padding:11px 26px;border:none;border-radius:999px;cursor:pointer;background:#7c3aed;color:white;font-weight:bold}
 footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align:center;padding:32px}
-</style>
+
+@media (max-width: 600px) {
+  nav {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 12px 8px;
+  }
+
+  nav a {
+    font-size: 14px;
+    margin: 0 8px;
+  }
+
+  .hero {
+    padding: 65px 18px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+    line-height: 1.25;
+  }
+
+  .hero p {
+    font-size: 17px;
+  }
+
+  .btn {
+    display: block;
+    width: 80%;
+    margin: 12px auto;
+    padding: 14px 20px;
+  }
+
+  .wrap {
+    padding: 22px 14px;
+  }
+
+  .section {
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  input {
+    width: 90%;
+  }
+}</style>
 </head>
 
 <body>
