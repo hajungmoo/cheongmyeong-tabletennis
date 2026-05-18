@@ -391,6 +391,39 @@ function showSlides() {
 showSlides();
   
 </script>
+<video id="bgm" loop style="display:none;">
+  <source src="여기에네주소" type="video/mp4">
+</video>
 
+<button onclick="toggleMusic()" 
+style="
+position:fixed;
+bottom:20px;
+right:20px;
+z-index:999;
+padding:14px 18px;
+border:none;
+border-radius:999px;
+background:#7c3aed;
+color:white;
+font-size:18px;
+box-shadow:0 8px 20px rgba(0,0,0,.25);
+">
+🎵
+</button>
+
+<script>
+function toggleMusic(){
+
+  const music = document.getElementById("bgm");
+
+  if(music.paused){
+    music.play();
+  }else{
+    music.pause();
+  }
+
+}
+</script>
 </body>
 </html>
