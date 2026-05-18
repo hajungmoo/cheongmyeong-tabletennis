@@ -175,11 +175,12 @@ async function savePlayer() {
   }
 
   await addDoc(collection(db, "players"), {
-    name,
-    grade,
-    style,
-    award
-  });
+  name,
+  grade,
+  style,
+  award,
+  createdAt: serverTimestamp()
+});
 
   alert("선수 저장 완료!");
   document.getElementById("playerName").value = "";
@@ -193,7 +194,12 @@ async function loadPlayers() {
   const list = document.getElementById("playerList");
   list.innerHTML = "";
 
-  const querySnapshot = await getDocs(collection(db, "players"));
+const q = query(
+  collection(db, "players"),
+  orderBy("createdAt", "desc")
+);
+
+const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
     list.innerHTML = "저장된 선수가 없습니다.";
@@ -231,10 +237,11 @@ async function saveSchedule() {
   }
 
   await addDoc(collection(db, "schedules"), {
-    day,
-    title,
-    time
-  });
+  day,
+  title,
+  time,
+  createdAt: serverTimestamp()
+});
 
   alert("일정 저장 완료!");
   document.getElementById("scheduleDay").value = "";
@@ -247,7 +254,12 @@ async function loadSchedules() {
   const list = document.getElementById("scheduleList");
   list.innerHTML = "";
 
-  const querySnapshot = await getDocs(collection(db, "schedules"));
+const q = query(
+  collection(db, "schedules"),
+  orderBy("createdAt", "desc")
+);
+
+const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
     list.innerHTML = "등록된 일정이 없습니다.";
