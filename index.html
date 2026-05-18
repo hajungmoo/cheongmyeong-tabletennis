@@ -152,13 +152,12 @@ h2{
 }
 
 .card{
-.card{
   position:relative;
   overflow:hidden;
   border-radius:30px;
   padding:28px;
-  background:
-  linear-gradient(135deg,
+  background:linear-gradient(
+  135deg,
   rgba(124,58,237,.55),
   rgba(37,99,235,.45),
   rgba(236,72,153,.45));
@@ -170,26 +169,11 @@ h2{
   transition:.35s;
 }
 
-.card::before{
-  content:"";
-  position:absolute;
-  top:-60%;
-  left:-60%;
-  width:220%;
-  height:220%;
-  background:
-  linear-gradient(
-  45deg,
-  transparent,
-  rgba(255,255,255,.18),
-  transparent);
-  transform:rotate(25deg);
-}
-
 .card:hover{
   transform:
   translateY(-10px)
   scale(1.04);
+
   box-shadow:
   0 18px 45px rgba(124,58,237,.38),
   0 0 40px rgba(236,72,153,.28);
@@ -206,10 +190,6 @@ h2{
   font-size:16px;
   opacity:.96;
   line-height:1.6;
-}
-
-.card:hover{
-  transform:translateY(-6px) scale(1.03);
 }
 
 .photo{
