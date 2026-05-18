@@ -122,8 +122,8 @@ async function saveNotice() {
   }
 
   await addDoc(collection(db, "notices"), {
-    title: title,
-    content: content,
+    title,
+    content,
     createdAt: serverTimestamp()
   });
 
@@ -146,32 +146,23 @@ async function loadNotices() {
 
   querySnapshot.forEach((noticeDoc) => {
     const data = noticeDoc.data();
-
-    const box = document.createElement("div");
-    box.style.background = "#f9fafb";
-    box.style.padding = "15px";
-    box.style.marginBottom = "10px";
-    box.style.borderRadius = "12px";
-
-    box.innerHTML = `
-      <h3>${data.title}</h3>
-      <p>${data.content}</p>
-      <button onclick="deleteNotice('${noticeDoc.id}')">삭제</button>
+    list.innerHTML += `
+      <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
+        <h3>${data.title}</h3>
+        <p>${data.content}</p>
+        <button onclick="deleteNotice('${noticeDoc.id}')">삭제</button>
+      </div>
     `;
-
-    list.appendChild(box);
   });
 }
 
 async function deleteNotice(id) {
   await deleteDoc(doc(db, "notices", id));
-  alert("삭제 완료!");
+  alert("공지 삭제 완료!");
   loadNotices();
 }
 
-window.saveNotice = saveNotice;
-  async function savePlayer() {
-
+async function savePlayer() {
   const name = document.getElementById("playerName").value;
   const grade = document.getElementById("playerGrade").value;
   const style = document.getElementById("playerStyle").value;
@@ -190,19 +181,15 @@ window.saveNotice = saveNotice;
   });
 
   alert("선수 저장 완료!");
-
   document.getElementById("playerName").value = "";
   document.getElementById("playerGrade").value = "";
   document.getElementById("playerStyle").value = "";
   document.getElementById("playerAward").value = "";
-
   loadPlayers();
 }
 
 async function loadPlayers() {
-
   const list = document.getElementById("playerList");
-
   list.innerHTML = "";
 
   const querySnapshot = await getDocs(collection(db, "players"));
@@ -213,57 +200,80 @@ async function loadPlayers() {
   }
 
   querySnapshot.forEach((playerDoc) => {
-
     const data = playerDoc.data();
-
-    const box = document.createElement("div");
-
-    box.style.background = "#f9fafb";
-    box.style.padding = "15px";
-    box.style.marginBottom = "10px";
-    box.style.borderRadius = "12px";
-
-    box.innerHTML = `
-      <h3>${data.name}</h3>
-      <p>${data.grade}</p>
-      <p>${data.style || ""}</p>
-      <p>${data.award || ""}</p>
-      <button onclick="deletePlayer('${playerDoc.id}')">삭제</button>
+    list.innerHTML += `
+      <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
+        <h3>${data.name}</h3>
+        <p>${data.grade}</p>
+        <p>${data.style || ""}</p>
+        <p>${data.award || ""}</p>
+        <button onclick="deletePlayer('${playerDoc.id}')">삭제</button>
+      </div>
     `;
-
-    list.appendChild(box);
-
   });
-
 }
 
 async function deletePlayer(id) {
-
   await deleteDoc(doc(db, "players", id));
-
   alert("선수 삭제 완료!");
-
   loadPlayers();
 }
 
-window.savePlayer = savePlayer;
-  window.savePlayer = savePlayer;
-
-loadPlayers();
-
-async function saveSchedule(){
-
+async function saveSchedule() {
   const day = document.getElementById("scheduleDay").value;
-window.deletePlayer = deletePlayer;
+  const title = document.getElementById("scheduleTitle").value;
+  const time = document.getElementById("scheduleTime").value;
 
-loadPlayers();
-window.deleteNotice = deleteNotice;
+  if (!day || !title || !time) {
+    alert("모든 항목을 입력해주세요.");
+    return;
+  }
 
-loadNotices();
-  async function loadTrials() {
+  await addDoc(collection(db, "schedules"), {
+    day,
+    title,
+    time
+  });
 
+  alert("일정 저장 완료!");
+  document.getElementById("scheduleDay").value = "";
+  document.getElementById("scheduleTitle").value = "";
+  document.getElementById("scheduleTime").value = "";
+  loadSchedules();
+}
+
+async function loadSchedules() {
+  const list = document.getElementById("scheduleList");
+  list.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "schedules"));
+
+  if (querySnapshot.empty) {
+    list.innerHTML = "등록된 일정이 없습니다.";
+    return;
+  }
+
+  querySnapshot.forEach((scheduleDoc) => {
+    const data = scheduleDoc.data();
+    list.innerHTML += `
+      <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
+        <h3>${data.day}</h3>
+        <p>${data.title}</p>
+        <p>${data.time}</p>
+        <button onclick="deleteSchedule('${scheduleDoc.id}')">삭제</button>
+      </div>
+    `;
+  });
+}
+
+async function deleteSchedule(id) {
+  await deleteDoc(doc(db, "schedules", id));
+  alert("일정 삭제 완료!");
+  loadSchedules();
+}
+
+async function loadTrials() {
   const list = document.getElementById("trialList");
-
   list.innerHTML = "";
 
   const querySnapshot = await getDocs(collection(db, "trials"));
@@ -274,41 +284,35 @@ loadNotices();
   }
 
   querySnapshot.forEach((trialDoc) => {
-
     const data = trialDoc.data();
-
-    const box = document.createElement("div");
-
-    box.style.background = "#f9fafb";
-    box.style.padding = "15px";
-    box.style.marginBottom = "10px";
-    box.style.borderRadius = "12px";
-
-    box.innerHTML = `
-      <h3>${data.name}</h3>
-      <p>학년: ${data.grade}</p>
-      <p>연락처: ${data.phone}</p>
-      <button onclick="deleteTrial('${trialDoc.id}')">삭제</button>
+    list.innerHTML += `
+      <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
+        <h3>${data.name}</h3>
+        <p>학년: ${data.grade}</p>
+        <p>연락처: ${data.phone}</p>
+        <button onclick="deleteTrial('${trialDoc.id}')">삭제</button>
+      </div>
     `;
-
-    list.appendChild(box);
-
   });
-
 }
 
 async function deleteTrial(id) {
-
   await deleteDoc(doc(db, "trials", id));
-
   alert("체험 신청 삭제 완료!");
-
   loadTrials();
-
 }
 
+window.saveNotice = saveNotice;
+window.deleteNotice = deleteNotice;
+window.savePlayer = savePlayer;
+window.deletePlayer = deletePlayer;
+window.saveSchedule = saveSchedule;
+window.deleteSchedule = deleteSchedule;
 window.deleteTrial = deleteTrial;
 
+loadNotices();
+loadPlayers();
+loadSchedules();
 loadTrials();
 </script>
 
