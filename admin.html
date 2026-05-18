@@ -60,6 +60,10 @@
   <h2>👥 저장된 선수</h2>
   <div id="playerList">불러오는 중...</div>
 </section>
+  <section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
+  <h2>📝 체험 신청 확인</h2>
+  <div id="trialList">불러오는 중...</div>
+</section>
   <div style="text-align:center;">
     <a href="index.html">
       <button style="padding:12px 30px; border:none; border-radius:10px;">
@@ -227,6 +231,56 @@ loadPlayers();
 window.deleteNotice = deleteNotice;
 
 loadNotices();
+  async function loadTrials() {
+
+  const list = document.getElementById("trialList");
+
+  list.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "trials"));
+
+  if (querySnapshot.empty) {
+    list.innerHTML = "아직 체험 신청이 없습니다.";
+    return;
+  }
+
+  querySnapshot.forEach((trialDoc) => {
+
+    const data = trialDoc.data();
+
+    const box = document.createElement("div");
+
+    box.style.background = "#f9fafb";
+    box.style.padding = "15px";
+    box.style.marginBottom = "10px";
+    box.style.borderRadius = "12px";
+
+    box.innerHTML = `
+      <h3>${data.name}</h3>
+      <p>학년: ${data.grade}</p>
+      <p>연락처: ${data.phone}</p>
+      <button onclick="deleteTrial('${trialDoc.id}')">삭제</button>
+    `;
+
+    list.appendChild(box);
+
+  });
+
+}
+
+async function deleteTrial(id) {
+
+  await deleteDoc(doc(db, "trials", id));
+
+  alert("체험 신청 삭제 완료!");
+
+  loadTrials();
+
+}
+
+window.deleteTrial = deleteTrial;
+
+loadTrials();
 </script>
 
 </body>
