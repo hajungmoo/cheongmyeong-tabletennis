@@ -25,7 +25,30 @@ h2{font-size:32px}
 input{padding:12px;margin:6px;width:220px;border-radius:12px;border:1px solid #ddd}
 button{padding:11px 26px;border:none;border-radius:999px;cursor:pointer;background:#7c3aed;color:white;font-weight:bold}
 footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align:center;padding:32px}
+  .slider {
+  max-width: 1100px;
+  margin: 30px auto;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+}
 
+.slide {
+  display: none;
+  padding: 55px 25px;
+  text-align: center;
+  color: white;
+  background: linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);
+}
+
+.slide.active {
+  display: block;
+}
+
+.slide h2 {
+  font-size: 34px;
+  margin-bottom: 10px;
+}
 @media (max-width: 600px) {
   nav {
     display: flex;
@@ -80,30 +103,7 @@ footer{background:linear-gradient(135deg,#111827,#374151);color:white;text-align
     width: 90%;
   }
   
-  .slider {
-  max-width: 1100px;
-  margin: 30px auto;
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0,0,0,.15);
-}
 
-.slide {
-  display: none;
-  padding: 55px 25px;
-  text-align: center;
-  color: white;
-  background: linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);
-}
-
-.slide.active {
-  display: block;
-}
-
-.slide h2 {
-  font-size: 34px;
-  margin-bottom: 10px;
-}
 }</style>
 </head>
 
