@@ -55,16 +55,15 @@ nav a:hover{
   linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),
   url('단체사진.jpg');
 
-  background-size:contain;
-  background-position:center;
+  background-size:cover;
+  background-position:center 35%;
   background-repeat:no-repeat;
-  background-color:#111827;
 
   color:white;
   text-align:center;
 
-  padding:55px 20px;
-  min-height:260px;
+  padding:90px 20px;
+  min-height:320px;
 
   display:flex;
   flex-direction:column;
@@ -259,11 +258,19 @@ footer{
     font-size:32px;
   }
 
+  .hero{
+    background-position:center top;
+    min-height:220px;
+    padding:60px 20px;
+  }
+
   .btn{
     display:block;
     width:80%;
     margin:12px auto;
   }
+
+}
 
   .grid{
     grid-template-columns:1fr;
