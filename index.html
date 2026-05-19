@@ -619,11 +619,12 @@ async function loadPlayers(){
     return;
   }
 
-  querySnapshot.forEach((doc)=>{
+  querySnapshot.forEach((doc, index)=>{
     const data = doc.data();
     const card = document.createElement("div");
     card.className = "card player-card";
-
+card.style.animationDelay = `${index * 0.15}s`;
+    
     const imageUrl = data.image ? data.image : "https://via.placeholder.com/400x300";
 
     card.onclick = function(){
