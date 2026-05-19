@@ -608,51 +608,35 @@ async function loadPlayers(){
     const data = doc.data();
     const card = document.createElement("div");
     card.className = "card";
-   card.innerHTML = `
-card.innerHTML = `
-  <img src="${data.image || 'https://via.placeholder.com/400x300'}" style="
-    width:100%;
-    height:320px;
-    object-fit:cover;
-    border-radius:22px;
-    margin-bottom:18px;
-    box-shadow:0 12px 28px rgba(0,0,0,.28);
-    border:2px solid rgba(255,255,255,.15);
-  ">
 
-  <h3 style="
-    font-size:28px;
-    margin-bottom:10px;
-  ">
-    ${data.name}
-  </h3>
+    const imageUrl = data.image ? data.image : "https://via.placeholder.com/400x300";
 
-  <p style="
-    font-size:16px;
-    margin-bottom:6px;
-  ">
-    🎓 ${data.grade}
-  </p>
+    card.innerHTML = `
+      <img src="${imageUrl}" style="
+        width:100%;
+        height:320px;
+        object-fit:cover;
+        border-radius:22px;
+        margin-bottom:18px;
+        box-shadow:0 12px 28px rgba(0,0,0,.28);
+        border:2px solid rgba(255,255,255,.15);
+      ">
 
-  <p style="
-    font-size:15px;
-    opacity:.95;
-    margin-bottom:12px;
-  ">
-    🏓 ${data.style || "전형 준비중"}
-  </p>
+      <h3>${data.name}</h3>
+      <p>🎓 ${data.grade}</p>
+      <p>🏓 ${data.style || "전형 준비중"}</p>
 
-  <div style="
-    padding:12px;
-    border-radius:16px;
-    background:rgba(255,255,255,.12);
-    backdrop-filter:blur(8px);
-    line-height:1.7;
-    font-size:14px;
-  ">
-    🏆 ${data.award || "수상기록 준비중"}
-  </div>
-`;
+      <div style="
+        padding:12px;
+        border-radius:16px;
+        background:rgba(255,255,255,.12);
+        line-height:1.7;
+        font-size:14px;
+      ">
+        🏆 ${data.award || "수상기록 준비중"}
+      </div>
+    `;
+
     playerList.appendChild(card);
   });
 }
