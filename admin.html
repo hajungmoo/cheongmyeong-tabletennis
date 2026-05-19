@@ -47,7 +47,8 @@
   <input id="playerStyle" type="text" placeholder="전형"
   style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
 
-  <input id="playerAward" type="text" placeholder="수상 기록"
+<input id="playerAward" type="text" placeholder="수상 기록">
+<input id="playerImage" type="text" placeholder="player1.jpg">
   style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
 
   <button onclick="savePlayer()"
@@ -186,6 +187,7 @@ async function savePlayer() {
   const grade = document.getElementById("playerGrade").value;
   const style = document.getElementById("playerStyle").value;
   const award = document.getElementById("playerAward").value;
+  const image = document.getElementById("playerImage").value;
 
   if (!name || !grade) {
     alert("선수 이름과 학년을 입력해주세요.");
@@ -201,8 +203,9 @@ async function savePlayer() {
       name,
       grade,
       style,
-      award,
-      createdAt: serverTimestamp()
+     award,
+image,
+createdAt: serverTimestamp()
     });
     alert("선수 저장 완료!");
   }
