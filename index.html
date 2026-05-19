@@ -12,6 +12,7 @@
 body{
   margin:0;
   font-family:Arial,sans-serif;
+  overflow-x:hidden;
   background:
   radial-gradient(circle at top left,#7c3aed 0%,transparent 25%),
   radial-gradient(circle at top right,#2563eb 0%,transparent 25%),
@@ -112,6 +113,8 @@ nav a:hover{
   padding:120px 20px;
   text-align:center;
   color:white;
+
+  will-change:transform;
 }
 
 .slide.active{
@@ -149,7 +152,6 @@ nav a:hover{
 .section{
   background:rgba(255,255,255,.08);
   border:1px solid rgba(255,255,255,.15);
-  backdrop-filter:blur(6px);
   border-radius:32px;
   padding:34px;
   margin-bottom:34px;
@@ -176,7 +178,6 @@ h2{
   rgba(124,58,237,.55),
   rgba(37,99,235,.45),
   rgba(236,72,153,.45));
-  backdrop-filter:blur(4px);
   border:1px solid rgba(255,255,255,.18);
   box-shadow:
   0 10px 30px rgba(0,0,0,.28),
