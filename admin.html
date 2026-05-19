@@ -98,7 +98,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI",
@@ -112,6 +112,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+let editingNoticeId = null;
+let editingPlayerId = null;
+let editingScheduleId = null;
+
 async function saveNotice() {
   const title = document.getElementById("noticeTitle").value;
   const content = document.getElementById("noticeContent").value;
@@ -121,13 +125,19 @@ async function saveNotice() {
     return;
   }
 
-  await addDoc(collection(db, "notices"), {
-    title,
-    content,
-    createdAt: serverTimestamp()
-  });
+  if (editingNoticeId) {
+    await updateDoc(doc(db, "notices", editingNoticeId), { title, content });
+    alert("공지 수정 완료!");
+    editingNoticeId = null;
+  } else {
+    await addDoc(collection(db, "notices"), {
+      title,
+      content,
+      createdAt: serverTimestamp()
+    });
+    alert("공지 저장 완료!");
+  }
 
-  alert("공지 저장 완료!");
   document.getElementById("noticeTitle").value = "";
   document.getElementById("noticeContent").value = "";
   loadNotices();
@@ -138,7 +148,7 @@ async function loadNotices() {
   list.innerHTML = "";
 
   const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
-const querySnapshot = await getDocs(q);
+  const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
     list.innerHTML = "아직 저장된 공지가 없습니다.";
@@ -151,10 +161,18 @@ const querySnapshot = await getDocs(q);
       <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
         <h3>${data.title}</h3>
         <p>${data.content}</p>
+        <button onclick="editNotice('${noticeDoc.id}', '${data.title}', '${data.content}')">수정</button>
         <button onclick="deleteNotice('${noticeDoc.id}')">삭제</button>
       </div>
     `;
   });
+}
+
+function editNotice(id, title, content) {
+  editingNoticeId = id;
+  document.getElementById("noticeTitle").value = title;
+  document.getElementById("noticeContent").value = content;
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 async function deleteNotice(id) {
@@ -174,15 +192,21 @@ async function savePlayer() {
     return;
   }
 
-  await addDoc(collection(db, "players"), {
-  name,
-  grade,
-  style,
-  award,
-  createdAt: serverTimestamp()
-});
+  if (editingPlayerId) {
+    await updateDoc(doc(db, "players", editingPlayerId), { name, grade, style, award });
+    alert("선수 수정 완료!");
+    editingPlayerId = null;
+  } else {
+    await addDoc(collection(db, "players"), {
+      name,
+      grade,
+      style,
+      award,
+      createdAt: serverTimestamp()
+    });
+    alert("선수 저장 완료!");
+  }
 
-  alert("선수 저장 완료!");
   document.getElementById("playerName").value = "";
   document.getElementById("playerGrade").value = "";
   document.getElementById("playerStyle").value = "";
@@ -194,12 +218,8 @@ async function loadPlayers() {
   const list = document.getElementById("playerList");
   list.innerHTML = "";
 
-const q = query(
-  collection(db, "players"),
-  orderBy("createdAt", "desc")
-);
-
-const querySnapshot = await getDocs(q);
+  const q = query(collection(db, "players"), orderBy("createdAt", "desc"));
+  const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
     list.innerHTML = "저장된 선수가 없습니다.";
@@ -214,10 +234,20 @@ const querySnapshot = await getDocs(q);
         <p>${data.grade}</p>
         <p>${data.style || ""}</p>
         <p>${data.award || ""}</p>
+        <button onclick="editPlayer('${playerDoc.id}', '${data.name}', '${data.grade}', '${data.style || ""}', '${data.award || ""}')">수정</button>
         <button onclick="deletePlayer('${playerDoc.id}')">삭제</button>
       </div>
     `;
   });
+}
+
+function editPlayer(id, name, grade, style, award) {
+  editingPlayerId = id;
+  document.getElementById("playerName").value = name;
+  document.getElementById("playerGrade").value = grade;
+  document.getElementById("playerStyle").value = style;
+  document.getElementById("playerAward").value = award;
+  window.scrollTo({ top: 350, behavior: "smooth" });
 }
 
 async function deletePlayer(id) {
@@ -236,14 +266,20 @@ async function saveSchedule() {
     return;
   }
 
-  await addDoc(collection(db, "schedules"), {
-  day,
-  title,
-  time,
-  createdAt: serverTimestamp()
-});
+  if (editingScheduleId) {
+    await updateDoc(doc(db, "schedules", editingScheduleId), { day, title, time });
+    alert("일정 수정 완료!");
+    editingScheduleId = null;
+  } else {
+    await addDoc(collection(db, "schedules"), {
+      day,
+      title,
+      time,
+      createdAt: serverTimestamp()
+    });
+    alert("일정 저장 완료!");
+  }
 
-  alert("일정 저장 완료!");
   document.getElementById("scheduleDay").value = "";
   document.getElementById("scheduleTitle").value = "";
   document.getElementById("scheduleTime").value = "";
@@ -254,12 +290,8 @@ async function loadSchedules() {
   const list = document.getElementById("scheduleList");
   list.innerHTML = "";
 
-const q = query(
-  collection(db, "schedules"),
-  orderBy("createdAt", "desc")
-);
-
-const querySnapshot = await getDocs(q);
+  const q = query(collection(db, "schedules"), orderBy("createdAt", "desc"));
+  const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
     list.innerHTML = "등록된 일정이 없습니다.";
@@ -273,10 +305,19 @@ const querySnapshot = await getDocs(q);
         <h3>${data.day}</h3>
         <p>${data.title}</p>
         <p>${data.time}</p>
+        <button onclick="editSchedule('${scheduleDoc.id}', '${data.day}', '${data.title}', '${data.time}')">수정</button>
         <button onclick="deleteSchedule('${scheduleDoc.id}')">삭제</button>
       </div>
     `;
   });
+}
+
+function editSchedule(id, day, title, time) {
+  editingScheduleId = id;
+  document.getElementById("scheduleDay").value = day;
+  document.getElementById("scheduleTitle").value = title;
+  document.getElementById("scheduleTime").value = time;
+  window.scrollTo({ top: 700, behavior: "smooth" });
 }
 
 async function deleteSchedule(id) {
@@ -317,10 +358,16 @@ async function deleteTrial(id) {
 
 window.saveNotice = saveNotice;
 window.deleteNotice = deleteNotice;
+window.editNotice = editNotice;
+
 window.savePlayer = savePlayer;
 window.deletePlayer = deletePlayer;
+window.editPlayer = editPlayer;
+
 window.saveSchedule = saveSchedule;
 window.deleteSchedule = deleteSchedule;
+window.editSchedule = editSchedule;
+
 window.deleteTrial = deleteTrial;
 
 loadNotices();
