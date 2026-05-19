@@ -568,14 +568,19 @@ function toggleLogin(){
   box.style.display = box.style.display === "none" ? "block" : "none";
 }
 
-function checkLogin(){
-  const id=document.getElementById("adminId").value;
-  const pw=document.getElementById("adminPw").value;
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-  if(id==="gkwjdan" && pw==="akdlfem1@3$"){
-    window.location.href="admin.html";
-  }else{
-    alert("아이디 또는 비밀번호가 틀렸습니다.");
+const auth = getAuth(app);
+
+async function checkLogin(){
+  const email = document.getElementById("adminId").value;
+  const pw = document.getElementById("adminPw").value;
+
+  try{
+    await signInWithEmailAndPassword(auth, email, pw);
+    window.location.href = "admin.html";
+  }catch(error){
+    alert("로그인 정보가 틀렸습니다.");
   }
 }
 
