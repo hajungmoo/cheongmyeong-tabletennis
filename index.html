@@ -65,6 +65,9 @@ nav a:hover{
 }
 
 .hero{
+  position:relative;
+overflow:hidden;
+  
   background:
   linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),
   url('단체사진.jpg');
@@ -316,7 +319,43 @@ footer{
   }
 
 }
+.hero::before{
+  content:'';
+  position:absolute;
+  width:700px;
+  height:700px;
 
+  background:
+  radial-gradient(circle,
+  rgba(255,255,255,.18),
+  transparent 70%);
+
+  top:-250px;
+  right:-180px;
+
+  animation:heroGlow 7s ease-in-out infinite;
+
+  pointer-events:none;
+}
+
+@keyframes heroGlow{
+
+  0%{
+    transform:scale(1) translateY(0);
+    opacity:.55;
+  }
+
+  50%{
+    transform:scale(1.18) translateY(25px);
+    opacity:.9;
+  }
+
+  100%{
+    transform:scale(1) translateY(0);
+    opacity:.55;
+  }
+
+}
 </style>
 </head>
 
