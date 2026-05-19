@@ -167,12 +167,27 @@ overflow:hidden;
   padding:120px 20px;
   text-align:center;
   color:white;
-
-  will-change:transform;
+  opacity:0;
+  transform:scale(1.04);
+  animation:slideFadeZoom 1.2s ease forwards;
 }
 
 .slide.active{
   display:block;
+}
+
+@keyframes slideFadeZoom{
+  from{
+    opacity:0;
+    transform:scale(1.08) translateY(12px);
+    filter:blur(6px);
+  }
+
+  to{
+    opacity:1;
+    transform:scale(1) translateY(0);
+    filter:blur(0);
+  }
 }
 
 .slide1{
@@ -865,7 +880,6 @@ loadSchedules();
 let slideIndex = 0;
 
 function showSlides() {
-
   const slides = document.querySelectorAll(".slide");
 
   slides.forEach(slide => {
@@ -880,7 +894,7 @@ function showSlides() {
 
   slides[slideIndex - 1].classList.add("active");
 
-  setTimeout(showSlides, 3000);
+  setTimeout(showSlides, 4200);
 }
 
 showSlides();
