@@ -47,9 +47,11 @@
   <input id="playerStyle" type="text" placeholder="전형"
   style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
 
-<input id="playerAward" type="text" placeholder="수상 기록">
-<input id="playerImage" type="text" placeholder="player1.jpg">
-  style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+<input id="playerAward" type="text" placeholder="수상 기록"
+style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+
+<input id="playerImage" type="text" placeholder="images/player1.jpg"
+style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
 
   <button onclick="savePlayer()"
   style="padding:12px 30px; border:none; border-radius:10px; background:#7c3aed; color:white;">
@@ -195,7 +197,13 @@ async function savePlayer() {
   }
 
   if (editingPlayerId) {
-    await updateDoc(doc(db, "players", editingPlayerId), { name, grade, style, award });
+await updateDoc(doc(db, "players", editingPlayerId), {
+  name,
+  grade,
+  style,
+  award,
+  image
+});
     alert("선수 수정 완료!");
     editingPlayerId = null;
   } else {
@@ -214,6 +222,7 @@ createdAt: serverTimestamp()
   document.getElementById("playerGrade").value = "";
   document.getElementById("playerStyle").value = "";
   document.getElementById("playerAward").value = "";
+  document.getElementById("playerImage").value = "";
   loadPlayers();
 }
 
@@ -231,20 +240,68 @@ async function loadPlayers() {
 
   querySnapshot.forEach((playerDoc) => {
     const data = playerDoc.data();
+
     list.innerHTML += `
-      <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
+      <div style="
+        background:#f9fafb;
+        padding:15px;
+        margin-bottom:10px;
+        border-radius:12px;
+      ">
+
+        <img src="${data.image || ''}" style="
+          width:120px;
+          height:120px;
+          object-fit:cover;
+          border-radius:15px;
+          margin-bottom:10px;
+        ">
+
         <h3>${data.name}</h3>
-        <p>${data.grade}</p>
-        <p>${data.style || ""}</p>
-        <p>${data.award || ""}</p>
-        <button onclick="editPlayer('${playerDoc.id}', '${data.name}', '${data.grade}', '${data.style || ""}', '${data.award || ""}')">수정</button>
-        <button onclick="deletePlayer('${playerDoc.id}')">삭제</button>
+
+        <p>학년 : ${data.grade}</p>
+
+        <p>전형 : ${data.style || ""}</p>
+
+        <p>🏆 ${data.award || ""}</p>
+
+        <button onclick="editPlayer(
+          '${playerDoc.id}',
+          '${data.name}',
+          '${data.grade}',
+          '${data.style || ""}',
+          '${data.award || ""}',
+          '${data.image || ""}'
+        )"
+        style="
+          padding:8px 16px;
+          border:none;
+          border-radius:8px;
+          background:#2563eb;
+          color:white;
+          margin-right:8px;
+        ">
+          수정
+        </button>
+
+        <button onclick="deletePlayer('${playerDoc.id}')"
+        style="
+          padding:8px 16px;
+          border:none;
+          border-radius:8px;
+          background:#dc2626;
+          color:white;
+        ">
+          삭제
+        </button>
+
       </div>
     `;
   });
 }
 
-function editPlayer(id, name, grade, style, award) {
+function editPlayer(id, name, grade, style, award, image) {
+  document.getElementById("playerImage").value = image;
   editingPlayerId = id;
   document.getElementById("playerName").value = name;
   document.getElementById("playerGrade").value = grade;
