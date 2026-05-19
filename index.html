@@ -608,7 +608,16 @@ async function loadPlayers(){
     const data = doc.data();
     const card = document.createElement("div");
     card.className = "card";
-    card.innerHTML = `
+   card.innerHTML = `
+  <img src="${data.image}" style="
+  width:100%;
+  height:320px;
+  object-fit:cover;
+  border-radius:20px;
+  margin-bottom:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+  ">
+  
       <h3>${data.name}</h3>
       <p>${data.grade}</p>
       <p>${data.style || ""}</p>
