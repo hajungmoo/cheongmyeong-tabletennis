@@ -356,6 +356,52 @@ footer{
   }
 
 }
+  .hero h1{
+  animation:heroTitleIn 1.1s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.hero p{
+  animation:heroTextIn 1.3s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.hero .btn{
+  animation:heroButtonIn 1.5s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+@keyframes heroTitleIn{
+  from{
+    opacity:0;
+    transform:translateY(35px) scale(.95);
+    filter:blur(8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+    filter:blur(0);
+  }
+}
+
+@keyframes heroTextIn{
+  from{
+    opacity:0;
+    transform:translateY(25px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes heroButtonIn{
+  from{
+    opacity:0;
+    transform:translateY(20px) scale(.95);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
 </style>
 </head>
 
