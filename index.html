@@ -610,21 +610,18 @@ async function loadPlayers(){
     const data = doc.data();
     const card = document.createElement("div");
     card.className = "card";
-const card = document.createElement("div");
-card.className = "card";
 
-card.onclick = function(){
-  openPlayerModal(
-    imageUrl,
-    data.name,
-    data.grade,
-    data.style || "전형 준비중",
-    data.award || "수상기록 준비중"
-  );
-};
-
-const imageUrl = data.image ? data.image : "https://via.placeholder.com/400x300";
     const imageUrl = data.image ? data.image : "https://via.placeholder.com/400x300";
+
+    card.onclick = function(){
+      openPlayerModal(
+        imageUrl,
+        data.name,
+        data.grade,
+        data.style || "전형 준비중",
+        data.award || "수상기록 준비중"
+      );
+    };
 
     card.innerHTML = `
       <img src="${imageUrl}" style="
