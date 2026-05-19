@@ -12,7 +12,7 @@
   .player-card{
   opacity:0;
   transform:translateY(35px) scale(.96);
-  animation:playerFadeUp .7s ease forwards;
+  animation:playerFadeUp 1s cubic-bezier(.22,1,.36,1) forwards;
 }
 
 @keyframes playerFadeUp{
@@ -623,7 +623,7 @@ async function loadPlayers(){
     const data = doc.data();
     const card = document.createElement("div");
     card.className = "card player-card";
-card.style.animationDelay = `${index * 0.15}s`;
+card.style.animationDelay = `${index * 0.35}s`;
     
     const imageUrl = data.image ? data.image : "https://via.placeholder.com/400x300";
 
