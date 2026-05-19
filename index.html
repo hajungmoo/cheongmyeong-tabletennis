@@ -9,6 +9,19 @@
 
 <style>
 
+  .player-card{
+  opacity:0;
+  transform:translateY(35px) scale(.96);
+  animation:playerFadeUp .7s ease forwards;
+}
+
+@keyframes playerFadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+  
 body{
   margin:0;
   font-family:Arial,sans-serif;
