@@ -609,7 +609,7 @@ async function loadPlayers(){
   querySnapshot.forEach((doc)=>{
     const data = doc.data();
     const card = document.createElement("div");
-    card.className = "card";
+    card.className = "card player-card";
 
     const imageUrl = data.image ? data.image : "https://via.placeholder.com/400x300";
 
