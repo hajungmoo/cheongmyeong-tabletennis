@@ -163,12 +163,17 @@ overflow:hidden;
 }
 
 .slide{
+  overflow:hidden;
+  position:relative;
+
   display:none;
   padding:120px 20px;
   text-align:center;
   color:white;
+
   opacity:0;
   transform:scale(1.04);
+
   animation:slideFadeZoom 1.2s ease forwards;
 }
 
@@ -176,7 +181,34 @@ overflow:hidden;
   display:block;
 }
 
+.slide::before{
+  content:'';
+  position:absolute;
+  inset:0;
+
+  background:
+  linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255,255,255,.08) 45%,
+    transparent 100%
+  );
+
+  transform:translateX(-100%);
+
+  animation:slideShine 5s linear infinite;
+
+  pointer-events:none;
+}
+
+@keyframes slideShine{
+  to{
+    transform:translateX(100%);
+  }
+}
+
 @keyframes slideFadeZoom{
+
   from{
     opacity:0;
     transform:scale(1.08) translateY(12px);
