@@ -102,6 +102,7 @@ style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI",
@@ -114,7 +115,14 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
+onAuthStateChanged(auth, (user) => {
+  if(!user){
+    alert("로그인이 필요합니다.");
+    window.location.href = "index.html";
+  }
+});
 let editingNoticeId = null;
 let editingPlayerId = null;
 let editingScheduleId = null;
