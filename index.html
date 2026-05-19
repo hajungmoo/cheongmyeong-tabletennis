@@ -248,7 +248,17 @@ footer{
   text-align:center;
   padding:32px;
 }
+  
+.fade-up{
+  opacity:0;
+  transform:translateY(40px);
+  transition:all .8s ease;
+}
 
+.fade-up.show{
+  opacity:1;
+  transform:translateY(0);
+}
 @media (max-width:600px){
 
   nav{
@@ -322,19 +332,19 @@ footer{
 </div>
 <div class="wrap">
 
-<section id="about" class="section">
+<section id="about" class="section fade-up">
   <h2>🏓 탁구부 소개</h2>
   <p>수원청명초 엘리트 탁구 꿈나무는 체계적인 훈련과 즐거운 분위기 속에서 아이들의 자신감, 집중력, 실력을 함께 성장시키는 탁구부입니다.</p>
 </section>
 
-<section id="notice" class="section">
+<section id="notice" class="section fade-up">
   <h2>📢 공지사항</h2>
  <div id="noticeList" class="grid">
   <div class="card">공지 불러오는 중...</div>
 </div>
 </section>
 
-<section id="players" class="section">
+<section id="players" class="section fade-up">
   <h2>🏆 선수 소개</h2>
   <div id="playerList" class="grid">
     <div class="card">선수 불러오는 중...</div>
@@ -365,7 +375,7 @@ footer{
     <div class="card">일정 불러오는 중...</div>
   </div>
 </section>
-<section id="photos" class="section">
+<section id="photos" class="section fade-up">
   <h2>📸 활동 사진</h2>
 
   <div class="grid">
@@ -651,7 +661,23 @@ function showSlides() {
 }
 
 showSlides();
-  
+  const fadeEls = document.querySelectorAll(".fade-up");
+
+const observer = new IntersectionObserver((entries)=>{
+
+  entries.forEach((entry)=>{
+
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+    }
+
+  });
+
+});
+
+fadeEls.forEach((el)=>{
+  observer.observe(el);
+});
 </script>
 <video id="bgm" loop style="display:none;">
   <source src="https://raw.githubusercontent.com/hajungmoo/cheongmyeong-tabletennis/refs/heads/main/KakaoTalk_20260513_020036725.mp4" type="video/mp4">
