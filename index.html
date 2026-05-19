@@ -585,6 +585,15 @@ async function loadNotices(){
     const data = doc.data();
     const card = document.createElement("div");
     card.className = "card";
+    card.onclick = function(){
+  openPlayerModal(
+    data.image || "player1.jpg",
+    data.name,
+    data.grade,
+    data.style || "전형 준비중",
+    data.award || "수상기록 준비중"
+  );
+};
     card.innerHTML = `
       <h3>${data.title}</h3>
       <p>${data.content}</p>
@@ -842,6 +851,64 @@ function closePopup(){
   document.getElementById("popupBox").style.display = "none";
 }
 </script>
+<div id="playerModal" onclick="closePlayerModal()" style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+z-index:10000;
+align-items:center;
+justify-content:center;
+padding:20px;
+">
+  <div onclick="event.stopPropagation()" style="
+  max-width:520px;
+  width:92%;
+  background:linear-gradient(135deg,#1e293b,#111827);
+  border-radius:28px;
+  padding:22px;
+  color:white;
+  text-align:center;
+  box-shadow:0 25px 70px rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.2);
+  ">
 
+    <img id="modalPlayerImage" src="" style="
+    width:100%;
+    max-height:520px;
+    object-fit:cover;
+    border-radius:22px;
+    margin-bottom:18px;
+    ">
+
+    <h2 id="modalPlayerName"></h2>
+    <p id="modalPlayerGrade"></p>
+    <p id="modalPlayerStyle"></p>
+    <p id="modalPlayerAward"></p>
+
+    <button onclick="closePlayerModal()" style="
+    margin-top:15px;
+    background:#ec4899;
+    ">
+      닫기
+    </button>
+  </div>
+</div>
+
+<script>
+function openPlayerModal(image, name, grade, style, award){
+  document.getElementById("modalPlayerImage").src = image;
+  document.getElementById("modalPlayerName").innerText = name;
+  document.getElementById("modalPlayerGrade").innerText = "🎓 " + grade;
+  document.getElementById("modalPlayerStyle").innerText = "🏓 " + style;
+  document.getElementById("modalPlayerAward").innerText = "🏆 " + award;
+
+  document.getElementById("playerModal").style.display = "flex";
+}
+
+function closePlayerModal(){
+  document.getElementById("playerModal").style.display = "none";
+}
+</script>
 </body>
 </html>
