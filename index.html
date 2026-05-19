@@ -89,10 +89,48 @@ overflow:hidden;
 }
 
 .hero h1{
-  font-size:38px;
+  font-size:42px;
   margin:15px 0;
+
+  font-weight:900;
+  letter-spacing:1px;
+
+  background:
+  linear-gradient(
+    90deg,
+    #ffffff,
+    #c4b5fd,
+    #93c5fd,
+    #f9a8d4,
+    #ffffff
+  );
+
+  background-size:300% auto;
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  text-shadow:
+    0 0 18px rgba(255,255,255,.15),
+    0 0 38px rgba(124,58,237,.35),
+    0 0 65px rgba(236,72,153,.28);
+
+  animation:
+    heroTitleIn 1.1s cubic-bezier(.22,1,.36,1) forwards,
+    heroShine 6s linear infinite;
 }
 
+  @keyframes heroShine{
+
+  0%{
+    background-position:0% center;
+  }
+
+  100%{
+    background-position:300% center;
+  }
+
+}
 .hero p{
   font-size:17px;
 }
