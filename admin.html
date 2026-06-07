@@ -523,8 +523,6 @@ window.editSchedule = editSchedule;
 
 window.deleteTrial = deleteTrial;
 async function loadVisitorStats() {
-async function loadRecentVisitors() {
-  async function loadRecentVisitors() {
   try {
     const response = await fetch(
       "https://edsezsvykkwtqwdewrsb.supabase.co/rest/v1/visitors?select=*",
@@ -537,34 +535,24 @@ async function loadRecentVisitors() {
 
     const visitors = await response.json();
 
-    const list = document.getElementById("recentVisitorList");
+    document.getElementById("totalVisitors").innerText = visitors.length;
+    document.getElementById("dashTotalVisitors").innerText = visitors.length;
 
-    list.innerHTML = "";
+    const today = new Date().toISOString().slice(0, 10);
 
-    visitors
-      .slice(-20)
-      .reverse()
-      .forEach((v) => {
+    const todayCount = visitors.filter(v =>
+      v.visited_at && v.visited_at.startsWith(today)
+    ).length;
 
-        const time = new Date(v.visited_at)
-          .toLocaleString("ko-KR");
-
-        list.innerHTML += `
-          <div style="
-            background:#f9fafb;
-            padding:10px;
-            border-radius:10px;
-            margin-bottom:8px;
-          ">
-            🏓 홈페이지 방문 - ${time}
-          </div>
-        `;
-      });
+    document.getElementById("todayVisitors").innerText = todayCount;
+    document.getElementById("dashTodayVisitors").innerText = todayCount;
 
   } catch (e) {
     console.log(e);
   }
 }
+
+async function loadRecentVisitors() {
   try {
     const response = await fetch(
       "https://edsezsvykkwtqwdewrsb.supabase.co/rest/v1/visitors?select=*",
@@ -585,58 +573,28 @@ async function loadRecentVisitors() {
 
     list.innerHTML = "";
 
-    visitors.forEach((v) => {
-      const date = new Date(v.visited_at);
-      const time = date.toLocaleString("ko-KR");
+    visitors
+      .slice(-20)
+      .reverse()
+      .forEach((v) => {
+        const time = new Date(v.visited_at).toLocaleString("ko-KR");
 
-      list.innerHTML += `
-        <div style="
-          background:#f9fafb;
-          padding:12px 15px;
-          border-radius:12px;
-          margin-bottom:8px;
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-        ">
-          <span>🏓 ${v.page || "home"} 방문</span>
-          <span style="color:#6b7280;">${time}</span>
-        </div>
-      `;
-    });
+        list.innerHTML += `
+          <div style="
+            background:#f9fafb;
+            padding:12px 15px;
+            border-radius:12px;
+            margin-bottom:8px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+          ">
+            <span>🏓 ${v.page || "home"} 방문</span>
+            <span style="color:#6b7280;">${time}</span>
+          </div>
+        `;
+      });
 
-  } catch (e) {
-    console.log(e);
-  }
-}
-  try {
-
-    const response = await fetch(
-      "https://edsezsvykkwtqwdewrsb.supabase.co/rest/v1/visitors?select=*",
-      {
-        headers: {
-          apikey: "sb_publishable_8qtpZoj29eGQDyWsRvzrfg_noJjtNoL"
-        }
-      }
-    );
-
-    const visitors = await response.json();
-
-    document.getElementById("totalVisitors").innerText =
-      visitors.length;
-document.getElementById("dashTotalVisitors").innerText =
-  visitors.length;
-    const today = new Date().toISOString().slice(0, 10);
-
-    const todayCount = visitors.filter(v =>
-      v.visited_at &&
-      v.visited_at.startsWith(today)
-    ).length;
-
-    document.getElementById("todayVisitors").innerText =
-      todayCount;
-document.getElementById("dashTodayVisitors").innerText =
-  todayCount;
   } catch (e) {
     console.log(e);
   }
