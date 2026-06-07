@@ -526,7 +526,7 @@ async function loadVisitorStats() {
 async function loadRecentVisitors() {
   try {
     const response = await fetch(
-      "https://edsezsvykkwtqwdewrsb.supabase.co/rest/v1/visitors?select=*&order=visited_at.desc&limit=20",
+      "https://edsezsvykkwtqwdewrsb.supabase.co/rest/v1/visitors?select=*",
       {
         headers: {
           apikey: "sb_publishable_8qtpZoj29eGQDyWsRvzrfg_noJjtNoL"
