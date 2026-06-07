@@ -73,8 +73,6 @@
   <h3 id="dashNotices" style="font-size:32px; color:#fbbf24;">0</h3>
 </div>
 
-</div>
-</section>
   </div>
 </section>
  <section style="
@@ -86,7 +84,7 @@ margin-bottom:25px;
 border:1px solid #374151;
 box-shadow:0 0 25px rgba(251,191,36,0.08);
 ">
-    <h2style="color:#fbbf24;">📢 공지 작성</h2>
+    <h2 style="color:#fbbf24;">📢 공지 작성</h2>
 
     <input id="noticeTitle" type="text" placeholder="공지 제목"
     style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
@@ -97,7 +95,9 @@ box-shadow:0 0 25px rgba(251,191,36,0.08);
     <br><br>
 
     <button onclick="saveNotice()"
-    style="padding:12px 30px; border:none; border-radius:10px; background:#111827; color:white;">
+    style="padding:12px 30px; border:none; border-radius:10px; background:#fbbf24;
+color:#111827;
+font-weight:bold;">
       공지 저장
     </button>
   </section>
@@ -111,7 +111,7 @@ margin-bottom:25px;
 border:1px solid #374151;
 box-shadow:0 0 25px rgba(251,191,36,0.08);
 ">
-    <h2style="color:#fbbf24;">📋 저장된 공지</h2>
+    <h2 style="color:#fbbf24;">📋 저장된 공지</h2>
     <div id="noticeList">불러오는 중...</div>
   </section>
 <section style="
@@ -123,7 +123,7 @@ margin-bottom:25px;
 border:1px solid #374151;
 box-shadow:0 0 25px rgba(251,191,36,0.08);
 ">
-  <h2style="color:#fbbf24;">🏓 선수 추가</h2>
+  <h2 style="color:#fbbf24;">🏓 선수 추가</h2>
 
   <input id="playerName" type="text" placeholder="선수 이름"
   style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
@@ -158,8 +158,16 @@ box-shadow:0 0 25px rgba(251,191,36,0.08);
   <h2 style="color:#fbbf24;">👥 저장된 선수</h2>
   <div id="playerList">불러오는 중...</div>
 </section>
-  <section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
-  <h2style="color:#fbbf24;">📅 훈련 일정 관리</h2>
+ <section style="
+background:#020817;
+color:white;
+padding:25px;
+border-radius:20px;
+margin-bottom:25px;
+border:1px solid #374151;
+box-shadow:0 0 25px rgba(251,191,36,0.08);
+">
+  <h2 style="color:#fbbf24;">📅 훈련 일정 관리</h2>
 
   <input id="scheduleDay" type="text" placeholder="요일"
   style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
@@ -185,7 +193,7 @@ margin-bottom:25px;
 border:1px solid #374151;
 box-shadow:0 0 25px rgba(251,191,36,0.08);
 ">
-  <h2style="color:#fbbf24;">📋 저장된 일정</h2>
+  <h2 style="color:#fbbf24;">📋 저장된 일정</h2>
   <div id="scheduleList">불러오는 중...</div>
 </section>
  <section style="
@@ -197,7 +205,7 @@ margin-bottom:25px;
 border:1px solid #374151;
 box-shadow:0 0 25px rgba(251,191,36,0.08);
 ">
-  <h2style="color:#fbbf24;">📝 체험 신청 확인</h2>
+  <h2 style="color:#fbbf24;">📝 체험 신청 확인</h2>
   <div id="trialList">불러오는 중...</div>
 </section>
 <section style="
@@ -209,13 +217,15 @@ margin-bottom:25px;
 border:1px solid #374151;
 box-shadow:0 0 25px rgba(251,191,36,0.08);
 ">
-  <h2style="color:#fbbf24;">📈 홈페이지 방문자 통계</h2>
+  <h2 style="color:#fbbf24;">📈 홈페이지 방문자 통계</h2>
 
   <div style="display:flex; gap:20px;">
 
     <div style="
       flex:1;
-      background:#f9fafb;
+     background:#111827;
+color:white;
+border:1px solid #374151;
       padding:20px;
       border-radius:15px;
       text-align:center;
@@ -251,12 +261,19 @@ margin-bottom:25px;
 border:1px solid #374151;
 box-shadow:0 0 25px rgba(251,191,36,0.08);
 ">
-  <h2style="color:#fbbf24;">🕒 최근 방문 기록</h2>
+  <h2 style="color:#fbbf24;">🕒 최근 방문 기록</h2>
   <div id="recentVisitorList">불러오는 중...</div>
 </section>
   <div style="text-align:center;">
     <a href="index.html">
-      <button style="padding:12px 30px; border:none; border-radius:10px;">
+      <button style="
+padding:12px 30px;
+border:none;
+border-radius:10px;
+background:#fbbf24;
+color:#111827;
+font-weight:bold;
+">
         홈페이지로 돌아가기
       </button>
     </a>
@@ -335,8 +352,10 @@ document.getElementById("dashNotices").innerText =
   querySnapshot.forEach((noticeDoc) => {
     const data = noticeDoc.data();
     list.innerHTML += `
-      <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
-        <h3>${data.title}</h3>
+      <div style="background:#111827;
+color:white;
+border:1px solid #374151; padding:15px; margin-bottom:10px; border-radius:12px;">
+        <h3 style="color:#fbbf24;">${data.title}</h3>
         <p>${data.content}</p>
         <button onclick="editNotice('${noticeDoc.id}', '${data.title}', '${data.content}')">수정</button>
         <button onclick="deleteNotice('${noticeDoc.id}')">삭제</button>
@@ -418,7 +437,9 @@ document.getElementById("dashPlayers").innerText =
 
     list.innerHTML += `
       <div style="
-        background:#f9fafb;
+        background:#111827;
+color:white;
+border:1px solid #374151;
         padding:15px;
         margin-bottom:10px;
         border-radius:12px;
@@ -536,8 +557,10 @@ async function loadSchedules() {
   querySnapshot.forEach((scheduleDoc) => {
     const data = scheduleDoc.data();
     list.innerHTML += `
-      <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
-        <h3>${data.day}</h3>
+      <div style="background:#111827;
+color:white;
+border:1px solid #374151; padding:15px; margin-bottom:10px; border-radius:12px;">
+        <h3 style="color:#fbbf24;">${data.day}</h3>
         <p>${data.title}</p>
         <p>${data.time}</p>
         <button onclick="editSchedule('${scheduleDoc.id}', '${data.day}', '${data.title}', '${data.time}')">수정</button>
@@ -576,8 +599,10 @@ document.getElementById("dashTrials").innerText =
   querySnapshot.forEach((trialDoc) => {
     const data = trialDoc.data();
     list.innerHTML += `
-      <div style="background:#f9fafb; padding:15px; margin-bottom:10px; border-radius:12px;">
-        <h3>${data.name}</h3>
+      <div style="background:#111827;
+color:white;
+border:1px solid #374151; padding:15px; margin-bottom:10px; border-radius:12px;">
+       <h3 style="color:#fbbf24;">${data.name}</h3>
         <p>학년: ${data.grade}</p>
         <p>연락처: ${data.phone}</p>
         <button onclick="deleteTrial('${trialDoc.id}')">삭제</button>
@@ -664,7 +689,9 @@ async function loadRecentVisitors() {
 
         list.innerHTML += `
           <div style="
-            background:#f9fafb;
+            background:#111827;
+color:white;
+border:1px solid #374151;
             padding:12px 15px;
             border-radius:12px;
             margin-bottom:8px;
@@ -673,7 +700,7 @@ async function loadRecentVisitors() {
             align-items:center;
           ">
             <span>🏓 ${v.page || "home"} 방문</span>
-            <span style="color:#6b7280;">${time}</span>
+            <span style="color:#d1d5db;">${time}</span>
           </div>
         `;
       });
