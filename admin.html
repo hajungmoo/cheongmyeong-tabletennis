@@ -13,7 +13,44 @@
 </div>
 
 <div style="max-width:900px; margin:auto; padding:30px;">
+<section style="
+  background:linear-gradient(135deg,#111827,#000);
+  color:white;
+  padding:30px;
+  border-radius:24px;
+  margin-bottom:25px;
+  border:1px solid #fbbf24;
+">
+  <h2 style="color:#fbbf24; margin-top:0;">🏓 청명초 탁구부 관리자 대시보드</h2>
+  <p style="color:#d1d5db;">홈페이지 현황을 한눈에 확인합니다.</p>
 
+  <div style="
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    margin-top:25px;
+  ">
+    <div style="background:#111827; padding:20px; border-radius:18px; border:1px solid #374151;">
+      <p style="color:#9ca3af;">전체 방문자</p>
+      <h3 id="dashTotalVisitors" style="font-size:32px; color:#fbbf24;">0</h3>
+    </div>
+
+    <div style="background:#111827; padding:20px; border-radius:18px; border:1px solid #374151;">
+      <p style="color:#9ca3af;">오늘 방문자</p>
+      <h3 id="dashTodayVisitors" style="font-size:32px; color:#fbbf24;">0</h3>
+    </div>
+
+    <div style="background:#111827; padding:20px; border-radius:18px; border:1px solid #374151;">
+      <p style="color:#9ca3af;">등록 선수</p>
+      <h3 id="dashPlayers" style="font-size:32px; color:#fbbf24;">0</h3>
+    </div>
+
+    <div style="background:#111827; padding:20px; border-radius:18px; border:1px solid #374151;">
+      <p style="color:#9ca3af;">체험 신청</p>
+      <h3 id="dashTrials" style="font-size:32px; color:#fbbf24;">0</h3>
+    </div>
+  </div>
+</section>
   <section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
     <h2>📢 공지 작성</h2>
 
@@ -487,7 +524,8 @@ async function loadVisitorStats() {
 
     document.getElementById("totalVisitors").innerText =
       visitors.length;
-
+document.getElementById("dashTotalVisitors").innerText =
+  visitors.length;
     const today = new Date().toISOString().slice(0, 10);
 
     const todayCount = visitors.filter(v =>
@@ -497,7 +535,8 @@ async function loadVisitorStats() {
 
     document.getElementById("todayVisitors").innerText =
       todayCount;
-
+document.getElementById("dashTodayVisitors").innerText =
+  todayCount;
   } catch (e) {
     console.log(e);
   }
