@@ -1290,6 +1290,39 @@ function openPlayerModal(image, name, grade, style, award){
 function closePlayerModal(){
   document.getElementById("playerModal").style.display = "none";
 }
+  <script>
+async function recordVisitor() {
+  try {
+    const SUPABASE_URL = "여기에_청명초_홈페이지용_SUPABASE_URL";
+    const SUPABASE_KEY = "여기에_청명초_홈페이지용_ANON_KEY";
+
+    let visitorKey = localStorage.getItem("visitor_key");
+
+    if (!visitorKey) {
+      visitorKey = crypto.randomUUID();
+      localStorage.setItem("visitor_key", visitorKey);
+    }
+
+    await fetch(`${SUPABASE_URL}/rest/v1/visitors`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify({
+        visitor_key: visitorKey,
+        page: "home"
+      })
+    });
+  } catch (e) {
+    console.log("visitor error", e);
+  }
+}
+
+recordVisitor();
 </script>
+  
 </body>
 </html>
