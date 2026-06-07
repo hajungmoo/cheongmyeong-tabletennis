@@ -89,6 +89,39 @@ style="width:95%; padding:12px; margin-bottom:10px; border-radius:10px; border:1
   <h2>📝 체험 신청 확인</h2>
   <div id="trialList">불러오는 중...</div>
 </section>
+  <section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
+  <h2>📈 홈페이지 방문자 통계</h2>
+
+  <div style="display:flex; gap:20px;">
+
+    <div style="
+      flex:1;
+      background:#f9fafb;
+      padding:20px;
+      border-radius:15px;
+      text-align:center;
+    ">
+      <h3>전체 방문자</h3>
+      <div id="totalVisitors" style="font-size:36px; font-weight:bold;">
+        0
+      </div>
+    </div>
+
+    <div style="
+      flex:1;
+      background:#f9fafb;
+      padding:20px;
+      border-radius:15px;
+      text-align:center;
+    ">
+      <h3>오늘 방문자</h3>
+      <div id="todayVisitors" style="font-size:36px; font-weight:bold;">
+        0
+      </div>
+    </div>
+
+  </div>
+</section>
   <div style="text-align:center;">
     <a href="index.html">
       <button style="padding:12px 30px; border:none; border-radius:10px;">
@@ -437,11 +470,43 @@ window.deleteSchedule = deleteSchedule;
 window.editSchedule = editSchedule;
 
 window.deleteTrial = deleteTrial;
+async function loadVisitorStats() {
 
+  try {
+
+    const response = await fetch(
+      "https://edsezsvykkwtqwdewrsb.supabase.co/rest/v1/visitors?select=*",
+      {
+        headers: {
+          apikey: "sb_publishable_8qtpZoj29eGQDyWsRvzrfg_noJjtNoL"
+        }
+      }
+    );
+
+    const visitors = await response.json();
+
+    document.getElementById("totalVisitors").innerText =
+      visitors.length;
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    const todayCount = visitors.filter(v =>
+      v.visited_at &&
+      v.visited_at.startsWith(today)
+    ).length;
+
+    document.getElementById("todayVisitors").innerText =
+      todayCount;
+
+  } catch (e) {
+    console.log(e);
+  }
+}
 loadNotices();
 loadPlayers();
 loadSchedules();
 loadTrials();
+loadVisitorStats();
 </script>
 
 </body>
