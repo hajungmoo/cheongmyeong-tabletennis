@@ -45,10 +45,18 @@
       <h3 id="dashPlayers" style="font-size:32px; color:#fbbf24;">0</h3>
     </div>
 
-    <div style="background:#111827; padding:20px; border-radius:18px; border:1px solid #374151;">
-      <p style="color:#9ca3af;">체험 신청</p>
-      <h3 id="dashTrials" style="font-size:32px; color:#fbbf24;">0</h3>
-    </div>
+<div style="background:#111827; padding:20px; border-radius:18px; border:1px solid #374151;">
+  <p style="color:#9ca3af;">체험 신청</p>
+  <h3 id="dashTrials" style="font-size:32px; color:#fbbf24;">0</h3>
+</div>
+
+<div style="background:#111827; padding:20px; border-radius:18px; border:1px solid #374151;">
+  <p style="color:#9ca3af;">공지사항</p>
+  <h3 id="dashNotices" style="font-size:32px; color:#fbbf24;">0</h3>
+</div>
+
+</div>
+</section>
   </div>
 </section>
   <section style="background:white; padding:25px; border-radius:20px; margin-bottom:25px;">
@@ -230,7 +238,8 @@ async function loadNotices() {
 
   const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
   const querySnapshot = await getDocs(q);
-
+document.getElementById("dashNotices").innerText =
+  querySnapshot.size;
   if (querySnapshot.empty) {
     list.innerHTML = "아직 저장된 공지가 없습니다.";
     return;
@@ -310,7 +319,8 @@ async function loadPlayers() {
 
   const q = query(collection(db, "players"), orderBy("createdAt", "desc"));
   const querySnapshot = await getDocs(q);
-
+document.getElementById("dashPlayers").innerText =
+  querySnapshot.size;
   if (querySnapshot.empty) {
     list.innerHTML = "저장된 선수가 없습니다.";
     return;
@@ -469,7 +479,8 @@ async function loadTrials() {
   list.innerHTML = "";
 
   const querySnapshot = await getDocs(collection(db, "trials"));
-
+document.getElementById("dashTrials").innerText =
+  querySnapshot.size;
   if (querySnapshot.empty) {
     list.innerHTML = "아직 체험 신청이 없습니다.";
     return;
