@@ -1,5 +1,262 @@
-청명초 탁구부 홈페이지는
-개인정보 보호 점검을 위해
-현재 일시적으로 운영을 중단합니다.
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>청명초등학교 탁구부</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-감사합니다.
+    body {
+      margin: 0;
+      font-family: "Noto Sans KR", Arial, sans-serif;
+      background: #f5f7fb;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f4c81, #1e88e5);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    header p {
+      margin-top: 12px;
+      font-size: 17px;
+      opacity: 0.95;
+    }
+
+    nav {
+      background: white;
+      padding: 14px 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav a {
+      display: inline-block;
+      margin: 6px 12px;
+      color: #0f4c81;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 28px auto;
+      padding: 0 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 26px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #0f4c81;
+      font-size: 24px;
+      border-left: 6px solid #1e88e5;
+      padding-left: 12px;
+    }
+
+    .hero-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .info-box {
+      background: #eef6ff;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      font-weight: 700;
+      color: #0f4c81;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .notice {
+      background: #fff8e1;
+      border-left: 6px solid #f9a825;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .result-list li,
+    .schedule-list li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background: #1f2937;
+      color: white;
+      text-align: center;
+      padding: 28px 20px;
+      margin-top: 40px;
+      font-size: 14px;
+    }
+
+    .small {
+      color: #666;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 27px;
+      }
+
+      header p {
+        font-size: 15px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>청명초등학교 탁구부</h1>
+    <p>기본기 · 성실함 · 바른 태도를 함께 키워가는 청명초 탁구부</p>
+  </header>
+
+  <nav>
+    <a href="#about">소개</a>
+    <a href="#notice">공지사항</a>
+    <a href="#schedule">훈련 일정</a>
+    <a href="#result">대회 결과</a>
+    <a href="#record">입상 실적</a>
+    <a href="#contact">문의</a>
+  </nav>
+
+  <section id="about">
+    <div class="card">
+      <h2>🏓 탁구부 소개</h2>
+      <p>
+        청명초등학교 탁구부는 학생 선수들이 탁구를 통해
+        체력, 집중력, 예절, 책임감을 함께 배울 수 있도록 지도하고 있습니다.
+      </p>
+      <p>
+        승패보다 중요한 것은 꾸준한 노력과 바른 태도라는 마음으로,
+        학생들이 즐겁고 성실하게 성장할 수 있는 훈련 환경을 만들어가고 있습니다.
+      </p>
+
+      <div class="hero-box">
+        <div class="info-box">기본기 중심 훈련</div>
+        <div class="info-box">바른 인성 지도</div>
+        <div class="info-box">대회 경험 확대</div>
+        <div class="info-box">안전한 훈련 환경</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="notice">
+    <div class="card">
+      <h2>📢 공지사항</h2>
+      <div class="notice">
+        현재 홈페이지는 학생 개인정보 및 초상권 보호를 위해
+        사진 없이 텍스트 중심으로 운영됩니다.
+      </div>
+
+      <ul>
+        <li>훈련 일정 및 대회 일정은 변경될 수 있습니다.</li>
+        <li>대회 참가 및 전지훈련 관련 안내는 별도 공지됩니다.</li>
+        <li>학생 얼굴이 포함된 사진은 홈페이지에 게시하지 않습니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="schedule">
+    <div class="card">
+      <h2>📅 훈련 일정</h2>
+      <ul class="schedule-list">
+        <li><strong>평일 훈련</strong> : 방과 후 훈련 진행</li>
+        <li><strong>주말 훈련</strong> : 대회 및 전지훈련 일정에 따라 별도 공지</li>
+        <li><strong>전지훈련</strong> : 학교 및 학부모 협의 후 진행</li>
+      </ul>
+      <p class="small">
+        ※ 세부 일정은 학교 일정, 대회 일정, 체육관 사정에 따라 변경될 수 있습니다.
+      </p>
+    </div>
+  </section>
+
+  <section id="result">
+    <div class="card">
+      <h2>🏆 대회 일정 및 결과</h2>
+      <ul class="result-list">
+        <li>
+          <strong>전국소년체육대회</strong><br />
+          청명초 탁구부 참가 및 우수 성적 달성
+        </li>
+        <li>
+          <strong>교보생명컵 전국대회</strong><br />
+          저학년부 우수 성적 달성
+        </li>
+        <li>
+          <strong>김천 유소년 탁구대회</strong><br />
+          U12, U10, U8 부문 입상
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="record">
+    <div class="card">
+      <h2>🥇 입상 실적</h2>
+      <ul>
+        <li>제55회 전국소년체육대회 준우승</li>
+        <li>2025 교보생명컵 1~2학년부 우승 및 준우승</li>
+        <li>2025 김천 유소년 탁구대회 U12 우승</li>
+        <li>2025 김천 유소년 탁구대회 U10 우승</li>
+        <li>2025 김천 유소년 탁구대회 U8 우승</li>
+      </ul>
+      <p class="small">
+        ※ 세부 입상 기록은 학교 확인 후 순차적으로 업데이트됩니다.
+      </p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="card">
+      <h2>📞 문의</h2>
+      <p>
+        청명초등학교 탁구부 관련 문의는 담당 지도자 또는 학교를 통해 안내받으실 수 있습니다.
+      </p>
+      <p class="small">
+        학생 개인정보 보호를 위해 홈페이지에는 학생 얼굴 사진 및 개인 연락처를 게시하지 않습니다.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p>청명초등학교 탁구부</p>
+    <p>본 홈페이지는 학생 개인정보 및 초상권 보호를 위해 사진 없이 운영됩니다.</p>
+  </footer>
+
+</body>
+</html>
