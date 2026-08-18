@@ -1,105 +1,5075 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="naver-site-verification" content="a545a026c989a13cc590c9766a7ad7f86adaa96c" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>수원청명초 엘리트 탁구 꿈나무</title>
+<meta charset="UTF-8">
+
+<meta name="naver-site-verification"
+content="a545a026c989a13cc590c9766a7ad7f86adaa96c">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#050505">
+
+<meta name="description"
+content="수원청명초등학교 엘리트 탁구부 공식 홈페이지">
+
+<title>수원청명초 탁구부 | CHUNGMYEONG TABLE TENNIS</title>
+
 <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&display=swap');
+
 :root{
-  --bg:#070b18;--panel:rgba(255,255,255,.08);--line:rgba(255,255,255,.16);--text:#fff;--muted:#b8c0d8;
-  --violet:#8b5cf6;--blue:#38bdf8;--pink:#ec4899;--gold:#fbbf24;--green:#22c55e;
+
+--bg:#050505;
+--bg2:#090909;
+
+--panel:#101010;
+--panel2:#151515;
+
+--gold:#d6a63c;
+--gold2:#ffd875;
+--gold3:#8e651e;
+
+--white:#f7f6f1;
+--muted:#9e9e98;
+
+--line:rgba(255,219,116,.16);
+--line2:rgba(255,255,255,.075);
+
+--shadow:
+0 25px 80px rgba(0,0,0,.55);
+
+--radius:28px;
+
 }
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;z-index:-3;background:radial-gradient(circle at 10% 10%,rgba(139,92,246,.38),transparent 28%),radial-gradient(circle at 90% 12%,rgba(56,189,248,.28),transparent 30%),radial-gradient(circle at 70% 88%,rgba(236,72,153,.26),transparent 30%),linear-gradient(180deg,#050816,#0f172a 55%,#111827)}
-body:after{content:"";position:fixed;inset:0;z-index:-2;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(to bottom,black,transparent 92%)}
-nav{position:sticky;top:0;z-index:1000;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;padding:12px;background:rgba(5,8,22,.72);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
-nav a,nav button{border:1px solid var(--line);color:white;text-decoration:none;background:rgba(255,255,255,.08);border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer}nav a:hover,nav button:hover{background:white;color:#111827;transform:translateY(-2px)}
-.hero{max-width:1280px;margin:18px auto 0;padding:22px;display:grid;grid-template-columns:1.25fr .75fr;gap:18px;min-height:calc(100vh - 92px)}
-.glass{background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.045));border:1px solid var(--line);border-radius:34px;box-shadow:0 25px 70px rgba(0,0,0,.32);backdrop-filter:blur(16px);overflow:hidden}
-.main-stage{position:relative;padding:42px;display:flex;flex-direction:column;justify-content:space-between;min-height:520px}.brand{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.08);width:max-content;color:#dbeafe;font-weight:900}.hero h1{font-size:clamp(34px,5vw,74px);line-height:1.02;margin:22px 0 14px;letter-spacing:-2px}.gradient{background:linear-gradient(90deg,#fff,#93c5fd,#c4b5fd,#f9a8d4,#fff);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shine 7s linear infinite}@keyframes shine{to{background-position:300% center}}
-.hero p{font-size:19px;color:var(--muted);max-width:620px;line-height:1.8}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border:0;border-radius:999px;padding:14px 22px;font-weight:900;cursor:pointer}.btn.primary{background:linear-gradient(135deg,var(--violet),var(--pink));color:white;box-shadow:0 12px 34px rgba(236,72,153,.27)}.btn.secondary{background:rgba(255,255,255,.1);border:1px solid var(--line);color:white}.btn.green{background:var(--green);color:white}.btn.gold{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#111827}
-.ai-art{position:absolute;right:3%;bottom:2%;width:min(46%,460px);aspect-ratio:1/1;opacity:.98;filter:drop-shadow(0 35px 70px rgba(56,189,248,.22))}.orb{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff 0 6%,#93c5fd 8% 18%,transparent 20%);animation:float 5s ease-in-out infinite}.orb.one{width:160px;height:160px;right:18%;bottom:26%}.orb.two{width:84px;height:84px;right:46%;bottom:16%;animation-delay:1.1s}.paddle{position:absolute;width:180px;height:250px;right:9%;bottom:8%;transform:rotate(-23deg);animation:pulse 4s ease-in-out infinite}.paddle:before{content:"";position:absolute;top:0;left:22px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#f0abfc,#ec4899 45%,#7c3aed 80%);box-shadow:inset 0 0 30px rgba(255,255,255,.25),0 0 80px rgba(236,72,153,.45)}.paddle:after{content:"";position:absolute;top:132px;left:80px;width:44px;height:120px;border-radius:30px;background:linear-gradient(#fbbf24,#92400e)}@keyframes float{50%{transform:translateY(-22px) scale(1.08)}}@keyframes pulse{50%{transform:rotate(-16deg) translateY(-12px)}}
-.side{display:grid;grid-template-rows:auto auto 1fr;gap:18px}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stat{padding:20px}.stat b{font-size:30px;color:#fff}.stat span{display:block;color:var(--muted);margin-top:5px}.panel{padding:24px}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.panel h2{margin:0;font-size:22px}.more{color:#bfdbfe;text-decoration:none;font-weight:900}.mini-list{display:grid;gap:10px}.mini-item{padding:13px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}.mini-item strong{display:block}.mini-item small{color:var(--muted)}
-.wrap{max-width:1280px;margin:auto;padding:28px 20px}.section{margin:36px 0;padding:28px}.section h2{font-size:32px;margin:0 0 20px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.card{position:relative;padding:22px;border-radius:26px;background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.045));border:1px solid var(--line);box-shadow:0 14px 38px rgba(0,0,0,.24);transition:.28s}.card:hover{transform:translateY(-7px);box-shadow:0 24px 60px rgba(139,92,246,.24)}.card h3{margin:0 0 9px;font-size:23px}.card p{color:#d6def7;line-height:1.65}.tag{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.25);font-size:13px;color:#bae6fd;font-weight:900}.player-avatar{height:190px;border-radius:22px;margin-bottom:14px;background:radial-gradient(circle at 50% 35%,#fff 0 5%,#93c5fd 6% 13%,transparent 14%),linear-gradient(135deg,rgba(139,92,246,.85),rgba(56,189,248,.55),rgba(236,72,153,.7));display:flex;align-items:end;justify-content:center;padding:18px;font-size:46px}.photo-safe{min-height:230px;border-radius:24px;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.25),transparent 20%),linear-gradient(135deg,rgba(56,189,248,.3),rgba(139,92,246,.5),rgba(236,72,153,.35));font-size:34px;font-weight:900;box-shadow:inset 0 0 60px rgba(255,255,255,.08)}
-input,textarea,select{width:100%;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.09);color:white;margin:6px 0 12px}textarea{min-height:110px}input::placeholder,textarea::placeholder{color:#94a3b8}iframe{width:100%;height:320px;border:0;border-radius:24px}.fixed-btn{position:fixed;right:20px;z-index:1200;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;border:0;color:white;font-size:22px;box-shadow:0 12px 30px rgba(0,0,0,.35);cursor:pointer}.music{bottom:22px;background:linear-gradient(135deg,var(--violet),var(--pink))}.call{bottom:88px;background:var(--green)}
-#popupBox{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:5000;display:none;align-items:center;justify-content:center;padding:18px}#popupBox .popup{max-width:620px;width:94%;padding:28px;text-align:center}footer{text-align:center;padding:34px;background:rgba(0,0,0,.35);border-top:1px solid var(--line);color:#cbd5e1}.empty{color:#94a3b8}.fade{opacity:0;transform:translateY(30px);transition:.8s}.fade.show{opacity:1;transform:translateY(0)}
-@media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto}.main-stage{min-height:520px}.ai-art{opacity:.55;width:70%;right:-6%}.side{grid-template-rows:auto}.stat-grid{grid-template-columns:1fr 1fr}nav{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}.section{padding:20px}.hero{padding:14px}.main-stage{padding:28px}.hero p{font-size:16px}}
+
+*{
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+margin:0;
+
+background:
+
+radial-gradient(
+circle at 15% 0%,
+rgba(214,166,60,.11),
+transparent 28%
+),
+
+radial-gradient(
+circle at 90% 22%,
+rgba(255,216,117,.065),
+transparent 24%
+),
+
+linear-gradient(
+180deg,
+#030303,
+#090909 45%,
+#050505
+);
+
+color:var(--white);
+
+font-family:
+"Noto Sans KR",
+sans-serif;
+
+overflow-x:hidden;
+
+}
+
+
+/* 마우스 조명 */
+
+.mouse-light{
+
+position:fixed;
+
+width:500px;
+height:500px;
+
+border-radius:50%;
+
+pointer-events:none;
+
+z-index:-1;
+
+background:
+
+radial-gradient(
+circle,
+rgba(255,205,90,.065),
+transparent 67%
+);
+
+transform:
+translate(-50%,-50%);
+
+}
+
+
+/* 스크롤 진행바 */
+
+#progress{
+
+position:fixed;
+
+left:0;
+top:0;
+
+width:0%;
+height:2px;
+
+z-index:99999;
+
+background:
+
+linear-gradient(
+90deg,
+#8f641d,
+#ffe58d,
+#d39b2d
+);
+
+box-shadow:
+0 0 15px #f4c85d;
+
+}
+
+
+/* 배경 그리드 */
+
+body:before{
+
+content:"";
+
+position:fixed;
+
+inset:0;
+
+pointer-events:none;
+
+z-index:-3;
+
+background-image:
+
+linear-gradient(
+rgba(255,255,255,.016) 1px,
+transparent 1px
+),
+
+linear-gradient(
+90deg,
+rgba(255,255,255,.016) 1px,
+transparent 1px
+);
+
+background-size:
+58px 58px;
+
+mask-image:
+
+linear-gradient(
+to bottom,
+black,
+transparent 93%
+);
+
+}
+
+
+/* 전체 이미지 */
+
+img{
+max-width:100%;
+display:block;
+}
+
+a{
+color:inherit;
+}
+
+
+/* =========================
+NAVIGATION
+========================= */
+
+.topbar{
+
+position:sticky;
+
+top:0;
+
+z-index:5000;
+
+background:
+rgba(4,4,4,.78);
+
+backdrop-filter:
+blur(22px);
+
+border-bottom:
+1px solid var(--line2);
+
+}
+
+.nav{
+
+max-width:1400px;
+
+margin:auto;
+
+padding:
+12px 22px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:20px;
+
+}
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:11px;
+
+text-decoration:none;
+
+}
+
+.logoIcon{
+
+width:40px;
+height:40px;
+
+display:grid;
+
+place-items:center;
+
+border-radius:13px;
+
+background:
+
+linear-gradient(
+145deg,
+#1b1b1b,
+#080808
+);
+
+border:
+1px solid rgba(255,216,117,.28);
+
+box-shadow:
+
+inset 0 0 20px rgba(255,216,117,.035),
+0 0 25px rgba(213,163,50,.06);
+
+font-size:18px;
+
+}
+
+.logo strong{
+
+display:block;
+
+font-size:14px;
+
+font-weight:900;
+
+}
+
+.logo small{
+
+display:block;
+
+margin-top:2px;
+
+font-family:Oswald;
+
+letter-spacing:1.7px;
+
+font-size:9px;
+
+color:#777;
+
+}
+
+.navlinks{
+
+display:flex;
+
+align-items:center;
+
+gap:3px;
+
+white-space:nowrap;
+
+overflow-x:auto;
+
+scrollbar-width:none;
+
+}
+
+.navlinks::-webkit-scrollbar{
+display:none;
+}
+
+.navlinks a{
+
+text-decoration:none;
+
+font-size:12px;
+
+font-weight:800;
+
+color:#aaa;
+
+padding:
+9px 11px;
+
+border-radius:999px;
+
+transition:.25s;
+
+}
+
+.navlinks a:hover{
+
+background:
+rgba(255,255,255,.07);
+
+color:#fff;
+
+}
+
+.navlinks .admin{
+
+background:
+
+linear-gradient(
+135deg,
+#f2cc6b,
+#a97822
+);
+
+color:#100c05;
+
+padding:
+9px 14px;
+
+margin-left:5px;
+
+}
+
+
+/* =========================
+HERO
+========================= */
+
+.hero{
+
+max-width:1400px;
+
+margin:auto;
+
+min-height:
+calc(100vh - 70px);
+
+padding:
+60px 24px 42px;
+
+display:grid;
+
+grid-template-columns:
+1.05fr .95fr;
+
+align-items:center;
+
+gap:55px;
+
+position:relative;
+
+}
+
+.heroCopy{
+
+position:relative;
+
+z-index:5;
+
+}
+
+.eyebrow{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:9px;
+
+padding:
+8px 13px;
+
+border-radius:999px;
+
+border:
+1px solid var(--line);
+
+background:
+rgba(255,255,255,.025);
+
+font-family:
+Oswald;
+
+font-size:11px;
+
+letter-spacing:2.2px;
+
+color:
+var(--gold2);
+
+}
+
+.eyebrow:before{
+
+content:"";
+
+width:6px;
+height:6px;
+
+border-radius:50%;
+
+background:
+var(--gold2);
+
+box-shadow:
+0 0 14px var(--gold);
+
+}
+
+.hero h1{
+
+margin:
+24px 0 20px;
+
+font-size:
+clamp(48px,6.2vw,94px);
+
+line-height:.98;
+
+letter-spacing:-4px;
+
+font-weight:900;
+
+}
+
+.goldText{
+
+background:
+
+linear-gradient(
+110deg,
+#8e641d 0%,
+#d9a83e 24%,
+#fff1ae 47%,
+#cf962d 70%,
+#ffe68d 100%
+);
+
+-webkit-background-clip:text;
+
+background-clip:text;
+
+color:transparent;
+
+background-size:
+180% auto;
+
+animation:
+goldFlow 7s linear infinite;
+
+}
+
+@keyframes goldFlow{
+
+to{
+background-position:180% center;
+}
+
+}
+
+.heroDescription{
+
+font-size:16px;
+
+line-height:1.9;
+
+color:#aaa;
+
+max-width:680px;
+
+}
+
+.heroDescription strong{
+
+color:white;
+
+}
+
+.actions{
+
+display:flex;
+
+gap:10px;
+
+flex-wrap:wrap;
+
+margin-top:30px;
+
+}
+
+.btn{
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:8px;
+
+padding:
+14px 20px;
+
+border-radius:14px;
+
+font-size:13px;
+
+font-weight:900;
+
+text-decoration:none;
+
+border:0;
+
+cursor:pointer;
+
+transition:
+transform .23s,
+box-shadow .23s,
+background .23s;
+
+}
+
+.btn:hover{
+
+transform:
+translateY(-3px);
+
+}
+
+.btnGold{
+
+background:
+
+linear-gradient(
+135deg,
+#ffe48d,
+#c58f28
+);
+
+color:#120d05;
+
+box-shadow:
+
+0 15px 40px
+rgba(213,164,54,.16);
+
+}
+
+.btnDark{
+
+background:
+#141414;
+
+color:#fff;
+
+border:
+1px solid var(--line2);
+
+}
+
+.btnOutline{
+
+background:
+transparent;
+
+color:
+var(--gold2);
+
+border:
+1px solid rgba(255,216,117,.28);
+
+}
+
+
+/* HERO 통계 */
+
+.heroStats{
+
+display:flex;
+
+gap:28px;
+
+flex-wrap:wrap;
+
+margin-top:38px;
+
+padding-top:24px;
+
+border-top:
+1px solid var(--line2);
+
+}
+
+.heroStat b{
+
+display:block;
+
+font-family:Oswald;
+
+font-size:29px;
+
+color:#fff;
+
+}
+
+.heroStat span{
+
+font-family:Oswald;
+
+font-size:9px;
+
+letter-spacing:1.4px;
+
+color:#74746f;
+
+}
+
+
+/* =========================
+HERO EMBLEM
+========================= */
+
+.heroVisual{
+
+position:relative;
+
+height:650px;
+
+display:grid;
+
+place-items:center;
+
+}
+
+.heroGlow{
+
+position:absolute;
+
+width:78%;
+height:78%;
+
+border-radius:50%;
+
+background:
+
+radial-gradient(
+circle,
+rgba(255,196,60,.18),
+rgba(214,166,60,.035) 45%,
+transparent 70%
+);
+
+filter:blur(18px);
+
+animation:
+heroBreath 5s ease-in-out infinite;
+
+}
+
+@keyframes heroBreath{
+
+50%{
+
+transform:scale(1.07);
+
+opacity:.75;
+
+}
+
+}
+
+
+/* 로고 프레임 */
+
+.emblemFrame{
+
+width:min(92%,600px);
+
+aspect-ratio:1;
+
+border-radius:50%;
+
+position:relative;
+
+display:grid;
+
+place-items:center;
+
+}
+
+.emblemFrame:before{
+
+content:"";
+
+position:absolute;
+
+inset:-4px;
+
+border-radius:50%;
+
+background:
+
+conic-gradient(
+
+transparent 0deg,
+
+transparent 40deg,
+
+rgba(255,217,109,.7) 70deg,
+
+transparent 95deg,
+
+transparent 210deg,
+
+rgba(194,138,37,.6) 250deg,
+
+transparent 280deg
+
+);
+
+filter:blur(4px);
+
+animation:
+spinRing 12s linear infinite;
+
+}
+
+@keyframes spinRing{
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+.emblem{
+
+position:relative;
+
+width:96%;
+height:96%;
+
+border-radius:50%;
+
+display:grid;
+
+place-items:center;
+
+overflow:hidden;
+
+background:
+
+radial-gradient(
+circle at 45% 35%,
+#1e1e1e,
+#080808 72%
+);
+
+border:
+1px solid rgba(255,220,130,.24);
+
+box-shadow:
+
+0 45px 110px rgba(0,0,0,.7),
+0 0 80px rgba(214,166,60,.08),
+
+inset 0 0 80px rgba(255,216,117,.035);
+
+}
+
+
+/* team-logo.png가 있으면 실제 로고 사용 */
+
+.emblem img{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+position:absolute;
+
+inset:0;
+
+}
+
+
+/* 이미지가 없을 때 표시 */
+
+.emblemFallback{
+
+text-align:center;
+
+position:absolute;
+
+z-index:0;
+
+}
+
+.emblemFallback .stars{
+
+color:
+var(--gold2);
+
+font-size:23px;
+
+letter-spacing:8px;
+
+}
+
+.emblemFallback .shield{
+
+font-family:Oswald;
+
+font-size:64px;
+
+font-weight:700;
+
+color:
+var(--gold);
+
+margin-top:15px;
+
+}
+
+.emblemFallback h2{
+
+font-size:52px;
+
+margin:
+3px 0;
+
+letter-spacing:-4px;
+
+color:
+var(--gold2);
+
+}
+
+.emblemFallback p{
+
+font-family:Oswald;
+
+font-size:15px;
+
+letter-spacing:5px;
+
+color:#888;
+
+}
+
+.floatChip{
+
+position:absolute;
+
+padding:
+10px 14px;
+
+border-radius:14px;
+
+background:
+rgba(11,11,11,.84);
+
+border:
+1px solid var(--line);
+
+backdrop-filter:blur(15px);
+
+box-shadow:
+var(--shadow);
+
+font-family:
+Oswald;
+
+font-size:10px;
+
+letter-spacing:1.3px;
+
+color:#aaa;
+
+}
+
+.floatChip b{
+
+color:
+var(--gold2);
+
+}
+
+.chipOne{
+
+top:13%;
+right:-1%;
+
+animation:
+floating 4.5s ease-in-out infinite;
+
+}
+
+.chipTwo{
+
+bottom:14%;
+left:-1%;
+
+animation:
+floating 5.2s ease-in-out infinite reverse;
+
+}
+
+@keyframes floating{
+
+50%{
+transform:translateY(-12px);
+}
+
+}
+
+
+/* =========================
+TICKER
+========================= */
+
+.ticker{
+
+overflow:hidden;
+
+border-top:
+1px solid var(--line2);
+
+border-bottom:
+1px solid var(--line2);
+
+background:
+#090909;
+
+}
+
+.tickerTrack{
+
+display:flex;
+
+gap:55px;
+
+width:max-content;
+
+padding:
+13px 0;
+
+font-family:
+Oswald;
+
+font-size:10px;
+
+letter-spacing:2.7px;
+
+color:#5f5f5a;
+
+animation:
+tickerMove 25s linear infinite;
+
+}
+
+.tickerTrack b{
+
+color:
+var(--gold);
+
+}
+
+@keyframes tickerMove{
+
+to{
+transform:translateX(-50%);
+}
+
+}
+
+
+/* =========================
+COMMON SECTION
+========================= */
+
+.wrap{
+
+max-width:1400px;
+
+margin:auto;
+
+padding:
+0 23px;
+
+}
+
+.section{
+
+padding:
+105px 0;
+
+}
+
+.sectionHead{
+
+display:flex;
+
+align-items:end;
+
+justify-content:space-between;
+
+gap:30px;
+
+margin-bottom:36px;
+
+}
+
+.sectionKicker{
+
+font-family:
+Oswald;
+
+font-size:11px;
+
+letter-spacing:2.5px;
+
+color:
+var(--gold);
+
+}
+
+.sectionHead h2{
+
+font-size:
+clamp(34px,4vw,56px);
+
+letter-spacing:-2px;
+
+line-height:1.08;
+
+margin:
+6px 0 0;
+
+}
+
+.sectionHead p{
+
+max-width:500px;
+
+font-size:13px;
+
+line-height:1.8;
+
+color:#8b8b87;
+
+margin:0;
+
+}
+
+
+/* reveal */
+
+.reveal{
+
+opacity:0;
+
+transform:
+translateY(30px);
+
+transition:
+.75s ease;
+
+}
+
+.reveal.show{
+
+opacity:1;
+
+transform:none;
+
+}
+
+
+/* =========================
+PLAYER CARDS
+========================= */
+
+.players{
+
+display:grid;
+
+grid-template-columns:
+repeat(7,1fr);
+
+gap:12px;
+
+}
+
+.player{
+
+min-height:280px;
+
+border-radius:25px;
+
+padding:20px;
+
+border:
+1px solid var(--line2);
+
+background:
+
+linear-gradient(
+155deg,
+#161616,
+#090909
+);
+
+position:relative;
+
+overflow:hidden;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:space-between;
+
+transition:.28s;
+
+}
+
+.player:hover{
+
+transform:
+translateY(-8px);
+
+border-color:
+rgba(255,216,117,.32);
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.45);
+
+}
+
+.player:before{
+
+content:"";
+
+position:absolute;
+
+width:140px;
+height:140px;
+
+border-radius:50%;
+
+right:-60px;
+bottom:-60px;
+
+background:
+
+radial-gradient(
+circle,
+rgba(215,166,59,.15),
+transparent 70%
+);
+
+}
+
+.playerTop{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+}
+
+.playerNumber{
+
+font-family:Oswald;
+
+font-size:11px;
+
+letter-spacing:1.5px;
+
+color:#595954;
+
+}
+
+.playerIcon{
+
+width:55px;
+height:55px;
+
+border-radius:18px;
+
+display:grid;
+
+place-items:center;
+
+font-size:22px;
+
+background:
+
+linear-gradient(
+145deg,
+#242424,
+#0b0b0b
+);
+
+border:
+1px solid var(--line);
+
+}
+
+.player h3{
+
+font-size:22px;
+
+margin:
+22px 0 5px;
+
+}
+
+.playerGrade{
+
+color:
+var(--gold);
+
+font-size:11px;
+
+font-weight:800;
+
+}
+
+.playerStyle{
+
+margin-top:8px;
+
+font-size:12px;
+
+color:#8f8f8a;
+
+line-height:1.6;
+
+}
+
+.playerFooter{
+
+font-family:
+Oswald;
+
+font-size:9px;
+
+letter-spacing:1.7px;
+
+color:#555;
+
+}
+
+
+/* =========================
+TEAM STATUS
+========================= */
+
+.statusGrid{
+
+display:grid;
+
+grid-template-columns:
+1.15fr .85fr;
+
+gap:17px;
+
+}
+
+.latest{
+
+padding:35px;
+
+border-radius:30px;
+
+border:
+1px solid var(--line2);
+
+background:
+
+linear-gradient(
+145deg,
+#151515,
+#090909
+);
+
+min-height:410px;
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.latest:after{
+
+content:"";
+
+position:absolute;
+
+width:350px;
+height:350px;
+
+border-radius:50%;
+
+right:-100px;
+top:-100px;
+
+background:
+
+radial-gradient(
+circle,
+rgba(216,167,59,.15),
+transparent 68%
+);
+
+}
+
+.lineTitle{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+font-family:
+Oswald;
+
+font-size:10px;
+
+letter-spacing:2px;
+
+color:
+var(--gold2);
+
+}
+
+.lineTitle:before{
+
+content:"";
+
+width:28px;
+
+height:1px;
+
+background:
+var(--gold);
+
+}
+
+.latest h3{
+
+font-size:31px;
+
+margin:
+20px 0 13px;
+
+letter-spacing:-1.1px;
+
+}
+
+.latest p{
+
+max-width:610px;
+
+font-size:13px;
+
+line-height:1.85;
+
+color:#999;
+
+}
+
+
+/* status 작은 카드 */
+
+.statusStack{
+
+display:grid;
+
+gap:15px;
+
+}
+
+.statusCard{
+
+min-height:125px;
+
+padding:
+22px 24px;
+
+border:
+1px solid var(--line2);
+
+border-radius:23px;
+
+background:#101010;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:20px;
+
+transition:.22s;
+
+}
+
+.statusCard:hover{
+
+background:#141414;
+
+border-color:
+rgba(255,216,117,.2);
+
+}
+
+.statusCard small{
+
+font-family:
+Oswald;
+
+font-size:9px;
+
+letter-spacing:1.5px;
+
+color:#676762;
+
+}
+
+.statusCard h4{
+
+font-size:18px;
+
+margin:
+6px 0 0;
+
+}
+
+.statusNumber{
+
+font-family:
+Oswald;
+
+font-size:42px;
+
+color:
+var(--gold2);
+
+}
+
+
+/* =========================
+CARDS
+========================= */
+
+.cards{
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:16px;
+
+}
+
+.card{
+
+border-radius:25px;
+
+border:
+1px solid var(--line2);
+
+background:
+
+linear-gradient(
+150deg,
+#151515,
+#0b0b0b
+);
+
+padding:25px;
+
+min-height:220px;
+
+transition:.25s;
+
+}
+
+.card:hover{
+
+transform:
+translateY(-5px);
+
+border-color:
+rgba(255,216,117,.2);
+
+}
+
+.cardDate{
+
+font-family:
+Oswald;
+
+font-size:10px;
+
+letter-spacing:1.4px;
+
+color:
+var(--gold);
+
+}
+
+.card h3{
+
+font-size:20px;
+
+margin:
+14px 0 10px;
+
+}
+
+.card p{
+
+font-size:12px;
+
+line-height:1.75;
+
+color:#94948f;
+
+}
+
+
+/* =========================
+RESULT
+========================= */
+
+.results{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:14px;
+
+}
+
+.result{
+
+min-height:265px;
+
+padding:23px;
+
+border-radius:24px;
+
+border:
+1px solid var(--line2);
+
+background:
+
+linear-gradient(
+155deg,
+#151515,
+#080808
+);
+
+position:relative;
+
+overflow:hidden;
+
+transition:.25s;
+
+}
+
+.result:hover{
+
+transform:
+translateY(-6px);
+
+border-color:
+rgba(255,216,117,.28);
+
+}
+
+.result:before{
+
+content:"🏆";
+
+position:absolute;
+
+right:12px;
+
+bottom:-2px;
+
+font-size:88px;
+
+opacity:.035;
+
+}
+
+.resultYear{
+
+font-family:
+Oswald;
+
+font-size:10px;
+
+letter-spacing:1.8px;
+
+color:
+var(--gold);
+
+}
+
+.result h3{
+
+margin:
+16px 0 12px;
+
+font-size:19px;
+
+line-height:1.45;
+
+}
+
+.resultValue{
+
+color:
+#f0cf73;
+
+font-size:17px;
+
+font-weight:900;
+
+}
+
+.resultMemo{
+
+font-size:11px;
+
+color:#777;
+
+line-height:1.7;
+
+margin-top:12px;
+
+}
+
+
+/* =========================
+COACH
+========================= */
+
+.coach{
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+border:
+1px solid var(--line2);
+
+border-radius:34px;
+
+overflow:hidden;
+
+background:#0c0c0c;
+
+}
+
+.coachInfo{
+
+padding:44px;
+
+}
+
+.coachInfo h2{
+
+font-size:43px;
+
+line-height:1.15;
+
+letter-spacing:-2px;
+
+margin:
+12px 0 18px;
+
+}
+
+.coachInfo p{
+
+font-size:13px;
+
+line-height:1.85;
+
+color:#999;
+
+}
+
+.coachPoints{
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+gap:10px;
+
+margin-top:25px;
+
+}
+
+.coachPoint{
+
+background:#141414;
+
+border:
+1px solid var(--line2);
+
+border-radius:17px;
+
+padding:15px;
+
+}
+
+.coachPoint b{
+
+display:block;
+
+font-size:12px;
+
+color:
+var(--gold2);
+
+}
+
+.coachPoint span{
+
+font-size:10px;
+
+color:#73736e;
+
+}
+
+
+/* sponsor */
+
+.sponsor{
+
+border-left:
+1px solid var(--line2);
+
+padding:35px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+text-align:center;
+
+background:
+
+radial-gradient(
+circle,
+rgba(214,166,60,.11),
+transparent 52%
+),
+
+#080808;
+
+}
+
+.sponsorLogo{
+
+width:280px;
+height:280px;
+
+border-radius:50%;
+
+display:grid;
+
+place-items:center;
+
+overflow:hidden;
+
+border:
+1px solid rgba(255,216,117,.2);
+
+background:#0d0d0d;
+
+box-shadow:
+0 30px 80px rgba(0,0,0,.6);
+
+}
+
+.sponsorLogo img{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+}
+
+.sponsorFallback{
+
+font-family:
+Oswald;
+
+color:
+var(--gold2);
+
+font-size:25px;
+
+letter-spacing:2px;
+
+}
+
+.sponsor h3{
+
+font-size:21px;
+
+margin:
+22px 0 6px;
+
+}
+
+.sponsor p{
+
+font-size:11px;
+
+color:#777;
+
+}
+
+
+/* =========================
+TRIAL
+========================= */
+
+.trial{
+
+display:grid;
+
+grid-template-columns:
+.85fr 1.15fr;
+
+gap:18px;
+
+}
+
+.trialBox{
+
+padding:32px;
+
+border:
+1px solid var(--line2);
+
+border-radius:28px;
+
+background:
+
+linear-gradient(
+150deg,
+#141414,
+#090909
+);
+
+}
+
+.trialBox h3{
+
+font-size:28px;
+
+margin:
+13px 0;
+
+}
+
+.trialBox p{
+
+font-size:13px;
+
+line-height:1.8;
+
+color:#8d8d88;
+
+}
+
+.steps{
+
+display:grid;
+
+gap:9px;
+
+margin-top:22px;
+
+}
+
+.step{
+
+display:flex;
+
+gap:12px;
+
+align-items:center;
+
+padding:
+11px 0;
+
+border-bottom:
+1px solid var(--line2);
+
+}
+
+.stepNo{
+
+width:31px;
+height:31px;
+
+display:grid;
+
+place-items:center;
+
+border-radius:50%;
+
+background:
+rgba(214,166,60,.12);
+
+color:
+var(--gold2);
+
+font-family:
+Oswald;
+
+font-size:11px;
+
+}
+
+.step b{
+
+display:block;
+
+font-size:12px;
+
+}
+
+.step span{
+
+font-size:10px;
+
+color:#666;
+
+}
+
+
+/* form */
+
+label{
+
+display:block;
+
+font-size:10px;
+
+font-weight:900;
+
+color:#aaa;
+
+margin-bottom:6px;
+
+}
+
+input,
+textarea{
+
+width:100%;
+
+padding:
+14px;
+
+border-radius:13px;
+
+border:
+1px solid var(--line2);
+
+background:
+#090909;
+
+color:#fff;
+
+outline:none;
+
+margin-bottom:13px;
+
+}
+
+textarea{
+
+min-height:105px;
+
+resize:vertical;
+
+}
+
+input:focus,
+textarea:focus{
+
+border-color:
+rgba(255,216,117,.38);
+
+box-shadow:
+0 0 0 3px rgba(214,166,60,.055);
+
+}
+
+.formRow{
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+gap:10px;
+
+}
+
+
+/* =========================
+MAP
+========================= */
+
+.location{
+
+display:grid;
+
+grid-template-columns:
+.75fr 1.25fr;
+
+border:
+1px solid var(--line2);
+
+border-radius:30px;
+
+overflow:hidden;
+
+background:#090909;
+
+}
+
+.locationInfo{
+
+padding:35px;
+
+}
+
+.locationInfo h3{
+
+font-size:26px;
+
+margin:
+12px 0;
+
+}
+
+.locationInfo p{
+
+font-size:12px;
+
+line-height:1.8;
+
+color:#858580;
+
+}
+
+.map iframe{
+
+width:100%;
+
+height:100%;
+
+min-height:390px;
+
+border:0;
+
+filter:
+grayscale(100%)
+brightness(.73)
+contrast(1.15);
+
+}
+
+
+/* =========================
+FOOTER
+========================= */
+
+footer{
+
+margin-top:85px;
+
+border-top:
+1px solid var(--line2);
+
+background:#030303;
+
+}
+
+.footer{
+
+max-width:1400px;
+
+margin:auto;
+
+padding:
+45px 23px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:end;
+
+gap:25px;
+
+}
+
+.footer h3{
+
+margin:
+0 0 7px;
+
+font-size:17px;
+
+}
+
+.footer p{
+
+margin:3px 0;
+
+font-size:10px;
+
+color:#666;
+
+}
+
+.footerRight{
+
+text-align:right;
+
+}
+
+.footerRight b{
+
+color:
+var(--gold2);
+
+}
+
+
+/* =========================
+FLOAT BUTTON
+========================= */
+
+.floatMenu{
+
+position:fixed;
+
+right:18px;
+
+bottom:18px;
+
+z-index:4000;
+
+display:grid;
+
+gap:8px;
+
+}
+
+.floatBtn{
+
+width:53px;
+height:53px;
+
+border-radius:16px;
+
+display:grid;
+
+place-items:center;
+
+text-decoration:none;
+
+border:
+1px solid var(--line2);
+
+background:#111;
+
+box-shadow:
+0 14px 40px rgba(0,0,0,.5);
+
+}
+
+.floatBtn.gold{
+
+background:
+
+linear-gradient(
+135deg,
+#f0c967,
+#a67420
+);
+
+color:#0d0903;
+
+}
+
+
+/* popup */
+
+#popupBox{
+
+position:fixed;
+
+inset:0;
+
+z-index:10000;
+
+display:none;
+
+align-items:center;
+
+justify-content:center;
+
+background:
+rgba(0,0,0,.82);
+
+padding:20px;
+
+}
+
+.popup{
+
+width:min(92%,550px);
+
+background:#111;
+
+border:
+1px solid var(--line);
+
+border-radius:27px;
+
+padding:30px;
+
+text-align:center;
+
+box-shadow:
+var(--shadow);
+
+}
+
+.popup h2{
+
+margin:
+0 0 10px;
+
+}
+
+.popup p{
+
+font-size:13px;
+
+line-height:1.8;
+
+color:#aaa;
+
+white-space:pre-wrap;
+
+}
+
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:1150px){
+
+.hero{
+
+grid-template-columns:1fr;
+
+text-align:center;
+
+}
+
+.heroDescription{
+
+margin:auto;
+
+}
+
+.actions,
+.heroStats{
+
+justify-content:center;
+
+}
+
+.heroVisual{
+
+height:540px;
+
+}
+
+.players{
+
+grid-template-columns:
+repeat(4,1fr);
+
+}
+
+.results{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:850px){
+
+.nav{
+
+display:block;
+
+padding:
+10px 14px;
+
+}
+
+.logo{
+
+margin-bottom:8px;
+
+}
+
+.navlinks{
+
+width:100%;
+
+}
+
+.hero{
+
+padding:
+45px 15px 30px;
+
+}
+
+.hero h1{
+
+letter-spacing:-3px;
+
+}
+
+.heroVisual{
+
+height:420px;
+
+}
+
+.floatChip{
+
+display:none;
+
+}
+
+.section{
+
+padding:
+75px 0;
+
+}
+
+.wrap{
+
+padding:
+0 15px;
+
+}
+
+.sectionHead{
+
+display:block;
+
+}
+
+.sectionHead p{
+
+margin-top:15px;
+
+}
+
+.statusGrid,
+.coach,
+.trial,
+.location{
+
+grid-template-columns:1fr;
+
+}
+
+.sponsor{
+
+border-left:0;
+
+border-top:
+1px solid var(--line2);
+
+}
+
+.cards{
+
+grid-template-columns:1fr;
+
+}
+
+.players{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+.footer{
+
+display:block;
+
+}
+
+.footerRight{
+
+text-align:left;
+
+margin-top:18px;
+
+}
+
+}
+
+@media(max-width:520px){
+
+.hero h1{
+
+font-size:43px;
+
+letter-spacing:-2.4px;
+
+}
+
+.heroDescription{
+
+font-size:13px;
+
+}
+
+.heroVisual{
+
+height:350px;
+
+}
+
+.heroStats{
+
+gap:16px;
+
+}
+
+.heroStat b{
+
+font-size:24px;
+
+}
+
+.players{
+
+gap:8px;
+
+}
+
+.player{
+
+min-height:230px;
+
+padding:15px;
+
+}
+
+.player h3{
+
+font-size:19px;
+
+}
+
+.results{
+
+grid-template-columns:1fr;
+
+}
+
+.coachInfo,
+.sponsor,
+.trialBox,
+.locationInfo{
+
+padding:24px;
+
+}
+
+.coachPoints{
+
+grid-template-columns:1fr;
+
+}
+
+.formRow{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+
+/* 선택 */
+
+::selection{
+
+background:
+var(--gold);
+
+color:#060606;
+
+}
+
 </style>
 </head>
+
+
+
 <body>
-<nav>
-  <a href="#home">HOME</a><a href="#notice">공지</a><a href="#schedule">일정</a><a href="#players">선수</a><a href="#records">실적</a><a href="#coach">코치</a><a href="#trial">체험</a><a href="#map">오시는 길</a><a href="admin.html">관리자</a>
-</nav>
 
-<main id="home" class="hero">
-  <section class="main-stage glass">
-    <div>
-      <div class="brand">🏓 CHUNGMYEONG TABLE TENNIS</div>
-      <h1><span id="mainTitle" class="gradient">수원청명초 엘리트 탁구 꿈나무</span></h1>
-      <p id="mainSubtitle">품격 있는 훈련, 당당한 성장, 챔피언의 시작. 학생 개인정보와 초상권 보호를 위해 사진 없이 운영됩니다.</p>
-      <div class="actions"><a class="btn primary" href="#trial">✨ 체험 신청</a><a class="btn secondary" href="#schedule">📅 훈련 일정</a><a class="btn secondary" href="#notice">📢 공지사항</a></div>
-    </div>
-    <div class="ai-art" aria-hidden="true"><div class="orb one"></div><div class="orb two"></div><div class="paddle"></div></div>
-  </section>
-  <aside class="side">
-    <div class="stat-grid">
-      <div class="stat glass"><b id="noticeCount">0</b><span>공지사항</span></div>
-      <div class="stat glass"><b id="scheduleCount">0</b><span>훈련 일정</span></div>
-      <div class="stat glass"><b id="playerCount">0</b><span>선수 카드</span></div>
-      <div class="stat glass"><b id="recordCount">0</b><span>입상 실적</span></div>
-    </div>
-    <div class="panel glass"><div class="panel-head"><h2>📢 최근 공지</h2><a class="more" href="#notice">더보기</a></div><div id="noticeMini" class="mini-list"><div class="mini-item empty">불러오는 중...</div></div></div>
-    <div class="panel glass"><div class="panel-head"><h2>🏆 주요 실적</h2><a class="more" href="#records">더보기</a></div><div id="recordMini" class="mini-list"><div class="mini-item empty">불러오는 중...</div></div></div>
-  </aside>
-</main>
+<div id="progress"></div>
 
-<div class="wrap">
-  <section id="notice" class="section glass fade"><h2>📢 공지사항</h2><div id="noticeList" class="grid"><div class="card empty">공지 불러오는 중...</div></div></section>
-  <section id="schedule" class="section glass fade"><h2>📅 훈련 일정</h2><div id="scheduleList" class="grid"><div class="card empty">일정 불러오는 중...</div></div></section>
-  <section id="players" class="section glass fade"><h2>🏓 선수 소개</h2><div id="playerList" class="grid"><div class="card empty">선수 불러오는 중...</div></div></section>
-  <section id="records" class="section glass fade"><h2>🥇 입상 실적</h2><div id="recordList" class="grid"><div class="card empty">실적 불러오는 중...</div></div></section>
-  <section id="coach" class="section glass fade"><h2>👨‍🏫 코치 소개</h2><div class="grid"><div class="card"><span class="tag">HEAD COACH</span><h3>하정무 코치</h3><p>대구 대명초등학교 3학년 탁구부 입문<br>포항대흥중학교 탁구부 창단 멤버<br>구미인동고등학교 탁구부 졸업 / 구미대학교 졸업</p><p>2025~현재 청명초등학교 탁구부 코치</p></div><div class="card"><span class="tag">ACHIEVEMENT</span><h3>지도 실적</h3><p>국가대표 및 실업팀 선수 다수 배출<br>전국소년체육대회 입상<br>전국대회 우승 및 준우승 다수</p></div><div class="card"><span class="tag">SPONSOR</span><h3>핑퐁드림어스</h3><p>수원청명초 탁구부 선수들의 꿈과 도전을 응원합니다.</p></div></div></section>
-  <section id="photos" class="section glass fade"><h2>🎨 AI 탁구 그래픽</h2><div class="grid"><div class="photo-safe">🏓<br>TRAINING</div><div class="photo-safe">⚡<br>MATCH</div><div class="photo-safe">🏆<br>VICTORY</div></div></section>
-  <section id="trial" class="section glass fade"><h2>📝 체험 신청</h2><p>체험을 원하는 학생 정보를 남겨주세요.</p><input id="trialName" placeholder="학생 이름"><input id="trialGrade" placeholder="학년"><input id="trialPhone" placeholder="보호자 연락처"><button class="btn primary" onclick="saveTrial()">체험 신청하기</button></section>
-  <section id="map" class="section glass fade"><h2>📍 오시는 길</h2><div class="card"><h3>수원청명초등학교 탁구부</h3><p>경기도 수원시 영통구 봉영로1517번길 37</p><iframe src="https://maps.google.com/maps?q=수원청명초등학교&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe><br><br><a class="btn secondary" target="_blank" href="https://map.naver.com/v5/search/수원청명초등학교">네이버지도 열기</a></div></section>
+<div class="mouse-light" id="mouseLight"></div>
+
+
+<!-- ======================
+HEADER
+====================== -->
+
+<header class="topbar">
+
+<nav class="nav">
+
+<a href="#home" class="logo">
+
+<div class="logoIcon">
+🏓
 </div>
 
-<footer><h3>🏓 수원청명초 엘리트 탁구 꿈나무</h3><p>학생 개인정보 및 초상권 보호를 위해 사진 없이 운영됩니다.</p><p>수원청명초 탁구부 코치 : 하정무 · 📞 010-8331-3189</p><p style="opacity:.65">© 2026 Suwon Cheongmyeong Elementary Table Tennis Team</p></footer>
+<div>
 
-<div id="popupBox"><div class="popup glass"><h2 id="popupTitle">공지</h2><p id="popupContent"></p><button class="btn primary" onclick="closePopup()">확인</button></div></div>
-<a class="fixed-btn call" href="tel:010-8331-3189">📞</a><button class="fixed-btn music" onclick="toggleMusic()">🎵</button>
-<video id="bgm" loop style="display:none"><source src="https://raw.githubusercontent.com/hajungmoo/cheongmyeong-tabletennis/refs/heads/main/KakaoTalk_20260513_020036725.mp4" type="video/mp4"></video>
+<strong>
+청명초 탁구부
+</strong>
+
+<small>
+CHUNGMYEONG TABLE TENNIS
+</small>
+
+</div>
+
+</a>
+
+
+<div class="navlinks">
+
+<a href="#team">
+TEAM
+</a>
+
+<a href="#schedule">
+TRAINING
+</a>
+
+<a href="#records">
+RESULTS
+</a>
+
+<a href="#notice">
+NOTICE
+</a>
+
+<a href="#coach">
+COACH
+</a>
+
+<a href="#trial">
+체험 신청
+</a>
+
+<a href="#map">
+LOCATION
+</a>
+
+<a
+href="admin.html"
+class="admin">
+
+ADMIN
+
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<!-- ======================
+HERO
+====================== -->
+
+<section
+class="hero"
+id="home">
+
+<div class="heroCopy">
+
+<div class="eyebrow">
+
+2026 · SUWON ELITE TABLE TENNIS
+
+</div>
+
+
+<h1>
+
+꿈을 향한<br>
+
+<span class="goldText">
+
+SMASH.
+
+</span>
+
+<br>
+
+청명의 이름으로.
+
+</h1>
+
+
+<p
+class="heroDescription"
+id="mainSubtitle">
+
+<strong>
+
+기본에 충실하고,
+최고의 선수를 향해.
+
+</strong>
+
+<br>
+
+수원청명초등학교 탁구부는
+기술 · 체력 · 멘탈 · 팀워크를
+함께 성장시키는
+엘리트 탁구 선수 육성팀입니다.
+
+<br>
+
+학생 개인정보와 초상권 보호를 위해
+선수 얼굴 사진과 전체 실명을
+공개하지 않습니다.
+
+</p>
+
+
+<div class="actions">
+
+<a
+href="#trial"
+class="btn btnGold">
+
+🏓 탁구부 체험 신청
+
+</a>
+
+<a
+href="#team"
+class="btn btnDark">
+
+선수단 보기
+
+</a>
+
+<a
+href="#records"
+class="btn btnOutline">
+
+주요 실적
+
+</a>
+
+</div>
+
+
+<div class="heroStats">
+
+<div class="heroStat">
+
+<b id="heroPlayerCount">
+7
+</b>
+
+<span>
+REGISTERED PLAYERS
+</span>
+
+</div>
+
+
+<div class="heroStat">
+
+<b id="heroRecordCount">
+0
+</b>
+
+<span>
+TEAM RESULTS
+</span>
+
+</div>
+
+
+<div class="heroStat">
+
+<b id="heroNoticeCount">
+0
+</b>
+
+<span>
+TEAM NOTICES
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- HERO LOGO -->
+
+<div class="heroVisual">
+
+<div class="heroGlow"></div>
+
+<div class="emblemFrame">
+
+<div class="emblem">
+
+<div class="emblemFallback">
+
+<div class="stars">
+★ ★ ★
+</div>
+
+<div class="shield">
+CM
+</div>
+
+<h2>
+청명
+</h2>
+
+<p>
+DREAMERS
+</p>
+
+</div>
+
+
+<img
+
+src="team-logo.png"
+
+alt="청명초 탁구부 로고"
+
+onerror="this.style.display='none'"
+
+>
+
+</div>
+
+</div>
+
+
+<div class="floatChip chipOne">
+
+<b>
+ELITE
+</b>
+
+· PLAYER DEVELOPMENT
+
+</div>
+
+
+<div class="floatChip chipTwo">
+
+<b>
+SPONSORED BY
+</b>
+
+· PINGPONG DREAMERS
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ======================
+TICKER
+====================== -->
+
+<div class="ticker">
+
+<div class="tickerTrack">
+
+<span>
+CHUNGMYEONG TABLE TENNIS
+</span>
+
+<b>
+DISCIPLINE
+</b>
+
+<span>
+TECHNIQUE
+</span>
+
+<b>
+MENTAL
+</b>
+
+<span>
+TEAMWORK
+</span>
+
+<b>
+CHALLENGE
+</b>
+
+<span>
+CHUNGMYEONG TABLE TENNIS
+</span>
+
+<b>
+DISCIPLINE
+</b>
+
+<span>
+TECHNIQUE
+</span>
+
+<b>
+MENTAL
+</b>
+
+<span>
+TEAMWORK
+</span>
+
+<b>
+CHALLENGE
+</b>
+
+</div>
+
+</div>
+
+
+
+<div class="wrap">
+
+
+<!-- ======================
+PLAYERS
+====================== -->
+
+<section
+id="team"
+class="section reveal">
+
+<div class="sectionHead">
+
+<div>
+
+<div class="sectionKicker">
+OUR TEAM
+</div>
+
+<h2>
+
+7명의 선수.<br>
+
+하나의 목표.
+
+</h2>
+
+</div>
+
+
+<p>
+
+청명초 선수들은
+각자의 성장 속도와 목표를 가지고
+같은 코트 위에서 함께 성장합니다.
+
+선수 개인정보 보호를 위해
+이름은 일부 가려 표시됩니다.
+
+</p>
+
+</div>
+
+
+<div
+id="playerList"
+class="players">
+
+</div>
+
+</section>
+
+
+
+<!-- ======================
+TEAM STATUS
+====================== -->
+
+<section
+class="section reveal">
+
+<div class="sectionHead">
+
+<div>
+
+<div class="sectionKicker">
+TEAM DASHBOARD
+</div>
+
+<h2>
+
+지금 청명은<br>
+
+이렇게 움직입니다.
+
+</h2>
+
+</div>
+
+<p>
+
+최신 공지와 훈련 일정,
+선수단 현황과 실적을
+실시간으로 확인할 수 있습니다.
+
+</p>
+
+</div>
+
+
+<div class="statusGrid">
+
+<div class="latest">
+
+<div class="lineTitle">
+LATEST NOTICE
+</div>
+
+<div id="noticeFeature">
+
+<h3>
+공지사항을 불러오는 중입니다.
+</h3>
+
+<p>
+잠시만 기다려주세요.
+</p>
+
+</div>
+
+<br>
+
+<a
+href="#notice"
+class="btn btnDark">
+
+전체 공지 보기 →
+
+</a>
+
+</div>
+
+
+<div class="statusStack">
+
+
+<div class="statusCard">
+
+<div>
+
+<small>
+NEXT TRAINING
+</small>
+
+<h4 id="nextScheduleTitle">
+
+훈련 일정 확인 중
+
+</h4>
+
+</div>
+
+<div
+id="scheduleCount"
+class="statusNumber">
+
+0
+
+</div>
+
+</div>
+
+
+
+<div class="statusCard">
+
+<div>
+
+<small>
+REGISTERED PLAYERS
+</small>
+
+<h4>
+청명초 선수단
+</h4>
+
+</div>
+
+<div
+id="playerCount"
+class="statusNumber">
+
+7
+
+</div>
+
+</div>
+
+
+
+<div class="statusCard">
+
+<div>
+
+<small>
+TEAM RESULTS
+</small>
+
+<h4>
+등록된 입상 실적
+</h4>
+
+</div>
+
+<div
+id="recordCount"
+class="statusNumber">
+
+0
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ======================
+SCHEDULE
+====================== -->
+
+<section
+id="schedule"
+class="section reveal">
+
+<div class="sectionHead">
+
+<div>
+
+<div class="sectionKicker">
+TRAINING
+</div>
+
+<h2>
+훈련 일정
+</h2>
+
+</div>
+
+
+<p>
+
+정규훈련,
+합동훈련,
+전지훈련,
+대회 일정이 표시됩니다.
+
+</p>
+
+</div>
+
+
+<div
+id="scheduleList"
+class="cards">
+
+</div>
+
+</section>
+
+
+
+<!-- ======================
+RESULTS
+====================== -->
+
+<section
+id="records"
+class="section reveal">
+
+<div class="sectionHead">
+
+<div>
+
+<div class="sectionKicker">
+RESULTS & HISTORY
+</div>
+
+<h2>
+
+도전이 쌓여<br>
+
+기록이 됩니다.
+
+</h2>
+
+</div>
+
+
+<p>
+
+매 경기의 경험과
+매 대회의 결과가
+선수 성장의 기록이 됩니다.
+
+</p>
+
+</div>
+
+
+<div
+id="recordList"
+class="results">
+
+</div>
+
+</section>
+
+
+
+<!-- ======================
+NOTICE
+====================== -->
+
+<section
+id="notice"
+class="section reveal">
+
+<div class="sectionHead">
+
+<div>
+
+<div class="sectionKicker">
+NOTICE
+</div>
+
+<h2>
+공지사항
+</h2>
+
+</div>
+
+
+<p>
+
+훈련,
+대회,
+전지훈련 및
+탁구부 주요 소식을 확인하세요.
+
+</p>
+
+</div>
+
+
+<div
+id="noticeList"
+class="cards">
+
+</div>
+
+</section>
+
+
+
+<!-- ======================
+COACH
+====================== -->
+
+<section
+id="coach"
+class="section reveal">
+
+<div class="coach">
+
+<div class="coachInfo">
+
+<div class="lineTitle">
+
+HEAD COACH
+
+</div>
+
+
+<h2>
+
+선수를 만드는 건<br>
+
+기술만이 아닙니다.
+
+</h2>
+
+
+<p>
+
+기본기와 기술뿐 아니라
+
+경기 운영,
+
+체력,
+
+멘탈,
+
+생활 습관,
+
+팀워크까지.
+
+<br><br>
+
+매일의 작은 습관이
+큰 경기에서도 흔들리지 않는
+선수를 만든다는 기준으로
+훈련합니다.
+
+</p>
+
+
+<div class="coachPoints">
+
+<div class="coachPoint">
+
+<b>
+기본기
+</b>
+
+<span>
+정확한 자세와 반복훈련
+</span>
+
+</div>
+
+
+<div class="coachPoint">
+
+<b>
+경기력
+</b>
+
+<span>
+실전 중심 경기 운영
+</span>
+
+</div>
+
+
+<div class="coachPoint">
+
+<b>
+멘탈
+</b>
+
+<span>
+경기 상황 판단과 집중
+</span>
+
+</div>
+
+
+<div class="coachPoint">
+
+<b>
+팀워크
+</b>
+
+<span>
+예절과 책임 있는 선수
+</span>
+
+</div>
+
+</div>
+
+
+<br>
+
+<strong>
+하정무 코치
+</strong>
+
+<p>
+
+2025 ~ 현재<br>
+
+수원청명초등학교 탁구부 코치
+
+</p>
+
+</div>
+
+
+
+<!-- SPONSOR -->
+
+<div class="sponsor">
+
+<div class="sponsorLogo">
+
+<div class="sponsorFallback">
+
+PINGPONG<br>
+DREAMERS
+
+</div>
+
+
+<img
+
+src="dreamers-logo.png"
+
+alt="핑퐁드림어스"
+
+onerror="this.style.display='none'"
+
+>
+
+</div>
+
+
+<h3>
+
+핑퐁드림어스와 함께
+
+</h3>
+
+
+<p>
+
+청명초 탁구부 선수들의<br>
+
+꿈과 도전을 응원합니다.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ======================
+TRIAL
+====================== -->
+
+<section
+id="trial"
+class="section reveal">
+
+<div class="sectionHead">
+
+<div>
+
+<div class="sectionKicker">
+
+JOIN THE TEAM
+
+</div>
+
+<h2>
+
+탁구를 좋아한다면,<br>
+
+시작해볼 수 있습니다.
+
+</h2>
+
+</div>
+
+
+<p>
+
+청명초 탁구부 체험을 원하는 학생은
+아래 정보를 남겨주세요.
+
+</p>
+
+</div>
+
+
+<div class="trial">
+
+<div class="trialBox">
+
+<div class="lineTitle">
+
+TRIAL PROGRAM
+
+</div>
+
+<h3>
+
+청명초 탁구부 체험
+
+</h3>
+
+<p>
+
+처음 라켓을 잡는 학생도
+괜찮습니다.
+
+탁구의 기본 동작과
+선수 훈련 환경을
+직접 경험할 수 있습니다.
+
+</p>
+
+
+<div class="steps">
+
+<div class="step">
+
+<div class="stepNo">
+01
+</div>
+
+<div>
+
+<b>
+체험 신청
+</b>
+
+<span>
+학생 정보 입력
+</span>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="stepNo">
+02
+</div>
+
+<div>
+
+<b>
+일정 조율
+</b>
+
+<span>
+체험 시간 협의
+</span>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="stepNo">
+03
+</div>
+
+<div>
+
+<b>
+탁구부 체험
+</b>
+
+<span>
+훈련 환경 경험
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- FORM -->
+
+<div class="trialBox">
+
+<div class="formRow">
+
+<div>
+
+<label>
+학생 이름
+</label>
+
+<input
+id="trialName"
+placeholder="학생 이름">
+
+</div>
+
+
+<div>
+
+<label>
+학년
+</label>
+
+<input
+id="trialGrade"
+placeholder="예 : 1학년">
+
+</div>
+
+</div>
+
+
+<label>
+보호자 연락처
+</label>
+
+<input
+id="trialPhone"
+placeholder="010-0000-0000">
+
+
+<label>
+문의 내용
+</label>
+
+<textarea
+id="trialMemo"
+placeholder="궁금한 내용을 남겨주세요.">
+</textarea>
+
+
+<button
+
+class="btn btnGold"
+
+style="width:100%"
+
+onclick="saveTrial()">
+
+탁구부 체험 신청하기
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ======================
+MAP
+====================== -->
+
+<section
+id="map"
+class="section reveal">
+
+<div class="location">
+
+<div class="locationInfo">
+
+<div class="lineTitle">
+
+LOCATION
+
+</div>
+
+<h3>
+
+수원청명초등학교 탁구부
+
+</h3>
+
+<p>
+
+경기도 수원시 영통구<br>
+
+봉영로1517번길 37
+
+</p>
+
+
+<p>
+
+방문 및 체험은
+사전 문의 후 방문해주세요.
+
+</p>
+
+
+<div class="actions">
+
+<a
+
+href="https://map.naver.com/v5/search/수원청명초등학교"
+
+target="_blank"
+
+class="btn btnGold">
+
+네이버지도
+
+</a>
+
+
+<a
+
+href="tel:010-8331-3189"
+
+class="btn btnDark">
+
+전화 문의
+
+</a>
+
+</div>
+
+</div>
+
+
+<div class="map">
+
+<iframe
+
+src="https://maps.google.com/maps?q=수원청명초등학교&t=&z=15&ie=UTF8&iwloc=&output=embed"
+
+loading="lazy">
+
+</iframe>
+
+</div>
+
+</div>
+
+</section>
+
+
+</div>
+
+
+
+<!-- ======================
+FOOTER
+====================== -->
+
+<footer>
+
+<div class="footer">
+
+<div>
+
+<h3>
+
+🏓 수원청명초등학교 탁구부
+
+</h3>
+
+<p>
+
+학생 개인정보 및 초상권 보호를 위해
+선수 사진과 전체 실명을 공개하지 않습니다.
+
+</p>
+
+<p>
+
+© 2026
+Suwon Cheongmyeong Elementary
+Table Tennis Team
+
+</p>
+
+</div>
+
+
+<div class="footerRight">
+
+<p>
+
+<b>
+HEAD COACH
+</b>
+
+하정무
+
+</p>
+
+<p>
+
+010-8331-3189
+
+</p>
+
+<p>
+
+SPONSOR · PINGPONG DREAMERS
+
+</p>
+
+</div>
+
+</div>
+
+</footer>
+
+
+
+<div class="floatMenu">
+
+<a
+href="#trial"
+class="floatBtn">
+
+✍️
+
+</a>
+
+<a
+href="tel:010-8331-3189"
+class="floatBtn gold">
+
+☎
+
+</a>
+
+</div>
+
+
+
+<!-- POPUP -->
+
+<div id="popupBox">
+
+<div class="popup">
+
+<div class="lineTitle"
+style="justify-content:center">
+
+NOTICE
+
+</div>
+
+<h2 id="popupTitle">
+
+공지사항
+
+</h2>
+
+<p id="popupContent"></p>
+
+<button
+
+class="btn btnGold"
+
+onclick="closePopup()">
+
+확인
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- ======================
+FIREBASE
+====================== -->
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, doc, getDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-const firebaseConfig={apiKey:"AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI",authDomain:"cheongmyeong-tabletennis.firebaseapp.com",projectId:"cheongmyeong-tabletennis",storageBucket:"cheongmyeong-tabletennis.firebasestorage.app",messagingSenderId:"712801821489",appId:"1:712801821489:web:501d20626d8cd12dc98610"};
-const app=initializeApp(firebaseConfig);const db=getFirestore(app);
-const $=id=>document.getElementById(id);const esc=s=>String(s??"").replace(/[&<>'"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[m]));
-function sortData(arr){return arr.sort((a,b)=>(a.order??999)-(b.order??999)||String(b.date??"").localeCompare(String(a.date??"")))}
-async function loadSettings(){try{const snap=await getDoc(doc(db,"settings","homepage"));if(!snap.exists())return;const d=snap.data();if(d.mainTitle)$("mainTitle").textContent=d.mainTitle;if(d.mainSubtitle)$("mainSubtitle").textContent=d.mainSubtitle;if(d.popupEnabled&&d.popupTitle&&d.popupContent){$("popupTitle").textContent=d.popupTitle;$("popupContent").textContent=d.popupContent;$("popupBox").style.display="flex"}}catch(e){console.log(e)}}
-async function loadCollection(name){try{const qs=await getDocs(collection(db,name));return qs.docs.map(x=>({id:x.id,...x.data()}));}catch(e){console.log(name,e);return []}}
-function noticeCard(d){return `<div class="card"><span class="tag">${esc(d.date||"공지")}</span><h3>${esc(d.title||"제목 없음")}</h3><p>${esc(d.content||"").replace(/\n/g,"<br>")}</p></div>`}
-function scheduleCard(d){return `<div class="card"><span class="tag">${esc(d.day||d.date||"일정")}</span><h3>${esc(d.title||"훈련")}</h3><p>⏰ ${esc(d.time||"시간 미정")}</p><p>${esc(d.place||d.memo||"").replace(/\n/g,"<br>")}</p></div>`}
-function playerCard(d){return `<div class="card"><div class="player-avatar">🏓</div><span class="tag">${esc(d.grade||"선수")}</span><h3>${esc(d.name||"이름")}</h3><p>전형 : ${esc(d.style||"준비중")}</p><p>🏆 ${esc(d.award||"수상기록 준비중").replace(/\n/g,"<br>")}</p></div>`}
-function recordCard(d){return `<div class="card"><span class="tag">${esc(d.year||d.date||"실적")}</span><h3>${esc(d.title||d.event||"대회명")}</h3><p>🏆 ${esc(d.result||"").replace(/\n/g,"<br>")}</p><p>${esc(d.memo||"").replace(/\n/g,"<br>")}</p></div>`}
-async function render(){await loadSettings();const [notices,schedules,players,records]=await Promise.all([loadCollection("notices"),loadCollection("schedules"),loadCollection("players"),loadCollection("records")]);
-const ns=sortData(notices), ss=sortData(schedules), ps=sortData(players), rs=sortData(records);
-$("noticeCount").textContent=ns.length;$("scheduleCount").textContent=ss.length;$("playerCount").textContent=ps.length;$("recordCount").textContent=rs.length;
-$("noticeList").innerHTML=ns.length?ns.map(noticeCard).join(""):'<div class="card empty">등록된 공지가 없습니다.</div>';
-$("scheduleList").innerHTML=ss.length?ss.map(scheduleCard).join(""):'<div class="card empty">등록된 일정이 없습니다.</div>';
-$("playerList").innerHTML=ps.length?ps.map(playerCard).join(""):'<div class="card empty">등록된 선수가 없습니다.</div>';
-$("recordList").innerHTML=rs.length?rs.map(recordCard).join(""):'<div class="card empty">등록된 실적이 없습니다.</div>';
-$("noticeMini").innerHTML=ns.length?ns.slice(0,3).map(d=>`<div class="mini-item"><strong>${esc(d.title)}</strong><small>${esc(d.date||"")}</small></div>`).join(""):'<div class="mini-item empty">등록된 공지가 없습니다.</div>';
-$("recordMini").innerHTML=rs.length?rs.slice(0,3).map(d=>`<div class="mini-item"><strong>${esc(d.title||d.event)}</strong><small>${esc(d.result||"")}</small></div>`).join(""):'<div class="mini-item empty">등록된 실적이 없습니다.</div>';
+
+import {
+initializeApp
 }
-window.saveTrial=async function(){const name=$("trialName").value.trim(),grade=$("trialGrade").value.trim(),phone=$("trialPhone").value.trim();if(!name||!grade||!phone){alert("모든 정보를 입력해주세요.");return}await addDoc(collection(db,"trials"),{name,grade,phone,createdAt:new Date().toISOString()});alert("체험 신청이 완료되었습니다!");["trialName","trialGrade","trialPhone"].forEach(id=>$(id).value="")}
+
+from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+
+import {
+
+getFirestore,
+collection,
+getDocs,
+addDoc,
+doc,
+getDoc
+
+}
+
+from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+
+
+const firebaseConfig={
+
+apiKey:
+"AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI",
+
+authDomain:
+"cheongmyeong-tabletennis.firebaseapp.com",
+
+projectId:
+"cheongmyeong-tabletennis",
+
+storageBucket:
+"cheongmyeong-tabletennis.firebasestorage.app",
+
+messagingSenderId:
+"712801821489",
+
+appId:
+"1:712801821489:web:501d20626d8cd12dc98610"
+
+};
+
+
+const app=
+initializeApp(firebaseConfig);
+
+
+const db=
+getFirestore(app);
+
+
+const $=
+id=>
+document.getElementById(id);
+
+
+const esc=
+s=>
+String(s??"")
+.replace(
+
+/[&<>'"]/g,
+
+m=>({
+
+"&":"&amp;",
+
+"<":"&lt;",
+
+">":"&gt;",
+
+"'":"&#39;",
+
+'"':"&quot;"
+
+}[m])
+
+);
+
+
+
+/* ======================
+기본 선수 7명
+====================== */
+
+const fallbackPlayers=[
+
+{
+name:"팡○이",
+grade:"6학년",
+style:"청명초 선수"
+},
+
+{
+name:"강○윤",
+grade:"6학년",
+style:"청명초 선수"
+},
+
+{
+name:"이○빈",
+grade:"5학년",
+style:"청명초 선수"
+},
+
+{
+name:"이○은",
+grade:"5학년",
+style:"청명초 선수"
+},
+
+{
+name:"천○슬",
+grade:"3학년",
+style:"청명초 선수"
+},
+
+{
+name:"양○은",
+grade:"2학년",
+style:"청명초 선수"
+},
+
+{
+name:"임○아",
+grade:"1학년",
+style:"청명초 선수"
+}
+
+];
+
+
+
+/* 이름 자동 가리기 */
+
+function maskName(name=""){
+
+const s=
+String(name).trim();
+
+
+if(!s)
+return "청명 선수";
+
+
+if(
+s.includes("○")
+)
+return s;
+
+
+if(
+s.length===1
+)
+return s+"○";
+
+
+if(
+s.length===2
+)
+return s[0]+"○";
+
+
+return
+
+s[0]+"○"+s[s.length-1];
+
+}
+
+
+
+/* 정렬 */
+
+function sortData(arr){
+
+return arr.sort(
+
+(a,b)=>
+
+(a.order??999)
+
+-
+
+(b.order??999)
+
+||
+
+String(
+b.date??
+b.createdAt??
+""
+)
+
+.localeCompare(
+
+String(
+a.date??
+a.createdAt??
+""
+)
+
+)
+
+);
+
+}
+
+
+
+/* Firebase Collection */
+
+async function loadCollection(name){
+
+try{
+
+const snap=
+await getDocs(
+
+collection(
+db,
+name
+)
+
+);
+
+
+return snap.docs.map(
+
+x=>({
+
+id:x.id,
+
+...x.data()
+
+})
+
+);
+
+}
+
+catch(e){
+
+console.log(
+name,
+e
+);
+
+return [];
+
+}
+
+}
+
+
+
+/* 설정 */
+
+async function loadSettings(){
+
+try{
+
+const snap=
+await getDoc(
+
+doc(
+db,
+"settings",
+"homepage"
+)
+
+);
+
+
+if(
+!snap.exists()
+)
+return;
+
+
+const d=
+snap.data();
+
+
+if(
+d.mainSubtitle
+)
+
+$("mainSubtitle")
+.innerHTML=
+esc(
+d.mainSubtitle
+)
+.replace(
+/\n/g,
+"<br>"
+);
+
+
+if(
+
+d.popupEnabled
+
+&&
+
+d.popupTitle
+
+&&
+
+d.popupContent
+
+){
+
+$("popupTitle")
+.textContent=
+d.popupTitle;
+
+
+$("popupContent")
+.textContent=
+d.popupContent;
+
+
+$("popupBox")
+.style.display=
+"flex";
+
+}
+
+}
+
+catch(e){
+
+console.log(e);
+
+}
+
+}
+
+
+
+/* ======================
+PLAYERS
+====================== */
+
+function renderPlayers(data){
+
+const arr=
+data.length
+?
+data
+:
+fallbackPlayers;
+
+
+$("playerCount")
+.textContent=
+arr.length;
+
+
+$("heroPlayerCount")
+.textContent=
+arr.length;
+
+
+$("playerList")
+.innerHTML=
+
+arr.map(
+
+(d,i)=>`
+
+<article class="player">
+
+<div>
+
+<div class="playerTop">
+
+<div class="playerNumber">
+
+PLAYER
+${String(i+1).padStart(2,"0")}
+
+</div>
+
+<div class="playerIcon">
+
+🏓
+
+</div>
+
+</div>
+
+
+<h3>
+
+${esc(maskName(d.name))}
+
+</h3>
+
+
+<div class="playerGrade">
+
+${esc(
+d.grade||
+"청명초 선수"
+)}
+
+</div>
+
+
+<div class="playerStyle">
+
+${esc(
+d.style||
+"기본기 성장형"
+)}
+
+</div>
+
+</div>
+
+
+<div class="playerFooter">
+
+CHUNGMYEONG ELITE TEAM
+
+</div>
+
+</article>
+
+`
+
+).join("");
+
+}
+
+
+
+/* ======================
+SCHEDULE
+====================== */
+
+function renderSchedules(arr){
+
+$("scheduleCount")
+.textContent=
+arr.length;
+
+
+$("nextScheduleTitle")
+.textContent=
+
+arr[0]?.title
+
+||
+
+"등록된 일정이 없습니다";
+
+
+$("scheduleList")
+.innerHTML=
+
+arr.length
+
+?
+
+arr.slice(0,6).map(
+
+d=>`
+
+<article class="card">
+
+<div class="cardDate">
+
+${esc(
+d.day||
+d.date||
+"TRAINING"
+)}
+
+</div>
+
+<h3>
+
+${esc(
+d.title||
+"훈련 일정"
+)}
+
+</h3>
+
+
+<p>
+
+⏰
+${esc(
+d.time||
+"시간 미정"
+)}
+
+</p>
+
+
+<p>
+
+${esc(
+d.place||
+d.memo||
+""
+)
+.replace(
+/\n/g,
+"<br>"
+)}
+
+</p>
+
+</article>
+
+`
+
+).join("")
+
+:
+
+`
+
+<article class="card">
+
+<h3>
+
+등록된 일정이 없습니다.
+
+</h3>
+
+<p>
+
+관리자 페이지에서
+훈련 일정을 등록해주세요.
+
+</p>
+
+</article>
+
+`;
+
+}
+
+
+
+/* ======================
+RESULT
+====================== */
+
+function renderRecords(arr){
+
+$("recordCount")
+.textContent=
+arr.length;
+
+
+$("heroRecordCount")
+.textContent=
+arr.length;
+
+
+$("recordList")
+.innerHTML=
+
+arr.length
+
+?
+
+arr.slice(0,8).map(
+
+d=>`
+
+<article class="result">
+
+<div class="resultYear">
+
+${esc(
+d.year||
+d.date||
+"TEAM RESULT"
+)}
+
+</div>
+
+
+<h3>
+
+${esc(
+d.title||
+d.event||
+"대회"
+)}
+
+</h3>
+
+
+<div class="resultValue">
+
+${esc(
+d.result||
+""
+)
+.replace(
+/\n/g,
+"<br>"
+)}
+
+</div>
+
+
+<div class="resultMemo">
+
+${esc(
+d.memo||
+d.detail||
+""
+)
+.replace(
+/\n/g,
+"<br>"
+)}
+
+</div>
+
+</article>
+
+`
+
+).join("")
+
+:
+
+`
+
+<article class="result">
+
+<div class="resultYear">
+
+RESULT
+
+</div>
+
+<h3>
+
+입상 실적을 준비 중입니다.
+
+</h3>
+
+<div class="resultMemo">
+
+새로운 기록이 등록되면
+이곳에 표시됩니다.
+
+</div>
+
+</article>
+
+`;
+
+}
+
+
+
+/* ======================
+NOTICE
+====================== */
+
+function renderNotices(arr){
+
+$("heroNoticeCount")
+.textContent=
+arr.length;
+
+
+const latest=
+arr[0];
+
+
+if(latest){
+
+$("noticeFeature")
+.innerHTML=
+
+`
+
+<h3>
+
+${esc(
+latest.title||
+"최근 공지"
+)}
+
+</h3>
+
+<p>
+
+${esc(
+latest.content||
+""
+)
+.replace(
+/\n/g,
+"<br>"
+)}
+
+</p>
+
+`;
+
+}
+
+else{
+
+$("noticeFeature")
+.innerHTML=
+
+`
+
+<h3>
+
+등록된 공지가 없습니다.
+
+</h3>
+
+<p>
+
+새로운 공지가 등록되면
+이곳에 표시됩니다.
+
+</p>
+
+`;
+
+}
+
+
+$("noticeList")
+.innerHTML=
+
+arr.length
+
+?
+
+arr.slice(0,9).map(
+
+d=>`
+
+<article class="card">
+
+<div class="cardDate">
+
+${esc(
+d.date||
+"NOTICE"
+)}
+
+</div>
+
+
+<h3>
+
+${esc(
+d.title||
+"공지사항"
+)}
+
+</h3>
+
+
+<p>
+
+${esc(
+d.content||
+""
+)
+.replace(
+/\n/g,
+"<br>"
+)}
+
+</p>
+
+</article>
+
+`
+
+).join("")
+
+:
+
+`
+
+<article class="card">
+
+<h3>
+
+등록된 공지가 없습니다.
+
+</h3>
+
+</article>
+
+`;
+
+}
+
+
+
+/* ======================
+RENDER
+====================== */
+
+async function render(){
+
+await loadSettings();
+
+
+const [
+
+notices,
+schedules,
+players,
+records
+
+]
+
+=
+
+await Promise.all([
+
+loadCollection(
+"notices"
+),
+
+loadCollection(
+"schedules"
+),
+
+loadCollection(
+"players"
+),
+
+loadCollection(
+"records"
+)
+
+]);
+
+
+renderNotices(
+sortData(notices)
+);
+
+
+renderSchedules(
+sortData(schedules)
+);
+
+
+renderPlayers(
+sortData(players)
+);
+
+
+renderRecords(
+sortData(records)
+);
+
+}
+
+
 render();
+
+
+
+/* ======================
+TRIAL
+====================== */
+
+window.saveTrial=
+async function(){
+
+const name=
+$("trialName")
+.value.trim();
+
+
+const grade=
+$("trialGrade")
+.value.trim();
+
+
+const phone=
+$("trialPhone")
+.value.trim();
+
+
+const memo=
+$("trialMemo")
+.value.trim();
+
+
+if(
+!name||
+!grade||
+!phone
+){
+
+alert(
+
+"학생 이름, 학년, 보호자 연락처를 입력해주세요."
+
+);
+
+return;
+
+}
+
+
+try{
+
+await addDoc(
+
+collection(
+db,
+"trials"
+),
+
+{
+
+name,
+grade,
+phone,
+memo,
+
+createdAt:
+new Date().toISOString()
+
+}
+
+);
+
+
+alert(
+
+"체험 신청이 완료되었습니다!\n확인 후 연락드리겠습니다."
+
+);
+
+
+[
+
+"trialName",
+"trialGrade",
+"trialPhone",
+"trialMemo"
+
+]
+
+.forEach(
+
+id=>
+$(id).value=""
+
+);
+
+}
+
+catch(e){
+
+console.log(e);
+
+alert(
+
+"신청 중 오류가 발생했습니다."
+
+);
+
+}
+
+};
+
 </script>
+
+
+
+<!-- ======================
+UI SCRIPT
+====================== -->
+
 <script>
-function toggleMusic(){const m=document.getElementById("bgm");m.paused?m.play():m.pause()}function closePopup(){document.getElementById("popupBox").style.display="none"}
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}));document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
+
+
+/* 팝업 */
+
+function closePopup(){
+
+document.getElementById(
+"popupBox"
+)
+.style.display=
+"none";
+
+}
+
+
+/* 등장 애니메이션 */
+
+const observer=
+
+new IntersectionObserver(
+
+entries=>{
+
+entries.forEach(
+
+entry=>{
+
+if(
+entry.isIntersecting
+)
+
+entry.target
+.classList
+.add(
+"show"
+);
+
+}
+
+);
+
+},
+
+{
+threshold:.08
+}
+
+);
+
+
+document
+.querySelectorAll(
+".reveal"
+)
+
+.forEach(
+
+el=>
+observer.observe(el)
+
+);
+
+
+
+/* 스크롤 진행바 */
+
+window.addEventListener(
+
+"scroll",
+
+()=>{
+
+const h=
+
+document.documentElement.scrollHeight
+
+-
+
+window.innerHeight;
+
+
+const p=
+
+h>0
+
+?
+
+window.scrollY/h*100
+
+:
+
+0;
+
+
+document
+.getElementById(
+"progress"
+)
+.style.width=
+
+p+"%";
+
+}
+
+);
+
+
+
+/* 마우스 골드 조명 */
+
+const light=
+
+document.getElementById(
+"mouseLight"
+);
+
+
+document.addEventListener(
+
+"mousemove",
+
+e=>{
+
+light.style.left=
+e.clientX+"px";
+
+
+light.style.top=
+e.clientY+"px";
+
+}
+
+);
+
+
 </script>
+
+
 </body>
 </html>
