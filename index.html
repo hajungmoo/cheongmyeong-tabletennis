@@ -4292,7 +4292,18 @@ console.log(e);
 /* ======================
 PLAYERS
 ====================== */
+function playerKey(name=""){
 
+  const s = String(name)
+    .replace(/\s/g,"")
+    .replace(/○/g,"");
+
+  if(!s) return "";
+
+  if(s.length === 1) return s;
+
+  return s[0] + s[s.length - 1];
+}
 function renderPlayers(data){
 
 const arr=
