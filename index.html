@@ -2334,7 +2334,7 @@ gap:8px;
 }
 
 .floatBtn{
-
+cursor:pointer;
 width:53px;
 height:53px;
 
@@ -3954,23 +3954,50 @@ SPONSOR · PINGPONG DREAMERS
 
 <div class="floatMenu">
 
-<a
-href="#trial"
-class="floatBtn">
+  <button
+    type="button"
+    class="floatBtn"
+    id="musicBtn"
+    onclick="toggleMusic()"
+    title="청명초 탁구부 노래">
 
-✍️
+    🎵
 
-</a>
+  </button>
 
-<a
-href="tel:010-8331-3189"
-class="floatBtn gold">
 
-☎
+  <a
+    href="#trial"
+    class="floatBtn">
 
-</a>
+    ✍️
+
+  </a>
+
+
+  <a
+    href="tel:010-8331-3189"
+    class="floatBtn gold">
+
+    ☎
+
+  </a>
 
 </div>
+
+
+<video
+  id="bgm"
+  loop
+  playsinline
+  preload="none"
+  style="display:none">
+
+  <source
+    src="https://raw.githubusercontent.com/hajungmoo/cheongmyeong-tabletennis/refs/heads/main/KakaoTalk_20260513_020036725.mp4"
+    type="video/mp4">
+
+</video>
 
 
 
@@ -4216,7 +4243,47 @@ a.createdAt??
 
 }
 
+window.toggleMusic = async function(){
 
+  const bgm = document.getElementById("bgm");
+  const btn = document.getElementById("musicBtn");
+
+  if(!bgm) return;
+
+
+  if(bgm.paused){
+
+    try{
+
+      await bgm.play();
+
+      btn.textContent = "⏸";
+
+      btn.title = "노래 일시정지";
+
+    }
+
+    catch(error){
+
+      console.error(error);
+
+      alert("음악을 재생하지 못했습니다.");
+
+    }
+
+  }
+
+  else{
+
+    bgm.pause();
+
+    btn.textContent = "🎵";
+
+    btn.title = "청명초 탁구부 노래";
+
+  }
+
+};
 
 /* Firebase Collection */
 
