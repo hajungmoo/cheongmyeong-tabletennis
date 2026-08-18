@@ -1657,6 +1657,397 @@ color:#94948f;
 }
 
 
+
+
+/* =========================
+RECENT ACTIVITY
+========================= */
+
+.activityGrid{
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:16px;
+
+}
+
+.activityCard{
+
+position:relative;
+
+min-height:270px;
+
+padding:25px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:space-between;
+
+overflow:hidden;
+
+border-radius:25px;
+
+border:
+1px solid var(--line2);
+
+background:
+linear-gradient(
+155deg,
+#161616,
+#080808
+);
+
+transition:.28s;
+
+}
+
+.activityCard:hover{
+
+transform:
+translateY(-7px);
+
+border-color:
+rgba(255,216,117,.30);
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.45);
+
+}
+
+.activityCard:after{
+
+content:"🏓";
+
+position:absolute;
+
+right:-8px;
+bottom:-22px;
+
+font-size:105px;
+
+opacity:.035;
+
+pointer-events:none;
+
+}
+
+.activityTop{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:10px;
+
+}
+
+.activityBadge{
+
+display:inline-flex;
+
+align-items:center;
+
+padding:
+6px 9px;
+
+border-radius:999px;
+
+color:
+var(--gold2);
+
+background:
+rgba(214,166,60,.08);
+
+border:
+1px solid var(--line);
+
+font-family:
+Oswald;
+
+font-size:8px;
+
+font-weight:700;
+
+letter-spacing:1.3px;
+
+}
+
+.activityDate{
+
+color:#666;
+
+font-family:
+Oswald;
+
+font-size:9px;
+
+letter-spacing:1px;
+
+text-align:right;
+
+}
+
+.activityIcon{
+
+width:48px;
+height:48px;
+
+margin-top:24px;
+
+display:grid;
+
+place-items:center;
+
+border-radius:16px;
+
+background:#181818;
+
+border:
+1px solid var(--line);
+
+font-size:21px;
+
+}
+
+.activityCard h3{
+
+margin:
+17px 0 9px;
+
+font-size:19px;
+
+line-height:1.45;
+
+letter-spacing:-.5px;
+
+}
+
+.activityCard p{
+
+margin:0;
+
+color:#888883;
+
+font-size:11px;
+
+line-height:1.8;
+
+}
+
+.activityBottom{
+
+margin-top:20px;
+
+padding-top:13px;
+
+border-top:
+1px solid var(--line2);
+
+color:#555;
+
+font-family:
+Oswald;
+
+font-size:8px;
+
+letter-spacing:1.4px;
+
+}
+
+
+/* =========================
+FAQ
+========================= */
+
+.faqGrid{
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+gap:12px;
+
+}
+
+.faqItem{
+
+border:
+1px solid var(--line2);
+
+border-radius:20px;
+
+background:
+linear-gradient(
+150deg,
+#141414,
+#090909
+);
+
+overflow:hidden;
+
+transition:.22s;
+
+}
+
+.faqItem:hover{
+
+border-color:
+rgba(255,216,117,.24);
+
+}
+
+.faqItem summary{
+
+list-style:none;
+
+cursor:pointer;
+
+padding:20px 22px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:16px;
+
+font-size:14px;
+
+font-weight:900;
+
+}
+
+.faqItem summary::-webkit-details-marker{
+
+display:none;
+
+}
+
+.faqQuestion{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+}
+
+.faqQ{
+
+width:30px;
+height:30px;
+
+flex:0 0 30px;
+
+display:grid;
+
+place-items:center;
+
+border-radius:10px;
+
+background:
+rgba(214,166,60,.10);
+
+border:
+1px solid var(--line);
+
+color:var(--gold2);
+
+font-family:Oswald;
+
+font-size:11px;
+
+}
+
+.faqPlus{
+
+color:var(--gold);
+
+font-family:Oswald;
+
+font-size:20px;
+
+transition:.2s;
+
+}
+
+.faqItem[open] .faqPlus{
+
+transform:rotate(45deg);
+
+}
+
+.faqAnswer{
+
+padding:
+0 22px 20px 62px;
+
+color:#92928d;
+
+font-size:12px;
+
+line-height:1.85;
+
+}
+
+@media(max-width:1150px){
+
+.activityGrid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+@media(max-width:850px){
+
+.faqGrid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+@media(max-width:520px){
+
+.activityCard{
+
+min-height:240px;
+
+padding:20px;
+
+}
+
+.faqItem summary{
+
+padding:17px;
+
+font-size:13px;
+
+}
+
+.faqAnswer{
+
+padding:
+0 17px 17px 57px;
+
+}
+
+}
+
+
 /* =========================
 RESULT
 ========================= */
@@ -3270,6 +3661,196 @@ class="statusNumber">
 
 
 
+
+
+<!-- ======================
+RECENT ACTIVITY
+====================== -->
+
+<section
+id="activity"
+class="section reveal">
+
+<div class="sectionHead">
+
+<div>
+
+<div class="sectionKicker">
+RECENT ACTIVITY
+</div>
+
+<h2>
+
+최근 활동.<br>
+
+코트 위의 기록.
+
+</h2>
+
+</div>
+
+<p>
+
+전지훈련과 합동훈련,
+전국대회까지.
+
+청명초 탁구부 선수들의
+최근 활동을 소개합니다.
+
+</p>
+
+</div>
+
+
+<div class="activityGrid">
+
+
+<!-- 01 -->
+
+<article class="activityCard">
+
+<div>
+
+<div class="activityTop">
+
+<span class="activityBadge">
+SUMMER TRAINING CAMP
+</span>
+
+<span class="activityDate">
+2026.08.03 ~ 08.14
+</span>
+
+</div>
+
+<div class="activityIcon">
+🏓
+</div>
+
+<h3>
+2026 여름 하계훈련<br>
+음성 용천초 전지훈련
+</h3>
+
+<p>
+
+2026년 8월 3일부터 8월 14일까지
+음성 용천초에서 하계 전지훈련을 진행했습니다.
+
+기본기 · 기술훈련 · 체력훈련과
+다양한 선수들과의 연습경기를 통해
+실전 경기력과 팀워크를 강화했습니다.
+
+</p>
+
+</div>
+
+<div class="activityBottom">
+2026 SUMMER TRAINING CAMP · EUMSEONG
+</div>
+
+</article>
+
+
+<!-- 02 -->
+
+<article class="activityCard">
+
+<div>
+
+<div class="activityTop">
+
+<span class="activityBadge">
+JOINT TRAINING
+</span>
+
+<span class="activityDate">
+2026.08
+</span>
+
+</div>
+
+<div class="activityIcon">
+🤝
+</div>
+
+<h3>
+서울 영남초<br>
+합동훈련
+</h3>
+
+<p>
+
+서울 영남초 선수들과 함께
+합동훈련을 진행했습니다.
+
+SYSTEM 훈련 및 연습경기를 중심으로
+다양한 실전 상황을 경험하며
+선수들의 경기 운영과 대응 능력을 점검했습니다.
+
+</p>
+
+</div>
+
+<div class="activityBottom">
+SYSTEM TRAINING · PRACTICE MATCH
+</div>
+
+</article>
+
+
+<!-- 03 -->
+
+<article class="activityCard">
+
+<div>
+
+<div class="activityTop">
+
+<span class="activityBadge">
+NATIONAL TOURNAMENT
+</span>
+
+<span class="activityDate">
+2026
+</span>
+
+</div>
+
+<div class="activityIcon">
+🏆
+</div>
+
+<h3>
+제59회 문화체육관광부장관기<br>
+전국남녀학생종별탁구대회 참가
+</h3>
+
+<p>
+
+청명초 탁구부 선수들이
+제59회 문화체육관광부장관기
+전국남녀학생종별탁구대회에 참가합니다.
+
+그동안 준비한 훈련 성과를
+전국 무대에서 펼치기 위해 도전합니다.
+
+</p>
+
+</div>
+
+<div class="activityBottom">
+59TH NATIONAL STUDENT TABLE TENNIS CHAMPIONSHIPS
+</div>
+
+</article>
+
+
+</div>
+
+</section>
+
+
 <!-- ======================
 SCHEDULE
 ====================== -->
@@ -3582,6 +4163,131 @@ onerror="this.style.display='none'"
 
 </section>
 
+
+
+
+
+<!-- ======================
+FAQ
+====================== -->
+
+<section
+id="faq"
+class="section reveal">
+
+<div class="sectionHead">
+
+<div>
+
+<div class="sectionKicker">
+JOIN FAQ
+</div>
+
+<h2>
+
+탁구부 입단,<br>
+
+궁금한 점을 확인하세요.
+
+</h2>
+
+</div>
+
+<p>
+
+체험과 입단을 고민하는
+학생과 학부모님이 자주 묻는 내용을
+간단하게 정리했습니다.
+
+</p>
+
+</div>
+
+
+<div class="faqGrid">
+
+<details class="faqItem">
+
+<summary>
+
+<span class="faqQuestion">
+<span class="faqQ">Q1</span>
+처음 탁구를 해도 되나요?
+</span>
+
+<span class="faqPlus">+</span>
+
+</summary>
+
+<div class="faqAnswer">
+네, 가능합니다. 처음 라켓을 잡는 학생도 기본 자세와 라켓 잡는 법부터 단계적으로 체험할 수 있습니다. 운동 경험보다 탁구에 대한 관심과 꾸준히 배우려는 자세를 중요하게 보고 있습니다.
+</div>
+
+</details>
+
+
+<details class="faqItem">
+
+<summary>
+
+<span class="faqQuestion">
+<span class="faqQ">Q2</span>
+몇 학년부터 가능한가요?
+</span>
+
+<span class="faqPlus">+</span>
+
+</summary>
+
+<div class="faqAnswer">
+초등학교 저학년부터 상담과 체험이 가능합니다. 학생의 학년과 운동 경험, 현재 체력 등을 확인한 뒤 체험을 통해 선수반 훈련이 잘 맞는지 함께 살펴봅니다.
+</div>
+
+</details>
+
+
+<details class="faqItem">
+
+<summary>
+
+<span class="faqQuestion">
+<span class="faqQ">Q3</span>
+체험은 어떻게 하나요?
+</span>
+
+<span class="faqPlus">+</span>
+
+</summary>
+
+<div class="faqAnswer">
+홈페이지 아래의 ‘탁구부 체험 신청’에 학생 정보와 연락처를 남겨주시면 확인 후 체험 일정을 조율합니다. 우측 하단의 전화 문의 버튼을 통해 상담하셔도 됩니다.
+</div>
+
+</details>
+
+
+<details class="faqItem">
+
+<summary>
+
+<span class="faqQuestion">
+<span class="faqQ">Q4</span>
+선수반 훈련은 어떻게 진행되나요?
+</span>
+
+<span class="faqPlus">+</span>
+
+</summary>
+
+<div class="faqAnswer">
+기본기와 기술훈련을 바탕으로 풋워크, 체력훈련, 볼박스, 서브·리시브, 실전 연습경기 등을 단계적으로 진행합니다. 선수별 보완점을 확인하면서 경기 운영 능력과 멘탈, 팀워크도 함께 훈련합니다.
+</div>
+
+</details>
+
+</div>
+
+</section>
 
 
 <!-- ======================
