@@ -4098,36 +4098,17 @@ style:"청명초 선수"
 
 function maskName(name=""){
 
-const s=
-String(name).trim();
+  const s = String(name).trim();
 
+  if(!s) return "청명 선수";
 
-if(!s)
-return "청명 선수";
+  if(s.includes("○")) return s;
 
+  if(s.length === 1) return s + "○";
 
-if(
-s.includes("○")
-)
-return s;
+  if(s.length === 2) return s[0] + "○";
 
-
-if(
-s.length===1
-)
-return s+"○";
-
-
-if(
-s.length===2
-)
-return s[0]+"○";
-
-
-return
-
-s[0]+"○"+s[s.length-1];
-
+  return s[0] + "○" + s[s.length - 1];
 }
 
 
