@@ -4304,96 +4304,81 @@ function playerKey(name=""){
 
   return s[0] + s[s.length - 1];
 }
-function renderPlayers(data){
+function renderPlayers(firebasePlayers){
 
-const arr=
-data.length
-?
-data
-:
-fallbackPlayers;
+  const officialPlayers = [
+    {name:"팡제이", grade:"6학년", style:"청명초 선수", order:1},
+    {name:"강다윤", grade:"6학년", style:"청명초 선수", order:2},
+    {name:"이수빈", grade:"5학년", style:"청명초 선수", order:3},
+    {name:"이효은", grade:"5학년", style:"청명초 선수", order:4},
+    {name:"천윤슬", grade:"3학년", style:"청명초 선수", order:5},
+    {name:"양하은", grade:"2학년", style:"청명초 선수", order:6},
+    {name:"임수아", grade:"1학년", style:"청명초 선수", order:7}
+  ];
 
+  function key(name=""){
+    const s = String(name).replace(/\s/g,"").replace(/○/g,"");
+    if(!s) return "";
+    return s.length >= 3 ? s[0] + s[s.length-1] : s;
+  }
 
-$("playerCount")
-.textContent=
-arr.length;
+  const arr = officialPlayers.map(base => {
 
+    const found = firebasePlayers.find(
+      d => key(d.name) === key(base.name)
+    );
 
-$("heroPlayerCount")
-.textContent=
-arr.length;
+    return {
+      ...base,
+      ...(found || {}),
+      name: base.name,
+      grade: found?.grade || base.grade,
+      style: found?.style || base.style
+    };
+  });
 
+  $("playerCount").textContent = 7;
+  $("heroPlayerCount").textContent = 7;
 
-$("playerList")
-.innerHTML=
+  $("playerList").innerHTML = arr.map((d,i)=>`
 
-arr.map(
+    <article class="player">
 
-(d,i)=>`
+      <div>
 
-<article class="player">
+        <div class="playerTop">
 
-<div>
+          <div class="playerNumber">
+            PLAYER ${String(i+1).padStart(2,"0")}
+          </div>
 
-<div class="playerTop">
+          <div class="playerIcon">
+            🏓
+          </div>
 
-<div class="playerNumber">
+        </div>
 
-PLAYER
-${String(i+1).padStart(2,"0")}
+        <h3>
+          ${esc(maskName(d.name))}
+        </h3>
 
-</div>
+        <div class="playerGrade">
+          ${esc(d.grade)}
+        </div>
 
-<div class="playerIcon">
+        <div class="playerStyle">
+          ${esc(d.style)}
+        </div>
 
-🏓
+      </div>
 
-</div>
+      <div class="playerFooter">
+        CHUNGMYEONG ELITE TEAM
+      </div>
 
-</div>
+    </article>
 
-
-<h3>
-
-${esc(maskName(d.name))}
-
-</h3>
-
-
-<div class="playerGrade">
-
-${esc(
-d.grade||
-"청명초 선수"
-)}
-
-</div>
-
-
-<div class="playerStyle">
-
-${esc(
-d.style||
-"기본기 성장형"
-)}
-
-</div>
-
-</div>
-
-
-<div class="playerFooter">
-
-CHUNGMYEONG ELITE TEAM
-
-</div>
-
-</article>
-
-`
-
-).join("");
-
+  `).join("");
 }
 
 
