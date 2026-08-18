@@ -2976,33 +2976,52 @@ function dailyDocId(playerId){
 
 function renderDailyPlayers(){
 
-  const players=
-
-  (
-    cache.players.length
-    ?
-    cache.players
-    :
-    fallbackPlayers
-  )
-
-  .slice(
-    0,
-    7
-  );
+  const firebasePlayers = cache.players || [];
 
 
-  $("dailyPlayerGrid")
-  .innerHTML=
+  const players = officialPlayers.map(base=>{
 
-  players
-  .map(
+    const found = firebasePlayers.find(
+
+      p =>
+      playerKey(p.name) === playerKey(base.name)
+
+    );
+
+
+    return {
+
+      ...base,
+
+      ...(found || {}),
+
+      name:base.name,
+
+      grade:
+      found?.grade
+      ||
+      base.grade
+
+    };
+
+  });
+
+
+  $("dailyPlayerGrid").innerHTML =
+
+  players.map(
 
     (p,i)=>{
 
-      const s=
+      const playerId =
+      p.id
+      ||
+      "official-" + (i+1);
+
+
+      const s =
       todayStatusFor(
-        p.id
+        playerId
       );
 
 
@@ -3035,7 +3054,7 @@ function renderDailyPlayers(){
 
         <div class="grade">
 
-          ${esc(p.grade||"청명초 선수")}
+          ${esc(p.grade)}
 
         </div>
 
@@ -3047,7 +3066,7 @@ function renderDailyPlayers(){
 
         <select
           class="miniSelect"
-          id="att_${p.id}">
+          id="att_${playerId}">
 
           <option
             value=""
@@ -3089,7 +3108,7 @@ function renderDailyPlayers(){
 
         <select
           class="miniSelect"
-          id="cond_${p.id}">
+          id="cond_${playerId}">
 
           <option
             value=""
@@ -3126,14 +3145,14 @@ function renderDailyPlayers(){
 
         <input
           class="miniInput"
-          id="memo_${p.id}"
-          value="${esc(s.memo||'')}"
-          placeholder="오늘 메모">
+          id="memo_${playerId}"
+          value="${esc(s.memo||"")}"
+          placeholder="오늘 선수 메모">
 
 
         <button
           class="statusSave"
-          onclick="savePlayerStatus('${p.id}')">
+          onclick="savePlayerStatus('${playerId}')">
 
           오늘 상태 저장
 
@@ -3145,8 +3164,7 @@ function renderDailyPlayers(){
 
     }
 
-  )
-  .join("");
+  ).join("");
 
 
   updateAttendanceCount();
