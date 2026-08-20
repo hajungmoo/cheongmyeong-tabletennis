@@ -248,6 +248,56 @@ table{border-collapse:separate!important;border-spacing:0!important;background:#
 body.sideCollapsed .app{grid-template-columns:72px minmax(0,1fr)!important}body.sideCollapsed .side{padding-left:10px!important;padding-right:10px!important}body.sideCollapsed .brand{justify-content:center!important}body.sideCollapsed .logo{width:38px!important;height:38px!important}body.sideCollapsed .nav button{justify-content:center!important;padding:9px!important}body.sideCollapsed .nav button .ico{width:28px!important;height:28px!important}
 @media(max-width:980px){.app{grid-template-columns:78px minmax(0,1fr)!important}.side{padding:14px 8px!important}.brand>div:last-child,.dbstat span,.nav button span,.sideCollapse span{display:none!important}.brand{justify-content:center!important}.nav button{justify-content:center!important}.content{padding:18px 14px 30px!important}.top{padding:0 16px!important}.dashboardHero{grid-template-columns:1fr!important}.dashStatus{border-left:0!important;border-top:1px solid #2c323b!important}.dashboardGrid{grid-template-columns:1fr!important}}
 @media(max-width:680px){.top p{display:none!important}.autosave{font-size:0!important}.autosave:after{content:"● ONLINE";font-size:8px}.content{padding:14px 10px 26px!important}.card{padding:14px!important}.dashboardHero{border-radius:11px!important}.dashLead{padding:21px!important}.dashLead h2{font-size:23px!important}.quickActions{grid-template-columns:1fr 1fr!important}.dashOverview{grid-template-columns:1fr 1fr!important}.grid2,.grid3,.grid4{grid-template-columns:1fr!important}.scoreGrid{grid-template-columns:repeat(2,1fr)!important}}
+
+/* ============================================================
+   CLOUD SYNC UI · polished modal / compact status chip
+   ============================================================ */
+.cloudTop{margin-left:auto;display:flex;align-items:center;gap:8px}
+.cloudStatus{appearance:none;border:1px solid #343c45;background:#12171d;color:#aeb7c1;border-radius:999px;padding:8px 12px;font-size:9px;font-weight:900;letter-spacing:.25px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.015);transition:.16s ease}
+.cloudStatus:hover{background:#171d24;border-color:#5a513d;color:#f0d58f;transform:translateY(-1px)}
+.cloudStatus.online{color:#8ed8b7;background:#101a16;border-color:#2a4b3c}
+.cloudStatus.saving{color:#e6ca8c;background:#1b1811;border-color:#544629}
+.cloudStatus.offline{color:#d9999d;background:#1b1214;border-color:#4a292e}
+.cloudOverlay{position:fixed;inset:0;z-index:99999;display:none;place-items:center;padding:24px;background:rgba(4,6,9,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.cloudOverlay.show{display:grid;animation:cloudBackdropIn .16s ease both}
+@keyframes cloudBackdropIn{from{opacity:0}to{opacity:1}}
+.cloudModal{width:min(720px,calc(100vw - 32px));max-height:min(820px,calc(100vh - 40px));overflow:auto;position:relative;background:linear-gradient(180deg,#14181e 0%,#0e1217 100%);border:1px solid #343b44;border-radius:20px;padding:30px;box-shadow:0 34px 90px rgba(0,0,0,.58);color:#f2f4f7;animation:cloudModalIn .18s ease both}
+@keyframes cloudModalIn{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+.cloudModal:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#d6b36a 25%,#f0d58f 50%,#d6b36a 75%,transparent)}
+.cloudClose{position:absolute;right:18px;top:17px;width:34px;height:34px;border-radius:10px;border:1px solid #303740;background:#11161c;color:#8f98a4;font-size:20px;line-height:1;display:grid;place-items:center;transition:.15s ease}
+.cloudClose:hover{color:#fff;border-color:#5b4c2f;background:#1c1913}
+.cloudLogo{width:58px;height:58px;border-radius:15px;display:grid;place-items:center;margin:0 0 14px;background:#11151a;border:1px solid #6d5a34;color:#f0d58f;font-size:16px;font-weight:950;letter-spacing:1px;box-shadow:inset 0 0 0 1px rgba(240,213,143,.045)}
+.cloudEyebrow{font-size:8px;font-weight:900;letter-spacing:1.7px;color:#927b49;text-transform:uppercase;margin-bottom:7px}
+.cloudModal h2{margin:0;color:#f7f5ef;font-size:24px;letter-spacing:-.7px}
+.cloudModal>p{margin:8px 0 22px;color:#8994a1;font-size:10px;line-height:1.65;max-width:560px}
+.cloudField{margin-bottom:11px}
+.cloudField label{font-size:8px;letter-spacing:.65px;color:#7d8793;margin:0 0 6px 2px}
+.cloudField input{background:#0b0f14!important;border:1px solid #2c333c!important;border-radius:10px!important;color:#f0f2f4!important;padding:12px 13px!important}
+.cloudField input:focus{border-color:#7b673d!important;box-shadow:0 0 0 3px rgba(214,179,106,.08)!important}
+.cloudActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.cloudActions button{appearance:none;border:1px solid #303740;background:#171c22;color:#cbd1d8;border-radius:10px;padding:10px 13px;font-size:9px;font-weight:900;transition:.15s ease}
+.cloudActions button:hover{transform:translateY(-1px);border-color:#4a535e;background:#1b2128;color:#fff}
+.cloudActions button.gold{background:#d6b36a;border-color:#ead08d;color:#17130b}
+.cloudActions button.gold:hover{background:#e3c37b;border-color:#f0d58f;color:#0e0c08}
+.cloudActions button.danger{background:#211416;border-color:#513036;color:#e5999e}
+.cloudActions button.danger:hover{background:#2a181b;border-color:#714049;color:#ffc0c4}
+.cloudSummary{background:#0d1116;border:1px solid #292f37;border-radius:14px;padding:16px;margin-bottom:12px}
+.cloudOnlineRow{display:flex;align-items:center;gap:10px;justify-content:space-between;padding-bottom:13px;border-bottom:1px solid #242a31}
+.cloudBadge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;background:#101c17;border:1px solid #2a4a3a;color:#75d3a7;font-size:8px;font-weight:950;letter-spacing:.65px;white-space:nowrap}
+.cloudOnlineRow b{font-size:10px;color:#e8ebef;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62%}
+.cloudMetricGrid{display:grid;grid-template-columns:1.6fr .7fr;gap:9px;margin-top:12px}
+.cloudMetric{background:#11161c;border:1px solid #252c34;border-radius:10px;padding:11px 12px}
+.cloudMetric span{display:block;color:#737e8b;font-size:8px;margin-bottom:5px}
+.cloudMetric strong{display:block;color:#f0f2f4;font-size:11px;line-height:1.35}
+.cloudMsg{min-height:18px;margin:10px 1px 0;color:#c9ac6f;font-size:9px;line-height:1.5}
+.cloudDetails{margin-top:16px;border-top:1px solid #242a31;padding-top:12px;color:#707a86;font-size:8px}
+.cloudDetails summary{cursor:pointer;color:#858f9b;font-weight:800;user-select:none;list-style:none}
+.cloudDetails summary::-webkit-details-marker{display:none}
+.cloudDetails summary:before{content:"＋";display:inline-block;width:16px;color:#9d8654}
+.cloudDetails[open] summary:before{content:"－"}
+.cloudDetails div{margin-top:9px;padding:10px 11px;background:#0b0f13;border:1px solid #232930;border-radius:9px;line-height:1.7;color:#717b87}
+@media(max-width:680px){.cloudModal{padding:24px 18px 20px;border-radius:16px}.cloudMetricGrid{grid-template-columns:1fr}.cloudOnlineRow{align-items:flex-start;flex-direction:column}.cloudOnlineRow b{max-width:100%}.cloudActions button{flex:1 1 46%}.cloudStatus{max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script type="module">
@@ -277,7 +327,7 @@ window.dispatchEvent(new Event('cm-cloud-ready'));
 onAuthStateChanged(auth,async user=>{window.dispatchEvent(new CustomEvent('cm-cloud-auth',{detail:{user:user?{email:user.email,uid:user.uid}:null}}));if(user){status('☁ CLOUD · 로그인됨','online');watch();await pull()}else status('☁ CLOUD · 로그인 필요','offline')});
 </script>
 
-</head><body><div class="cloudOverlay" id="cloudOverlay"><div class="cloudModal"><button class="cloudClose" onclick="closeCloudModal()">×</button><div class="cloudLogo">CM</div><h2>청명 TABLE TENNIS · CLOUD</h2><p>Firebase에 로그인하면 이 기기의 데이터와 클라우드 데이터가 자동으로 동기화됩니다.</p><div id="cloudLoggedOut"><div class="cloudField"><label>FIREBASE 로그인 이메일</label><input id="cloudEmail" type="email" autocomplete="username" placeholder="이메일"></div><div class="cloudField"><label>비밀번호</label><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')cloudLogin()"></div><div class="cloudActions"><button class="gold" onclick="cloudLogin()">☁ 로그인 · 동기화 시작</button><button onclick="cloudOfflineOpen()">오프라인으로 열기</button></div></div><div id="cloudLoggedIn" style="display:none"><div class="cloudMeta"><span class="cloudBadge">● CLOUD ONLINE</span><br><b id="cloudUserEmail">-</b><br>원격 저장: <span id="cloudRemoteInfo">확인 중</span><br>현재 경기: <span id="cloudMatchInfo">-</span></div><div class="cloudActions"><button class="gold" onclick="cloudForcePull()">↓ 클라우드에서 다시 받기</button><button onclick="cloudForcePush()">↑ 지금 클라우드 저장</button></div><div class="cloudActions"><button class="danger" onclick="cloudLogout()">로그아웃</button><button onclick="closeCloudModal()">닫기</button></div></div><div class="cloudMsg" id="cloudMsg"></div><div class="cloudMeta"><b>저장 위치</b> Firebase 프로젝트: cheongmyeong-tabletennis<br>데이터 영역: managerPro / main<br>기존 홈페이지 공지·선수 컬렉션과 분리되어 있습니다.</div></div></div><div class="app"><aside class="side"><div class="brand"><div class="logo"></div><div><b>CM TABLE TENNIS</b><small>MANAGER PRO · 2026</small></div></div><div class="dbstat"><span>PRO DATABASE · 384 BASE</span><b id="sideDb">READY</b></div><div class="nav">
+</head><body><div class="cloudOverlay" id="cloudOverlay" onclick="if(event.target===this)closeCloudModal()"><div class="cloudModal"><button class="cloudClose" onclick="closeCloudModal()" aria-label="닫기">×</button><div class="cloudLogo">CM</div><div class="cloudEyebrow">CHEONGMYEONG TABLE TENNIS · MANAGER PRO</div><h2>클라우드 동기화</h2><p>학교·집·다른 PC 어디서든 동일한 경기 데이터를 자동으로 이어서 사용합니다.</p><div id="cloudLoggedOut"><div class="cloudField"><label>FIREBASE 로그인 이메일</label><input id="cloudEmail" type="email" autocomplete="username" placeholder="이메일"></div><div class="cloudField"><label>비밀번호</label><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')cloudLogin()"></div><div class="cloudActions"><button class="gold" onclick="cloudLogin()">☁ 로그인 · 동기화 시작</button><button onclick="cloudOfflineOpen()">오프라인으로 열기</button></div></div><div id="cloudLoggedIn" style="display:none"><div class="cloudSummary"><div class="cloudOnlineRow"><span class="cloudBadge">● CLOUD ONLINE</span><b id="cloudUserEmail">-</b></div><div class="cloudMetricGrid"><div class="cloudMetric"><span>최근 클라우드 저장</span><strong id="cloudRemoteInfo">확인 중</strong></div><div class="cloudMetric"><span>현재 경기</span><strong id="cloudMatchInfo">-</strong></div></div></div><div class="cloudActions"><button class="gold" onclick="cloudForcePull()">↓ 클라우드에서 다시 받기</button><button onclick="cloudForcePush()">↑ 지금 클라우드 저장</button><button class="danger" onclick="cloudLogout()">로그아웃</button><button onclick="closeCloudModal()">닫기</button></div></div><div class="cloudMsg" id="cloudMsg"></div><details class="cloudDetails"><summary>연결 상세정보</summary><div>Firebase 프로젝트: cheongmyeong-tabletennis<br>데이터 영역: managerPro / main<br>기존 홈페이지 공지·선수 컬렉션과 분리되어 있습니다.</div></details></div></div><div class="app"><aside class="side"><div class="brand"><div class="logo"></div><div><b>CM TABLE TENNIS</b><small>MANAGER PRO · 2026</small></div></div><div class="dbstat"><span>PRO DATABASE · 384 BASE</span><b id="sideDb">READY</b></div><div class="nav">
 <button class="active" data-tab="dashboard" title="대시보드"><i class="ico">◆</i><span>대시보드</span></button><button data-tab="match" title="경기 입력"><i class="ico">＋</i><span>경기 입력</span></button><button data-tab="analysis" title="선수 분석"><i class="ico">◎</i><span>선수 분석</span></button><button data-tab="history" title="경기 저장소"><i class="ico">▤</i><span>경기 저장소</span></button><button data-tab="results" title="대회 성적"><i class="ico">🏆</i><span>대회 성적</span></button><button data-tab="players" title="선수·랭킹"><i class="ico">◈</i><span>선수·랭킹</span></button><button data-tab="schools" title="학교 DB"><i class="ico">▦</i><span>학교 DB</span></button><button data-tab="league" title="리그전 관리"><i class="ico">♜</i><span>리그전 관리</span></button><button data-tab="storage" title="데이터 관리"><i class="ico">⬢</i><span>데이터 관리</span></button></div><button class="sideCollapse" id="sideCollapseBtn" onclick="toggleSidebar()" title="메뉴 접기"><i>◀</i><span>메뉴 접기</span></button></aside><section class="main"><header class="top"><div><h1 id="topTitle">대시보드</h1><p>청명초 탁구부 · 선수 / 경기 / 랭킹 / 리그 / 대회 운영 시스템</p></div><div class="cloudTop"><button class="cloudStatus" id="cloudStatus" onclick="openCloudModal()">☁ CLOUD · 연결 준비</button></div></header><div class="content">
 <section id="dashboard" class="panel active">
 <div class="dashboardHero">
