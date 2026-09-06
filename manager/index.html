@@ -317,7 +317,32 @@ async function decodePayload(encoding,payload){if(encoding!=='gzip-base64')retur
 
 async function push(data,revision=Date.now(),force=false){if(!auth.currentUser)return;try{status('☁ CLOUD · 저장 중','saving');const enc=await gzipEncode(data);await setDoc(ref,{...enc,revision,updatedAt:serverTimestamp(),summary:{matches:(data.matches||[]).length,players:(data.players||[]).length,schools:(data.schools||[]).length,leagues:(data.leagues||[]).length,competitions:(data.competitions||[]).length},version:1},{merge:false});lastRemoteRev=revision;localStorage.setItem('cm_manager_cloud_last_push',String(revision));status(`☁ CLOUD · ${(data.matches||[]).length}경기 저장됨`,'online');updatePanel();if(force)msg(`클라우드 저장 완료 · ${(data.matches||[]).length}경기`)}catch(e){console.error(e);status('☁ CLOUD · 저장 실패','offline');msg('클라우드 저장 실패: '+(e.code||e.message))}}
 function queueSave(data,revision){if(isApplyingRemote||!auth.currentUser)return;clearTimeout(saveTimer);status('☁ CLOUD · 저장 대기','saving');saveTimer=setTimeout(()=>push(data,revision),900)}
-async function pull({force=false}={}){if(!auth.currentUser)return;try{status('☁ CLOUD · 불러오는 중','saving');const s=await getDoc(ref);if(!s.exists()){const rev=Date.now();const local=window.db||window.__cmDb;if(local)await push(local,rev,true);else status('☁ CLOUD · 초기 데이터 준비','saving');return}const d=s.data(),remoteRev=Number(d.revision||0),localRev=Number(localStorage.getItem('cm_manager_cloud_local_revision')||0);lastRemoteRev=remoteRev;const remoteDb=await decodePayload(d.encoding,d.payload);if(force||remoteRev>=localRev){isApplyingRemote=true;window.dispatchEvent(new CustomEvent('cm-cloud-data',{detail:{db:remoteDb,revision:remoteRev}}));setTimeout(()=>isApplyingRemote=false,0);status(`☁ CLOUD · ${(remoteDb.matches||[]).length}경기 동기화`,'online')}else{const local=window.db||window.__cmDb;if(local)await push(local,localRev,true)}updatePanel()}catch(e){console.error(e);status('☁ CLOUD · 연결 오류','offline');msg('클라우드 불러오기 실패: '+(e.code||e.message))}}
+async function pull({force=false}={}){
+ if(!auth.currentUser)return;
+ try{
+  status('☁ CLOUD · 불러오는 중','saving');
+  const s=await getDoc(ref);
+  if(!s.exists()){
+   status('☁ CLOUD · 원본 없음','offline');
+   msg('클라우드 원본이 없습니다. 안전을 위해 이 기기의 로컬 데이터를 자동 업로드하지 않았습니다.');
+   return
+  }
+  const d=s.data(),remoteRev=Number(d.revision||0),localRev=Number(localStorage.getItem('cm_manager_cloud_local_revision')||0);
+  lastRemoteRev=remoteRev;
+  const remoteDb=await decodePayload(d.encoding,d.payload);
+  if(localRev>remoteRev){
+   try{
+    const local=window.db||window.__cmDb;
+    if(local)localStorage.setItem('cm_manager_local_safety_backup',JSON.stringify({savedAt:new Date().toISOString(),revision:localRev,data:local}))
+   }catch(_){ }
+  }
+  isApplyingRemote=true;
+  window.dispatchEvent(new CustomEvent('cm-cloud-data',{detail:{db:remoteDb,revision:remoteRev}}));
+  setTimeout(()=>isApplyingRemote=false,0);
+  status(`☁ CLOUD · ${(remoteDb.matches||[]).length}경기 동기화`,'online');
+  updatePanel()
+ }catch(e){console.error(e);status('☁ CLOUD · 연결 오류','offline');msg('클라우드 불러오기 실패: '+(e.code||e.message))}
+}
 async function login(email,password){try{msg('로그인 중...');await signInWithEmailAndPassword(auth,email,password);msg('로그인 성공 · 클라우드 동기화 중...')}catch(e){console.error(e);msg('로그인 실패: 이메일/비밀번호 또는 Firebase Auth 설정을 확인해줘.')}}
 async function logoutUser(){await signOut(auth);status('☁ CLOUD · 로그아웃','offline');msg('로그아웃했습니다.')}
 function updatePanel(){const e=document.getElementById('cloudUserEmail'),r=document.getElementById('cloudRemoteInfo'),m=document.getElementById('cloudMatchInfo');if(e)e.textContent=auth.currentUser?.email||'-';if(r)r.textContent=lastRemoteRev?new Date(lastRemoteRev).toLocaleString('ko-KR'):'아직 없음';const local=window.db||window.__cmDb;if(m)m.textContent=(local?.matches||[]).length+'경기'}
