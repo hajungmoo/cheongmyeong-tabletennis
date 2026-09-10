@@ -21,3 +21,21 @@
 @media(max-width:380px){.logo strong{font-size:1rem}.logo img{width:50px;height:50px}.logo{gap:9px}.hero h1{font-size:2.65rem}.hero .btn{font-size:.875rem;padding:12px 13px;gap:9px}.player{padding:21px 13px}.player h3{font-size:1.6rem}.playerMark{font-size:1.15rem}.segments button{padding:8px 9px;font-size:.875rem}.trial{padding:24px 17px}.trialForm{padding:21px 14px}.heroStat b{font-size:2.15rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.heroCopy,.heroVisual{opacity:1;transform:none}}
 @media(forced-colors:active){.hero h1,.sectionHead h2,.coachSection h2,.message h2,.trialIntro h2,.location h2,.recordResult,.heroStat b,.sponsor strong{background:none;-webkit-text-fill-color:CanvasText;color:CanvasText;filter:none}}
+
+/* Give the coach's words the scale and emphasis of a featured statement. */
+#message{background:radial-gradient(ellipse at 50% 24%,#a0701924,transparent 64%),#060504;padding:105px 0}
+#message .message{display:grid;grid-template-columns:minmax(0,1fr);gap:39px;max-width:1260px;padding:64px 70px 60px;border:1px solid #d7ad5377;border-radius:23px;background:linear-gradient(140deg,#241a0a80,#0a0805 40%,#151006);box-shadow:inset 0 1px #ffe6a22a,0 0 65px #c48e2210,0 22px 60px #0008;position:relative;isolation:isolate}
+#message .message:before{content:'';position:absolute;top:-1px;left:14%;right:14%;height:2px;background:linear-gradient(90deg,transparent,#fce7af,#b7812c,transparent);box-shadow:0 0 22px #e9b94955;pointer-events:none}
+#message .message>div:first-child{text-align:center;min-width:0}
+#message .sectionKicker{justify-content:center;font-size:clamp(1rem,1.8vw,1.45rem);font-weight:900;letter-spacing:.18em;color:#ffe2a0;margin-bottom:29px;text-shadow:0 0 24px #d6a44150;line-height:1.7;gap:20px}
+#message .sectionKicker:before,#message .sectionKicker:after{content:'';display:block;width:44px;height:2px;flex-shrink:0;background:var(--gold-metal);box-shadow:0 0 16px #dfb6506e}
+#message .message h2{max-width:1070px;margin:0 auto;font-size:clamp(2.75rem,4.6vw,4.5rem);font-weight:900;line-height:1.34;letter-spacing:-.045em;text-wrap:balance;white-space:pre-line;filter:drop-shadow(0 3px 0 #72501966) drop-shadow(0 0 24px #e8ad3c2b)}
+#message .messageBody{border-left:0;border-top:1px solid #c9a34f47;padding:35px 0 0;max-width:1040px;margin:0 auto;min-width:0;font-size:clamp(1.0625rem,1.45vw,1.25rem);font-weight:500;line-height:2.05;letter-spacing:-.015em;color:#d9ccb0;white-space:normal;word-break:keep-all;overflow-wrap:anywhere;text-wrap:pretty}
+#message .messageBody p{margin:0;white-space:pre-line}
+#message .messageBody p+p{margin-top:25px}
+#message .messageBody p:first-child{font-size:clamp(1.25rem,1.9vw,1.6rem);font-weight:800;line-height:1.85;letter-spacing:-.025em;color:#f7dda0}
+#message .messageBody p:last-child:not(:first-child){color:#ead6a7;font-weight:600}
+@media(max-width:1050px){#message{padding:80px 0}#message .message{padding:48px 42px;gap:32px}#message .message h2{font-size:clamp(2.7rem,5.2vw,3.6rem)}#message .messageBody{padding-top:29px}#message .sectionKicker{font-size:1.125rem;margin-bottom:24px}}
+@media(max-width:700px){#message{padding:65px 0}#message .message{padding:36px 24px 34px;gap:27px;border-radius:17px}#message .sectionKicker{font-size:1rem;letter-spacing:.12em;gap:13px;margin-bottom:22px}#message .sectionKicker:before,#message .sectionKicker:after{width:23px}#message .message h2{font-size:clamp(2.2rem,6.8vw,3rem);line-height:1.43;letter-spacing:-.045em}#message .messageBody{font-size:1.0625rem;line-height:2;padding-top:26px}#message .messageBody p:first-child{font-size:1.25rem;line-height:1.85}#message .messageBody p+p{margin-top:22px}}
+@media(max-width:380px){#message .message{padding:31px 19px}#message .sectionKicker{font-size:.9375rem;letter-spacing:.07em;gap:10px}#message .sectionKicker:before,#message .sectionKicker:after{width:19px}#message .message h2{font-size:2rem}}
+@media(forced-colors:active){#message .message h2{filter:none}#message .sectionKicker{text-shadow:none}}

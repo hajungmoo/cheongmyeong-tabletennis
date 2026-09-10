@@ -12,9 +12,22 @@ const maskName = value => { const s=String(value||'').trim(); return !s?'청명 
 const visible = item => item.hidden !== true && item.hidden !== 'true' && item.visible !== false;
 function text(id, value) { const el=$(id); if(el) el.textContent=value??''; }
 function image(id, url, alt) { const el=$(id); if(!el)return; el.src=safeURL(url,'team-logo.png'); el.alt=alt||''; }
+function renderCoachMessage(element, value) {
+  const copy=String(value??'').trim();
+  const lines=copy.split(/\n+/).map(line=>line.trim()).filter(Boolean);
+  let paragraphs=lines;
+  if(lines.length===1){
+    const sentences=copy.split(/(?<=[.!?。])\s+(?=\S)/u);
+    paragraphs=[];
+    for(let i=0;i<sentences.length;i+=2)paragraphs.push(sentences.slice(i,i+2).join(' '));
+  }
+  element.replaceChildren(...paragraphs.map(copy=>{
+    const paragraph=document.createElement('p');paragraph.textContent=copy;return paragraph;
+  }));
+}
 function applySettings(raw) {
   settings=resolveSettings(raw); const c=settings.siteContent;
-  document.querySelectorAll('[data-content]').forEach(el=>{el.textContent=c[el.dataset.content]??'';});
+  document.querySelectorAll('[data-content]').forEach(el=>{if(el.dataset.content==='messageBody')renderCoachMessage(el,c.messageBody);else el.textContent=c[el.dataset.content]??'';});
   text('mainTitle',settings.mainTitle); text('mainSubtitle',settings.mainSubtitle);
   image('heroImage',c.heroImage,c.heroAlt); image('navLogo',c.heroImage,c.teamName+' 로고'); image('sponsorImage',c.sponsorImage,c.sponsorName);
   text('primaryLabel',c.primaryLabel); text('secondaryLabel',c.secondaryLabel);
