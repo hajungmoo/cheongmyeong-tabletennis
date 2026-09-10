@@ -1,4 +1,4 @@
-import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=2.0.0';
+import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=2.1.2';
 import {
   initializeApp
 }

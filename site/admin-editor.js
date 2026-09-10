@@ -1,15 +1,16 @@
-import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=2.0.0';
+import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=2.1.2';
 
 const field = (key,label,type='text',hint='') => ({key,label,type,hint});
 const groups = [
   {id:'main',title:'첫 화면',fields:[field('mainTitle','메인 제목','textarea'),field('mainSubtitle','메인 설명','textarea'),field('teamName','팀 이름'),field('englishName','영문 이름'),field('heroEyebrow','제목 위 작은 문구'),field('heroImage','로고 이미지 주소','image','기존 로고: team-logo.png'),field('heroAlt','로고 설명'),field('primaryLabel','체험 신청 버튼 문구'),field('secondaryLabel','훈련 일정 버튼 문구')]},
   {id:'copy',title:'영역별 문구',fields:[
     ...[['team','선수단'],['overview','요약 소식'],['activity','활동'],['schedule','일정'],['records','대회 기록'],['notices','공지'],['faq','자주 묻는 질문'],['trial','체험 신청']].flatMap(([k,t])=>[field(k+'Title',t+' 제목'),field(k+'Description',t+' 설명','textarea')]),field('trialIntro','체험 안내','textarea'),field('mapTitle','찾아오시는 길 제목')]},
+  {id:'effects',title:'문구 · 효과',fields:[field('marqueeText','중간에 흐르는 문구','text','짧은 문구를 · 로 구분해서 입력하세요.'),field('showMarquee','흐르는 문구 표시','boolean'),field('showEffects','은은한 빛 · 마우스 효과','boolean')]},
   {id:'activities',title:'팀 이야기',fields:[],array:'activities'},
   {id:'faqs',title:'자주 묻는 질문',fields:[],array:'faqs'},
   {id:'coach',title:'코치 · 후원',fields:[field('coachTitle','지도 방향 제목'),field('coachDescription','지도 방향 설명','textarea'),field('coachName','지도자 이름'),field('coachRole','지도자 소개'),field('messageTitle','코치 인사말 제목'),field('messageBody','코치 인사말','textarea'),field('sponsorName','후원 이름'),field('sponsorDescription','후원 소개','textarea'),field('sponsorImage','후원 로고 주소','image','기존 로고: dreamers-logo.png')],array:'values'},
   {id:'contact',title:'연락처 · 위치',fields:[field('contactAddress','주소'),field('contactPhone','문의 전화번호','tel'),field('contactNote','방문 안내','textarea'),field('mapQuery','지도에서 찾을 장소','text','정확한 장소명 또는 주소를 입력하세요.'),field('mapUrl','네이버 지도 링크','url')]},
-  {id:'visibility',title:'공개 영역',fields:[...Object.keys(CONTENT_DEFAULTS).filter(k=>k.startsWith('show')).map(key=>field(key,({showTeam:'선수단',showOverview:'요약 소식',showActivities:'팀 이야기',showSchedules:'훈련 일정',showRecords:'대회 기록',showNotices:'공지사항',showCoach:'코치 · 후원',showMessage:'코치 인사말',showFaq:'자주 묻는 질문',showTrial:'체험 신청',showMap:'찾아오시는 길',showMusic:'팀 노래'})[key],'boolean'))]},
+  {id:'visibility',title:'공개 영역',fields:[...Object.keys(CONTENT_DEFAULTS).filter(k=>k.startsWith('show')&&!['showMarquee','showEffects'].includes(k)).map(key=>field(key,({showTeam:'선수단',showOverview:'요약 소식',showActivities:'팀 이야기',showSchedules:'훈련 일정',showRecords:'대회 기록',showNotices:'공지사항',showCoach:'코치 · 후원',showMessage:'코치 인사말',showFaq:'자주 묻는 질문',showTrial:'체험 신청',showMap:'찾아오시는 길',showMusic:'팀 노래'})[key],'boolean'))]},
   {id:'popup',title:'팝업 공지',fields:[field('popupEnabled','팝업 사용','boolean'),field('popupTitle','팝업 제목'),field('popupContent','팝업 내용','textarea')]}
 ];
 const legacy = new Set(['mainTitle','mainSubtitle','popupEnabled','popupTitle','popupContent']);

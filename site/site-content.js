@@ -122,6 +122,9 @@ export const CONTENT_DEFAULTS = {
       "visible": true
     }
   ],
+  "marqueeText": "CHEONGMYEONG TABLE TENNIS · 기본을 단단하게 · 꿈은 더 크게 · 함께 성장하는 청명",
+  "showMarquee": true,
+  "showEffects": true,
   "showTeam": true,
   "showOverview": true,
   "showActivities": true,

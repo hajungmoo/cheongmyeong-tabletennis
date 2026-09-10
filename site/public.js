@@ -1,9 +1,11 @@
+import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
-import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=2.0.0';
+import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=2.1.2';
 
 const app = initializeApp({apiKey:'AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI',authDomain:'cheongmyeong-tabletennis.firebaseapp.com',projectId:'cheongmyeong-tabletennis',storageBucket:'cheongmyeong-tabletennis.firebasestorage.app',messagingSenderId:'712801821489',appId:'1:712801821489:web:501d20626d8cd12dc98610'});
 const db = getFirestore(app), $ = id => document.getElementById(id);
+const visualFinish=initVisualFinish();
 const preview = new URLSearchParams(location.search).get('preview') === '1' && window.parent !== window;
 let settings = resolveSettings(), rawSettings = {}, previewDraft = null, failed = [], scheduleFilter = 'all', noticeLimit = 6, recordLimit = 6, submitting = false;
 const state = {players:[],notices:[],schedules:[],records:[]};
@@ -50,6 +52,7 @@ function applySettings(raw) {
     text('popupTitle',settings.popupTitle);text('popupContent',settings.popupContent);
     if(!$('popupDialog').open)$('popupDialog').showModal();
   }else if($('popupDialog').open)$('popupDialog').close();
+  visualFinish.apply(c);
 }
 function renderPlayers() {
   const players=sortedItems(state.players).filter(visible);

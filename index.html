@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#050505">
   <meta name="description" content="수원청명초등학교 엘리트 탁구부 공식 홈페이지">
   <title>수원청명초 탁구부 | CHEONGMYEONG TABLE TENNIS</title>
-  <link rel="stylesheet" href="site/public.css?v=2.1.1">
+  <link rel="stylesheet" href="site/public.css?v=2.1.2">
 </head>
 <body>
 <a class="skipLink" href="#main">본문 바로가기</a>
@@ -54,6 +54,11 @@
     <div class="sectionHead"><div><div class="sectionKicker">TEAM JOURNAL</div><h2 data-content="activityTitle">코트 위에서 쌓아가는 이야기.</h2></div><p data-content="activityDescription"></p></div>
     <div class="stories" id="activityList"></div>
   </div></section>
+  <section id="teamMarquee" class="teamMarquee marquee-paused" aria-label="청명 탁구부 메시지" hidden>
+    <p id="marqueeAccessible" class="srOnly"></p>
+    <div class="marqueeViewport"><div id="marqueeTrack" class="marqueeTrack" aria-hidden="true"></div></div>
+    <button id="marqueeToggle" class="marqueeToggle" type="button" aria-label="흐르는 문구 일시정지" aria-pressed="false">Ⅱ</button>
+  </section>
   <section id="schedule" class="section"><div class="container">
     <div class="sectionHead"><div><div class="sectionKicker">TRAINING &amp; COMPETITION</div><h2 data-content="scheduleTitle">다음 도전을 준비하는 시간.</h2></div><p data-content="scheduleDescription"></p></div>
     <div class="filterBar"><div class="segments" role="group" aria-label="일정 구분"><button data-schedule-filter="all" aria-pressed="true">전체</button><button data-schedule-filter="upcoming" aria-pressed="false">다가오는 일정</button><button data-schedule-filter="other" aria-pressed="false">정기 · 기타</button><button data-schedule-filter="past" aria-pressed="false">지난 일정</button></div><label><span class="srOnly">일정 검색</span><input id="scheduleSearch" class="searchInput" type="search" placeholder="일정 · 장소 검색"></label></div>
@@ -83,9 +88,10 @@
 </main>
 <footer class="footer"><div class="container"><div class="footerTop"><div><strong data-content="teamName">청명초 탁구부</strong><p data-content="englishName">CHEONGMYEONG TABLE TENNIS</p></div><div class="footerLinks"><a href="#faq">자주 묻는 질문</a><a href="manager/">경기 관리</a><a href="admin.html">관리자</a><button id="musicBtn" type="button" aria-pressed="false">팀 노래 듣기</button></div></div><div class="footerBottom"><span>© <span data-content="teamName">청명초 탁구부</span></span><span>선수 이름은 일부 가려 표시됩니다.</span></div><span id="musicStatus" role="status"></span></div></footer>
 <a class="floatContact" data-phone href="tel:01083313189">전화 문의 <span aria-hidden="true">↗</span></a>
+<div id="pointerLight" class="pointerLight" aria-hidden="true"><span class="pointerHalo"></span></div>
 <audio id="bgm" preload="none" loop src="https://raw.githubusercontent.com/hajungmoo/cheongmyeong-tabletennis/refs/heads/main/KakaoTalk_20260513_020036725.mp4"></audio>
 <dialog id="popupDialog" class="popupDialog" aria-labelledby="popupTitle"><div class="sectionKicker">CHEONGMYEONG NOTICE</div><h2 id="popupTitle"></h2><p id="popupContent"></p><button id="closePopup" class="btn btnGold" type="button">확인했어요</button></dialog>
 <noscript><p class="loadState container">최신 일정과 체험 신청을 이용하려면 자바스크립트를 켜주세요. 문의: 010-8331-3189</p></noscript>
-<script type="module" src="site/public.js?v=2.1.1"></script>
+<script type="module" src="site/public.js?v=2.1.2"></script>
 </body>
 </html>
