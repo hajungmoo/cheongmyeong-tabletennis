@@ -1,43 +1,56 @@
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js';
 import {getFirestore,doc,onSnapshot} from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js';
-import {accessKeyFrom,lookupId,openReport} from './report-crypto.js?v=1.0.0';
+import {normalizeName,unpackReports} from './report-data.js?v=2.0.0';
 
 const app=initializeApp({apiKey:'AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI',authDomain:'cheongmyeong-tabletennis.firebaseapp.com',projectId:'cheongmyeong-tabletennis',appId:'1:712801821489:web:501d20626d8cd12dc98610'});
-const ref=doc(getFirestore(app),'settings','parentPortal'),$=id=>document.getElementById(id);
+const ref=doc(getFirestore(app),'settings','parentLive'),$=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sourceNames={match:'일반 경기',league:'리그전',competition:'대회 기록'};
-let key=accessKeyFrom(location.href),active=null,unsubscribe=null,report=null,limit=30,generation=0,delivery=0,loadTimer=null;
-$('accessField').hidden=!!key;
-if(key)$('lookupHint').textContent='자녀 이름을 입력하면 저장된 경기 결과를 확인할 수 있습니다.';
+let active=null,unsubscribe=null,report=null,reports=[],limit=30,generation=0,delivery=0,loadTimer=null;
+if(location.hash.startsWith('#key='))history.replaceState(null,'',location.pathname+location.search);
 function status(message,error=false){$('lookupStatus').textContent=message;$('lookupStatus').classList.toggle('error',error);}
-function clearReport(){report=null;$('report').hidden=true;$('welcome').hidden=false;$('matchList').replaceChildren();}
+function clearReport(){report=null;$('report').hidden=true;$('welcome').hidden=false;$('matchList').replaceChildren();$('playerChoices').replaceChildren();$('playerChoices').hidden=true;}
 function stop(){generation++;delivery++;clearTimeout(loadTimer);unsubscribe?.();unsubscribe=null;}
 function empty(message){clearReport();status(message,true);}
 function formatUpdated(value){const date=value?.toDate?.();return date&&!Number.isNaN(date.getTime())?'최근 반영 '+new Intl.DateTimeFormat('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Seoul'}).format(date):'저장된 최신 기록';}
+function displaySelection({focus=false}={}){
+  if(!active)return;
+  const matches=reports.filter(r=>normalizeName(r.player.name)===normalizeName(active.name));
+  $('playerChoices').replaceChildren();$('playerChoices').hidden=true;
+  const selected=active.playerId?matches.find(r=>r.player.id===active.playerId):matches.length===1?matches[0]:null;
+  if(!selected){
+    clearReport();
+    if(matches.length>1){
+      status('같은 이름의 선수가 있습니다. 학년을 확인하고 선택해 주세요.');$('playerChoices').hidden=false;
+      for(const item of matches){const button=document.createElement('button');button.type='button';button.className='button quiet';button.textContent=[item.player.name,item.player.grade,item.player.school].filter(Boolean).join(' · ');button.addEventListener('click',()=>{active.playerId=item.player.id;displaySelection({focus:true});});$('playerChoices').append(button);}
+    }else status('조회 가능한 기록을 찾지 못했습니다. 선수 이름을 정확히 입력해 주세요.',true);
+    return;
+  }
+  active.playerId=selected.player.id;report=selected;
+  $('athleteName').textContent=selected.player.name;$('athleteMeta').textContent=[selected.player.school,selected.player.grade].filter(Boolean).join(' · ');
+  $('report').hidden=false;$('welcome').hidden=true;
+  if(focus)$('sourceFilter').value=selected.matches.some(m=>m.source==='match')?'match':selected.matches.some(m=>m.source==='league')?'league':'competition';
+  status('실시간 조회 중 · 새 경기 결과가 저장되면 자동으로 바뀝니다.');renderMatches();
+  if(focus)$('athleteName').focus({preventScroll:true});
+}
 async function startLookup({focus=false}={}){
   stop();if(!active)return;
-  const current=generation,selection={...active};status('저장된 경기 기록을 불러오고 있습니다.');$('lookupButton').disabled=true;
+  const current=generation;status('저장된 경기 기록을 불러오고 있습니다.');$('lookupButton').disabled=true;
   loadTimer=setTimeout(()=>{if(current===generation){status('연결이 지연되고 있습니다. 인터넷 연결을 확인하고 다시 조회해 주세요.',true);$('lookupButton').disabled=false;}},20000);
-  try{
-    const lookup=await lookupId(selection.key,selection.name);if(current!==generation)return;
-    unsubscribe=onSnapshot(ref,{includeMetadataChanges:true},snapshot=>{
-      const item=++delivery;
-      (async()=>{
-        if(current!==generation)return;
-        if(snapshot.metadata?.fromCache){status('인터넷에 연결해 최신 기록을 확인하고 있습니다.');return;}
-        clearTimeout(loadTimer);
-        const data=snapshot.exists()?snapshot.data():null,envelope=data?.entries?.[lookup];
-        if(!envelope){empty('이름과 조회 링크를 확인해 주세요. 연결이 중지되었다면 코치님께 새 링크를 받아 주세요.');$('lookupButton').disabled=false;return;}
-        const opened=await openReport(envelope,selection.key,selection.name);
-        if(current!==generation||item!==delivery)return;
-        report=opened;$('athleteName').textContent=opened.player.name;$('athleteMeta').textContent=[opened.player.school,opened.player.grade].filter(Boolean).join(' · ');
-        $('updatedAt').textContent=formatUpdated(data.updatedAt);$('report').hidden=false;$('welcome').hidden=true;
-        if(focus)$('sourceFilter').value=opened.matches.find(m=>m.source==='match')?'match':opened.matches.find(m=>m.source==='league')?'league':'competition';
-        status('새로 저장된 결과가 있으면 자동으로 반영됩니다.');$('lookupButton').disabled=false;renderMatches();
-        if(focus){$('athleteName').focus({preventScroll:true});focus=false;}
-      })().catch(error=>{if(current!==generation||item!==delivery)return;empty(error.message?.includes('최신 크롬')?error.message:'이름과 조회 링크가 맞는지 확인해 주세요.');$('lookupButton').disabled=false;});
-    },()=>{if(current!==generation)return;empty('기록을 불러오지 못했습니다. 인터넷 연결을 확인하고 다시 조회해 주세요.');$('lookupButton').disabled=false;});
-  }catch{if(current===generation){empty('조회 링크를 확인하고 다시 시도해 주세요.');$('lookupButton').disabled=false;}}
+  unsubscribe=onSnapshot(ref,{includeMetadataChanges:true},snapshot=>{
+    const item=++delivery;
+    (async()=>{
+      if(current!==generation)return;
+      if(snapshot.metadata?.fromCache){status('인터넷에 연결해 최신 기록을 확인하고 있습니다.');return;}
+      clearTimeout(loadTimer);
+      const data=snapshot.exists()?snapshot.data():null;
+      if(!data||data.version!==2){reports=[];empty('조회 자료를 준비하고 있습니다. 코치님이 경기 프로그램을 열면 저장된 기록이 자동으로 연결됩니다.');$('lookupButton').disabled=false;return;}
+      if(data.enabled===false){reports=[];empty('지금은 경기 조회가 잠시 중지되어 있습니다.');$('lookupButton').disabled=false;return;}
+      const loaded=await unpackReports(data);if(current!==generation||item!==delivery)return;
+      reports=loaded;$('updatedAt').textContent=formatUpdated(data.updatedAt);$('lookupButton').disabled=false;
+      displaySelection({focus});focus=false;
+    })().catch(error=>{if(current!==generation||item!==delivery)return;reports=[];empty(error.message==='BROWSER_UPDATE'?'최신 크롬 또는 사파리에서 조회 화면을 열어 주세요.':'기록을 불러오지 못했습니다. 잠시 후 다시 조회해 주세요.');$('lookupButton').disabled=false;});
+  },()=>{if(current!==generation)return;clearTimeout(loadTimer);reports=[];empty('기록을 불러오지 못했습니다. 인터넷 연결을 확인하고 다시 조회해 주세요.');$('lookupButton').disabled=false;});
 }
 function renderMatches(){
   if(!report)return;
@@ -59,13 +72,12 @@ function renderMatches(){
   $('moreMatches').hidden=rows.length<=limit;
   $('moreMatches').textContent='경기 더 보기 ('+Math.max(0,rows.length-limit)+'경기)';
 }
-$('lookupForm').addEventListener('submit',event=>{event.preventDefault();const name=$('playerName').value.trim(),entered=key||accessKeyFrom($('accessKey').value);if(!name)return status('자녀 이름을 입력해 주세요.',true);if(!entered)return status('코치님께 받은 자녀 전용 조회 링크를 입력해 주세요.',true);active={name,key:entered};limit=30;clearReport();startLookup({focus:true});});
+$('lookupForm').addEventListener('submit',event=>{event.preventDefault();const name=$('playerName').value.trim();if(!normalizeName(name))return status('자녀 이름을 입력해 주세요.',true);active={name,playerId:null};limit=30;reports=[];$('playerChoices').replaceChildren();$('playerChoices').hidden=true;$('resultFilter').value='all';$('dateFrom').value='';$('dateTo').value='';clearReport();startLookup({focus:true});});
 $('recordFilters').addEventListener('submit',event=>event.preventDefault());
 $('recordFilters').addEventListener('change',()=>{limit=30;renderMatches();});
 $('resetFilters').addEventListener('click',()=>{$('resultFilter').value='all';$('dateFrom').value='';$('dateTo').value='';limit=30;renderMatches();});
 $('moreMatches').addEventListener('click',()=>{limit+=30;renderMatches();});
 $('refreshReport').addEventListener('click',()=>startLookup());
-window.addEventListener('hashchange',()=>{stop();active=null;key=accessKeyFrom(location.href);$('accessField').hidden=!!key;$('lookupButton').disabled=false;clearReport();status('자녀 이름을 입력해 주세요.');});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();$('lookupButton').disabled=false;clearReport();}else if(active)startLookup();});
 window.addEventListener('pagehide',()=>{stop();clearReport();});
 window.addEventListener('pageshow',event=>{if(event.persisted&&active)startLookup();});
