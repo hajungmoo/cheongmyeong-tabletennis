@@ -1,4 +1,4 @@
-import {shareablePlayers,projectPlayer} from './parent-projection.js?v=1.0.0';
+import {shareablePlayers,projectPlayer} from './parent-projection.js?v=1.1.0';
 import {packReports,sourceFingerprint} from '../parents/report-data.js?v=2.0.0';
 
 // Public result copies are independent of the authenticated manager source.
@@ -48,7 +48,7 @@ export function initParentSharing({auth,fs,sourceRef,doc,getDocFromServer,runTra
     if(!sourceSnap.exists())return;
     const settings=readSettings(accessSnap),raw=sourceSnap.data(),revision=Number(raw.revision||0),before=publicSnap.exists()?publicSnap.data():null;
     const [fingerprint,policyHash]=await Promise.all([sourceFingerprint(raw.encoding,raw.payload),hashSettings(settings)]);
-    if(before?.version===2&&before.sourceFingerprint===fingerprint&&before.settingsFingerprint===policyHash)return;
+    if(before?.version===2&&before.projectionVersion===2&&before.sourceFingerprint===fingerprint&&before.settingsFingerprint===policyHash)return;
     const db=await decodePayload(raw.encoding,raw.payload),reports=[];
     if(settings.enabled){
       const hidden=new Set(settings.hiddenPlayerIds);
@@ -65,8 +65,8 @@ export function initParentSharing({auth,fs,sourceRef,doc,getDocFromServer,runTra
       const currentAccess=await tx.get(accessRef),currentSource=await tx.get(sourceRef),currentReport=await tx.get(reportRef);
       if(!currentSource.exists()||JSON.stringify(readSettings(currentAccess))!==JSON.stringify(settings)||Number(currentSource.data().revision||0)!==revision||currentSource.data().payload!==raw.payload||currentSource.data().encoding!==raw.encoding)throw new Error('SOURCE_CHANGED');
       const live=currentReport.exists()?currentReport.data():null;
-      if(live?.version===2&&live.sourceFingerprint===fingerprint&&live.settingsFingerprint===policyHash)return;
-      tx.set(reportRef,{version:2,enabled:settings.enabled,sourceRevision:revision,sourceFingerprint:fingerprint,settingsFingerprint:policyHash,updatedAt:serverTimestamp(),...packed});
+      if(live?.version===2&&live.projectionVersion===2&&live.sourceFingerprint===fingerprint&&live.settingsFingerprint===policyHash)return;
+      tx.set(reportRef,{version:2,projectionVersion:2,enabled:settings.enabled,sourceRevision:revision,sourceFingerprint:fingerprint,settingsFingerprint:policyHash,updatedAt:serverTimestamp(),...packed});
     });
   }
   function publish(){

@@ -17,8 +17,17 @@ export function projectPlayer(db,pid,sourceRevision){
     const t1=Array.isArray(m.team1)?m.team1:[],t2=Array.isArray(m.team2)?m.team2:[];
     const side=t1.includes(pid)?1:t2.includes(pid)?2:0;if(!side||!t1.length||!t2.length||t1.some(id=>t2.includes(id)))continue;
     if(m.status!=='완료'||!score(m.score1)||!score(m.score2))continue;
-    const my=side===1?t1:t2,other=side===1?t2:t1,a=side===1?m.score1:m.score2,b=side===1?m.score2:m.score1;
-    rows.push({id:'match:'+text(m.id),source:'match',date:text(m.date),title:text(m.category)||'일반 경기',format:my.length>1||other.length>1?'복식':'단식',partner:names(my.filter(id=>id!==pid)),opponents:names(other),opponentSchools:schoolNames(other,side===1?m.team2SchoolSnapshot:m.team1SchoolSnapshot),a,b,result:outcome(a,b),forfeit:false});
+    const my=side===1?t1:t2,other=side===1?t2:t1,one=m.matchFormat==='1set';
+    if(one&&(!score(m.points1)||!score(m.points2)||m.points1===m.points2||t1.length!==1||t2.length!==1))continue;
+    const first=one?m.points1:m.score1,second=one?m.points2:m.score2,a=side===1?first:second,b=side===1?second:first;
+    const row={id:'match:'+text(m.id),source:one?'one-set':'match',date:text(m.date),title:one?'한세트게임':text(m.category)||'일반 경기',format:one?'한세트게임':my.length>1||other.length>1?'복식':'단식',partner:names(my.filter(id=>id!==pid)),opponents:names(other),opponentSchools:schoolNames(other,side===1?m.team2SchoolSnapshot:m.team1SchoolSnapshot),a,b,result:outcome(a,b),forfeit:false};
+    if(one){
+      row.scoreUnit='points';
+      if(Number.isInteger(m.tableNumber)&&Number.isInteger(m.tableCount)&&m.tableNumber>=1&&m.tableNumber<=m.tableCount&&m.tableCount<=99){
+        row.tableNumber=m.tableNumber;row.nextTable=Math.max(1,Math.min(m.tableCount,m.tableNumber+(a>b?-1:1)));
+      }
+    }
+    rows.push(row);
     if(m.leagueId&&m.leagueGameNo!=null)linkedGames.add(text(m.leagueId)+':'+text(m.leagueGameNo));
   }
   for(const league of db.leagues||[]){

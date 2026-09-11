@@ -28,7 +28,7 @@
   <section id="report" class="report" aria-labelledby="athleteName" hidden>
     <div class="athleteHead"><div><div class="eyebrow">PLAYER RECORD</div><h2 id="athleteName" tabindex="-1"></h2><p id="athleteMeta"></p></div><div class="updated"><span id="updatedAt"></span><button id="refreshReport" class="button quiet" type="button">새로고침</button></div></div>
     <form id="recordFilters" class="filters" aria-label="경기 기록 필터">
-      <label>경기 구분<select id="sourceFilter"><option value="match">일반 경기</option><option value="league">리그전</option><option value="competition">대회 기록</option><option value="all">전체 기록 모아 보기</option></select></label>
+      <label>경기 구분<select id="sourceFilter"><option value="match">일반 경기</option><option value="one-set">한세트게임</option><option value="league">리그전</option><option value="competition">대회 기록</option><option value="all">전체 기록 모아 보기</option></select></label>
       <label>시작일<input id="dateFrom" type="date"></label><label>종료일<input id="dateTo" type="date"></label>
       <label>결과<select id="resultFilter"><option value="all">전체 결과</option><option value="win">승리</option><option value="loss">패배</option></select></label>
       <button id="resetFilters" class="button quiet" type="button">필터 초기화</button>
@@ -40,10 +40,10 @@
     <div id="matchList" class="matchList"></div>
     <button id="moreMatches" class="button more" type="button" hidden>경기 더 보기</button>
   </section>
-  <div id="welcome" class="welcome"><span class="rule" aria-hidden="true"></span><p>일반 경기 · 리그전 · 대회 기록</p><small>코치님이 저장한 결과를 확인할 수 있습니다.</small></div>
+  <div id="welcome" class="welcome"><span class="rule" aria-hidden="true"></span><p>한세트게임 · 일반 경기 · 리그전 · 대회 기록</p><small>코치님이 저장한 결과를 확인할 수 있습니다.</small></div>
 </main>
 <footer class="footer"><span>CHEONGMYEONG TABLE TENNIS</span><p>기록 확인이나 수정이 필요하면 코치님께 말씀해 주세요.</p><a href="../">청명초 탁구부 홈페이지</a></footer>
 <noscript><p>경기 기록을 조회하려면 자바스크립트를 켜주세요.</p></noscript>
-<script type="module" src="./parents.js?v=2.0.0"></script>
+<script type="module" src="./parents.js?v=2.1.0"></script>
 </body>
 </html>
