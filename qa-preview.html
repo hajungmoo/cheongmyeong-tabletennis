@@ -1,10 +1,26 @@
 <!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>홈페이지 화면 검증 · 미리보기 전용</title>
 <style>body{margin:0;background:#263242;color:white;font:14px system-ui}header{padding:12px;display:flex;gap:10px;align-items:center}button{padding:8px 14px;cursor:pointer}iframe{display:block;margin:auto;border:0;background:#040e1b;max-width:100%;height:1100px}#report{font-size:12px;white-space:pre-wrap;padding:10px}</style>
-<header>검증 전용 · 신청 접수 안 됨 <button id="desktop">PC 1360px</button><button id="mobile">모바일 390px</button><button id="narrow">모바일 320px</button><button id="gallery">사진첩 테스트</button></header><iframe id="frame" title="홈페이지 미리보기" src="index.html?preview=1" width="1360"></iframe><pre id="report"></pre>
+<header>검증 전용 · 신청 접수 안 됨 <button id="desktop">PC 1360px</button><button id="mobile">모바일 390px</button><button id="narrow">모바일 320px</button><button id="gallery">사진첩 테스트</button><button id="checks">기능 검증</button></header><iframe id="frame" title="홈페이지 미리보기" src="index.html?preview=1" width="1360"></iframe><pre id="report"></pre>
 <script type="module">
 const frame=document.getElementById('frame'),report=document.getElementById('report');
 function inspect(){const d=frame.contentDocument,w=frame.contentWindow;report.textContent=JSON.stringify({viewport:w.innerWidth,content:d.documentElement.scrollWidth,overflow:d.documentElement.scrollWidth>w.innerWidth,brokenImages:[...d.images].filter(i=>i.complete&&!i.naturalWidth).map(i=>i.getAttribute('src'))},null,2)}
-for(const [id,width]of [['desktop',1360],['mobile',390],['narrow',320]])document.getElementById(id).onclick=()=>{frame.width=width;setTimeout(inspect,500)};
+for(const [id,width]of [['desktop',1360],['mobile',390],['narrow',320]])document.getElementById(id).onclick=()=>{frame.width=width;frame.contentWindow.scrollTo(0,0);setTimeout(inspect,500)};
 document.getElementById('gallery').onclick=()=>frame.contentWindow.postMessage({type:'cm-home-preview-v2',settings:{popupEnabled:false,siteContent:{activities:[{id:'qa-gallery',visible:true,title:'사진첩 검증용 · 실제 행사 사진 아님',date:'테스트',tag:'PREVIEW',body:'이 항목은 미리보기 전용이며 실제 홈페이지나 데이터베이스에는 저장되지 않습니다.',image:'site/assets/arena-gold.webp',photos:['team-logo.png','dreamers-logo.png']}]}}},location.origin);
 window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==frame.contentWindow)return;if(event.data?.type==='cm-home-preview-ready'){frame.contentWindow.postMessage({type:'cm-home-preview-v2',settings:{popupEnabled:false}},location.origin);setTimeout(inspect,500)}});
+document.getElementById('checks').onclick=async()=>{
+ const d=frame.contentDocument,results=[],assert=(name,pass)=>results.push({name,pass:Boolean(pass)}),settle=()=>new Promise(r=>setTimeout(r,120));
+ assert('기존 선수 8명 표시',d.querySelectorAll('#playerList .player').length===8);
+ assert('기존 일정 표시',d.querySelectorAll('.scheduleRow').length>0);
+ assert('기존 대회 기록 표시',d.querySelectorAll('.record').length>0);
+ for(const width of [1360,390,320]){frame.width=width;await settle();assert(width+'px 가로 넘침 없음',d.documentElement.scrollWidth<=frame.contentWindow.innerWidth);}
+ frame.width=390;await settle();
+ const menu=d.querySelector('#menuToggle');menu.click();assert('모바일 메뉴 열림',menu.getAttribute('aria-expanded')==='true');menu.click();assert('모바일 메뉴 닫힘',menu.getAttribute('aria-expanded')==='false');
+ const faq=d.querySelector('.faqItem');faq.querySelector('summary').click();assert('FAQ 펼치기',faq.open);faq.querySelector('summary').click();
+ document.getElementById('gallery').click();await settle();
+ d.querySelector('[data-activity]').click();assert('사진첩 열기',d.querySelector('#activityDialog').open);assert('첫 사진 1/3',d.querySelector('#galleryCounter').textContent==='1 / 3');
+ d.querySelector('#galleryNext').click();assert('다음 사진',d.querySelector('#galleryCounter').textContent==='2 / 3');d.querySelector('#galleryPrev').click();assert('이전 사진',d.querySelector('#galleryCounter').textContent==='1 / 3');
+ d.querySelector('[data-photo="2"]').click();assert('썸네일 선택',d.querySelector('#galleryCounter').textContent==='3 / 3');d.querySelector('#galleryNext').click();assert('마지막 다음은 첫 사진',d.querySelector('#galleryCounter').textContent==='1 / 3');
+ d.querySelector('#closeActivity').click();assert('사진첩 닫기',!d.querySelector('#activityDialog').open);
+ report.textContent=JSON.stringify(results,null,2);report.dataset.result=results.every(r=>r.pass)?'PASS':'FAIL';
+};
 </script></html>
