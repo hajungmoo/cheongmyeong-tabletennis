@@ -1,13 +1,16 @@
+import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.1.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
-import { getFirestore, collection, getDocs, addDoc, doc, getDoc } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
-import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=2.1.2';
+import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
+import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.1.0';
 
 const app = initializeApp({apiKey:'AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI',authDomain:'cheongmyeong-tabletennis.firebaseapp.com',projectId:'cheongmyeong-tabletennis',storageBucket:'cheongmyeong-tabletennis.firebasestorage.app',messagingSenderId:'712801821489',appId:'1:712801821489:web:501d20626d8cd12dc98610'});
 const db = getFirestore(app), $ = id => document.getElementById(id);
 const visualFinish=initVisualFinish();
+const activityGallery=initActivityGallery();
+const shownPopups=new Set();
 const preview = new URLSearchParams(location.search).get('preview') === '1' && window.parent !== window;
-let settings = resolveSettings(), rawSettings = {}, previewDraft = null, failed = [], scheduleFilter = 'all', noticeLimit = 6, recordLimit = 6, submitting = false;
+let settings = resolveSettings(), rawSettings = {}, previewDraft = null, failed = [], scheduleFilter = 'all', noticeLimit = 6, recordLimit = 3, submitting = false;
 const state = {players:[],notices:[],schedules:[],records:[]};
 const paragraphs = value => esc(value).replace(/\n/g,'<br>');
 const maskName = value => { const s=String(value||'').trim(); return !s?'청명 선수':s.includes('○')?s:s.length<3?s[0]+'○':s[0]+'○'+s.at(-1); };
@@ -33,7 +36,7 @@ function applySettings(raw) {
   text('mainTitle',settings.mainTitle); text('mainSubtitle',settings.mainSubtitle);
   image('heroImage',c.heroImage,c.heroAlt); image('navLogo',c.heroImage,c.teamName+' 로고'); image('sponsorImage',c.sponsorImage,c.sponsorName);
   text('primaryLabel',c.primaryLabel); text('secondaryLabel',c.secondaryLabel);
-  const sections={team:'showTeam',overview:'showOverview',activity:'showActivities',schedule:'showSchedules',records:'showRecords',notice:'showNotices',coach:'showCoach',message:'showMessage',faq:'showFaq',trial:'showTrial',map:'showMap'};
+  const sections={team:'showTeam',overview:'showOverview',activity:'showActivities',schedule:'showSchedules',records:'showRecords',notice:'showNotices',coach:'showCoach',message:'showMessage',faq:'showFaq',trial:'showTrial',map:'showMap',sponsor:'showCoach'};
   Object.entries(sections).forEach(([id,key])=>{$(id).hidden=c[key]===false;});
   document.querySelectorAll('a[href^="#"]').forEach(a=>{const id=a.getAttribute('href').slice(1); if(sections[id])a.hidden=$(id).hidden;});
   $('musicBtn').hidden=c.showMusic===false;
@@ -43,21 +46,19 @@ function applySettings(raw) {
   const mapURL='https://maps.google.com/maps?q='+encodeURIComponent(c.mapQuery||c.contactAddress)+'&t=&z=15&ie=UTF8&iwloc=&output=embed';
   if($('mapFrame').getAttribute('src')!==mapURL)$('mapFrame').src=mapURL;
   $('coachValues').innerHTML=c.values.filter(visible).map((v,i)=>`<div class="value"><span>${String(i+1).padStart(2,'0')}</span><h3>${esc(v.title)}</h3><p>${esc(v.body)}</p></div>`).join('');
-  $('activityList').innerHTML=c.activities.filter(visible).map((a,i)=>{
-    const img=safeURL(a.image),url=safeURL(a.url);
-    return `<article class="story">${img?`<img class="storyImage" src="${esc(img)}" alt="${esc(a.title)}" loading="lazy">`:''}<div class="storyBody"><div class="storyMeta"><span>${esc(a.tag||'청명 소식')}</span><time>${esc(a.date)}</time></div><h3>${esc(a.title)}</h3><p>${paragraphs(a.body)}</p>${url?`<a class="textLink" href="${esc(url)}" target="_blank" rel="noopener noreferrer">활동 자세히 보기 <span aria-hidden="true">↗</span></a>`:''}<span class="storyNumber" aria-hidden="true">${String(i+1).padStart(2,'0')}</span></div></article>`;
-  }).join('')||'<p class="empty">새로운 활동 소식을 준비하고 있습니다.</p>';
+  activityGallery.render(c.activities.filter(visible));
   $('faqList').innerHTML=c.faqs.filter(visible).map((f,i)=>`<details class="faqItem"><summary><span class="questionNo">${String(i+1).padStart(2,'0')}</span><span>${esc(f.question)}</span><span class="faqPlus" aria-hidden="true">+</span></summary><div class="faqAnswer">${paragraphs(f.answer)}</div></details>`).join('')||'<p class="empty">궁금한 점은 전화로 문의해주세요.</p>';
   if(settings.popupEnabled && settings.popupTitle && settings.popupContent){
     text('popupTitle',settings.popupTitle);text('popupContent',settings.popupContent);
-    if(!$('popupDialog').open)$('popupDialog').showModal();
+    const popupKey=settings.popupTitle+'|'+settings.popupContent;
+    if(!$('popupDialog').open&&!shownPopups.has(popupKey)){shownPopups.add(popupKey);$('popupDialog').showModal();}
   }else if($('popupDialog').open)$('popupDialog').close();
   visualFinish.apply(c);
 }
 function renderPlayers() {
   const players=sortedItems(state.players).filter(visible);
   text('heroPlayerCount',players.length); text('teamCount',players.length+'명의 선수');
-  $('playerList').innerHTML=players.map((p,i)=>`<article class="player"><div class="playerMeta"><span>PLAYER ${String(i+1).padStart(2,'0')}</span><span>${esc(p.grade)}</span></div><h3>${esc(maskName(p.name))}<span class="playerMark" aria-hidden="true">CM</span></h3><p>${esc(p.style||'청명초 선수')}</p>${p.award?`<div class="playerAward">${paragraphs(p.award)}</div>`:''}</article>`).join('')||'<p class="empty">선수단 소개를 준비하고 있습니다.</p>';
+  $('playerList').innerHTML=players.map((p,i)=>`<article class="player"><div class="playerMeta"><span>${String(i+1).padStart(2,'0')}</span><span aria-hidden="true">★ ★ ★</span></div>${jerseyMarkup(i)}<h3>${esc(maskName(p.name))}</h3><div class="playerGrade">${esc(p.grade)}</div><p>${esc(p.style||'청명초 선수')}</p>${p.award?`<div class="playerAward">${paragraphs(p.award)}</div>`:''}</article>`).join('')||'<p class="empty">선수단 소개를 준비하고 있습니다.</p>';
 }
 function renderSchedules() {
   const items=sortedItems(state.schedules).filter(visible);
@@ -86,7 +87,7 @@ function renderNotices() {
 }
 function renderRecords() {
   const items=sortedItems(state.records).filter(visible);text('heroRecordCount',items.length);
-  $('recordList').innerHTML=items.slice(0,recordLimit).map(r=>`<article class="record"><span class="recordDate">${esc(r.year||r.date||'대회 기록')}</span><div class="recordResult">${paragraphs(r.result)}</div><h3>${esc(r.title||r.event||'대회')}</h3><p>${paragraphs(r.memo||r.detail||'')}</p></article>`).join('')||'<p class="empty">새로운 도전의 기록을 준비하고 있습니다.</p>';
+  $('recordList').innerHTML=items.slice(0,recordLimit).map(r=>`<article class="record" data-medal="${recordMedal(r.result)}">${trophyMarkup}<span class="recordDate">${esc(r.year||r.date||'대회 기록')}</span><div class="recordResult">${paragraphs(r.result)}</div><h3>${esc(r.title||r.event||'대회')}</h3><p>${paragraphs(r.memo||r.detail||'')}</p></article>`).join('')||'<p class="empty">새로운 도전의 기록을 준비하고 있습니다.</p>';
   $('moreRecords').hidden=items.length<=recordLimit;
 }
 async function load() {
@@ -130,3 +131,8 @@ if(preview){
 }
 applySettings({});
 load();
+// Only homepage presentation settings are observed; manager/parents data paths stay unchanged.
+onSnapshot(doc(db,'settings','homepage'),snap=>{
+  rawSettings=snap.exists()?snap.data():{};
+  applySettings(previewDraft?{...rawSettings,...previewDraft,siteContent:{...rawSettings.siteContent,...previewDraft.siteContent}}:rawSettings);
+},error=>console.warn('홈페이지 실시간 설정 갱신 불가',error.code));

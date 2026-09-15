@@ -1,4 +1,5 @@
-import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=2.1.2';
+import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.1.0';
+import { createPhotoUploader } from './photo-upload.js?v=3.1.0';
 import {
   initializeApp
 }
@@ -409,6 +410,7 @@ async function(){
 홈페이지 설정
 ================================ */
 const siteEditor=initSiteEditor({
+  uploadPhoto:createPhotoUploader(app,auth),
   isSignedIn:()=>!!auth.currentUser,
   notify:toast,
   read:async()=>{const snap=await getDoc(doc(db,'settings','homepage'));return snap.exists()?snap.data():{};},

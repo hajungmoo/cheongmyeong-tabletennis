@@ -1,4 +1,5 @@
-import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=2.1.2';
+import { photoUploadError } from './photo-upload.js?v=3.1.0';
+import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=3.1.0';
 
 const field = (key,label,type='text',hint='') => ({key,label,type,hint});
 const groups = [
@@ -15,7 +16,7 @@ const groups = [
 ];
 const legacy = new Set(['mainTitle','mainSubtitle','popupEnabled','popupTitle','popupContent']);
 const arrayFields = {
-  activities:[field('title','활동 제목'),field('tag','분류'),field('date','날짜'),field('body','내용','textarea'),field('image','이미지 주소 · 선택','image','선수의 얼굴이 드러나지 않는 이미지를 사용하세요.'),field('url','관련 링크 · 선택','url'),field('visible','홈페이지에 표시','boolean')],
+  activities:[field('title','활동 제목'),field('tag','분류'),field('date','날짜'),field('body','내용','textarea'),field('image','대표 사진 · 선택','image','기존 이미지 주소도 사용할 수 있습니다. 선수의 얼굴이 드러나지 않는 사진을 사용하세요.'),field('photos','사진첩 · 최대 10장','photos','추가 사진 주소를 한 줄에 하나씩 입력하거나 아래에서 사진 파일을 선택하세요.'),field('url','관련 링크 · 선택','url'),field('visible','홈페이지에 표시','boolean')],
   faqs:[field('question','질문'),field('answer','답변','textarea'),field('visible','홈페이지에 표시','boolean')],
   values:[field('title','지도 키워드'),field('body','설명','textarea'),field('visible','홈페이지에 표시','boolean')]
 };
@@ -24,18 +25,18 @@ const pathFor = key => legacy.has(key)?key:'siteContent.'+key;
 const get = (obj,path) => path.split('.').reduce((o,k)=>o?.[k],obj);
 const set = (obj,path,value) => {const keys=path.split('.');let o=obj;for(const k of keys.slice(0,-1))o=o[k]??=( {} );o[keys.at(-1)]=value;};
 const equal = (a,b) => JSON.stringify(a)===JSON.stringify(b);
-function normalized(raw){const out=resolveSettings(raw);for(const key of Object.keys(arrayFields))out.siteContent[key]=out.siteContent[key].map((x,i)=>({...x,id:x.id||'legacy-'+key+'-'+i}));return out;}
+function normalized(raw){const out=resolveSettings(raw);for(const key of Object.keys(arrayFields))out.siteContent[key]=out.siteContent[key].map((x,i)=>({...x,...(key==='activities'?{photos:Array.isArray(x.photos)?x.photos:[]}:{}),id:x.id||'legacy-'+key+'-'+i}));return out;}
 function inputHTML(f,value,attributes,id) {
-  const attr=`id="${id}" ${attributes}`,type=f.type;
-  const input=type==='textarea'?`<textarea ${attr} rows="${f.key==='messageBody'?8:3}" maxlength="12000">${esc(value)}</textarea>`:
+  const attr=`id="${id}" ${attributes}`,type=f.type,activityPhoto=f.key==='image'||f.key==='photos';
+  const input=type==='photos'?`<textarea ${attr} rows="3" maxlength="20000" placeholder="추가 사진 주소를 한 줄에 하나씩 입력">${esc(Array.isArray(value)?value.join('\n'):value)}</textarea>`:type==='textarea'?`<textarea ${attr} rows="${f.key==='messageBody'?8:3}" maxlength="12000">${esc(value)}</textarea>`:
     type==='boolean'?`<select ${attr}><option value="true" ${value===false?'':'selected'}>표시함</option><option value="false" ${value===false?'selected':''}>표시 안 함</option></select>`:
     `<input ${attr} type="${['url','image'].includes(type)?'text':type}" value="${esc(value)}" maxlength="${['url','image'].includes(type)?1500:500}" ${['url','image'].includes(type)?'placeholder="https://… 또는 기존 이미지 파일명"':''}>`;
-  return `<div class="editorField"><label for="${id}">${esc(f.label)}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}</div>`;
+  return `<div class="editorField"><label for="${id}">${esc(f.label)}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}${activityPhoto?`<div class="photoUploadField"><label class="photoUploadButton" for="${id}_upload">＋ ${type==='photos'?'여러 사진 선택':'사진 파일 선택'}<input id="${id}_upload" type="file" accept="image/jpeg,image/png,image/webp" ${type==='photos'?'multiple':''} data-photo-target="${id}" data-photo-many="${type==='photos'}"></label><span class="photoUploadStatus" role="status"></span><p class="photoUploadNote">JPG·PNG·WebP / 장당 15MB 이하 · 공개 가능한 사진만 선택하세요.<br>사진 업로드 후 ‘홈페이지에 저장’을 눌러야 방문자에게 표시됩니다.</p><div class="photoEditorPreview" data-photo-preview="${id}"></div></div>`:''}</div>`;
 }
 
-export function initSiteEditor({read,write,isSignedIn,notify}) {
+export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
   const $=id=>document.getElementById(id),root=$('siteEditor');
-  let raw={},baseline=normalized(),loaded=false,saving=false,active='main',previewTimer;
+  let raw={},baseline=normalized(),loaded=false,saving=false,active='main',previewTimer,uploading=false;
   const status=message=>{$('editorStatus').textContent=message;};
   function changedPaths(draft=readDraft()) {
     const paths=groups.flatMap(g=>[...g.fields.map(f=>pathFor(f.key)),...(g.array?['siteContent.'+g.array]:[])]);
@@ -44,7 +45,7 @@ export function initSiteEditor({read,write,isSignedIn,notify}) {
   function updateStatus() {
     const n=changedPaths().length;
     status(loaded?(n?`${n}개 항목 수정됨 · 아직 홈페이지에 반영되지 않았습니다.`:'저장된 내용과 같습니다.'):'설정을 불러오고 있습니다.');
-    $('saveSiteContent').disabled=!loaded||saving||!n;
+    $('saveSiteContent').disabled=!loaded||saving||uploading||!n;
     $('previewHome').disabled=!loaded;
     $('editorRefresh').disabled=saving;
     root.querySelectorAll('[data-editor-tab]').forEach(b=>{const g=groups.find(x=>x.id===b.dataset.editorTab);const dirty=changedPaths().some(p=>g.fields.some(f=>pathFor(f.key)===p)||p==='siteContent.'+g.array);b.classList.toggle('dirty',dirty);});
@@ -54,15 +55,15 @@ export function initSiteEditor({read,write,isSignedIn,notify}) {
     $('editorArray_'+key).innerHTML=items.map((item,i)=>`<article class="repeatItem" data-repeat-key="${key}" data-repeat-id="${esc(item.id)}"><div class="repeatHead"><h4>${arrayNames[key]} ${i+1}</h4><div class="repeatActions"><button type="button" data-move="-1" aria-label="${arrayNames[key]} ${i+1} 위로" ${i===0?'disabled':''}>↑</button><button type="button" data-move="1" aria-label="${arrayNames[key]} ${i+1} 아래로" ${i===items.length-1?'disabled':''}>↓</button><button type="button" class="dangerText" data-remove>삭제</button></div></div><div class="editorFields">${arrayFields[key].map((f,j)=>inputHTML(f,item[f.key]??(f.type==='boolean'?true:''),`data-repeat-field="${f.key}"`,'repeat_'+key+'_'+i+'_'+j)).join('')}</div></article>`).join('')||`<p class="editorEmpty">등록된 ${arrayNames[key]}이 없습니다. 아래 버튼으로 추가하세요.</p>`;
   }
   function render() {
-    root.inert=!loaded||saving;
+    root.inert=!loaded||saving||uploading;
     root.innerHTML=`<div class="editorTabs" role="group" aria-label="홈페이지 편집 영역">${groups.map(g=>`<button type="button" data-editor-tab="${g.id}" aria-pressed="${g.id===active}">${g.title}</button>`).join('')}</div><div class="editorPanels">${groups.map(g=>`<div class="editorPanel" id="editorPanel_${g.id}" ${g.id===active?'':'hidden'}><div class="editorPanelHead"><h3>${g.title}</h3><span>수정한 항목을 한 번에 저장할 수 있습니다.</span></div><div class="editorFields">${g.fields.map(f=>inputHTML(f,get(baseline,pathFor(f.key)),`data-site-path="${pathFor(f.key)}"`,'site_'+f.key)).join('')}</div>${g.array?`<h3 class="repeatTitle">${arrayNames[g.array]} 목록</h3><div id="editorArray_${g.array}"></div><button type="button" class="btn btnDark" data-add="${g.array}">${arrayNames[g.array]} 추가</button>`:''}</div>`).join('')}</div>`;
     for(const g of groups.filter(g=>g.array))renderArray(g.array,baseline.siteContent[g.array]);
-    updateStatus();
+    updateStatus();refreshPhotoPreviews();
   }
   function readArray(key) {
     return [...root.querySelectorAll(`[data-repeat-key="${key}"]`)].map(el=>{
       const id=el.dataset.repeatId,item={...(baseline.siteContent[key].find(x=>x.id===id)||{}),id};
-      el.querySelectorAll('[data-repeat-field]').forEach(input=>{const key=input.dataset.repeatField;item[key]=key==='visible'?input.value==='true':input.value;});return item;
+      el.querySelectorAll('[data-repeat-field]').forEach(input=>{const key=input.dataset.repeatField;item[key]=key==='visible'?input.value==='true':key==='photos'?input.value.split(/\n/).map(x=>x.trim()).filter(Boolean):input.value;});return item;
     });
   }
   function readDraft() {
@@ -79,11 +80,13 @@ export function initSiteEditor({read,write,isSignedIn,notify}) {
       if(g.array)for(const item of draft.siteContent[g.array]){
         const title=item.title??item.question;if(!title?.trim())throw new Error(arrayNames[g.array]+'의 제목 또는 질문을 입력해주세요.');
         for(const k of ['url','image'])if(item[k]&&!safeURL(item[k]))throw new Error(arrayNames[g.array]+'의 이미지 또는 링크 주소를 확인해주세요.');
+        if(item.photos?.some(url=>!safeURL(url)))throw new Error('사진첩에 올바른 사진 주소를 입력해주세요.');
+        if(new Set([item.image,...(item.photos||[])].filter(Boolean)).size>10)throw new Error('대표 사진을 포함해 한 활동에 10장까지 등록할 수 있습니다.');
       }
     }
   }
   async function load(force=false) {
-    if(saving)return;
+    if(saving||uploading)return;
     if(loaded&&changedPaths().length){if(!force)return;if(!confirm('저장하지 않은 수정 내용을 버리고 다시 불러올까요?'))return;}
     loaded=false;root.inert=true;updateStatus();
     try{raw=await read();baseline=normalized(raw);
@@ -92,7 +95,7 @@ export function initSiteEditor({read,write,isSignedIn,notify}) {
     }catch(error){status('설정을 불러오지 못했습니다. 새로 불러오기를 눌러주세요.');$('saveSiteContent').disabled=true;$('previewHome').disabled=true;console.error(error);}
   }
   async function save() {
-    if(!loaded||saving||!isSignedIn())return;
+    if(!loaded||saving||uploading||!isSignedIn())return;
     const draft=readDraft(),paths=changedPaths(draft);if(!paths.length)return;
     try{validate(draft);}catch(error){status(error.message);return;}
     saving=true;root.inert=true;$('saveSiteContent').disabled=true;$('editorRefresh').disabled=true;status('홈페이지에 저장하고 있습니다.');
@@ -103,22 +106,62 @@ export function initSiteEditor({read,write,isSignedIn,notify}) {
     finally{saving=false;root.inert=false;$('saveSiteContent').disabled=!loaded||!changedPaths().length;$('editorRefresh').disabled=false;}
   }
   function sendPreview(){if($('homePreview').open&&$('homePreviewFrame').contentWindow)$('homePreviewFrame').contentWindow.postMessage({type:'cm-home-preview-v2',settings:readDraft()},location.origin);}
-  root.addEventListener('input',updateStatus);root.addEventListener('change',updateStatus);
+  function refreshPhotoPreviews() {
+    root.querySelectorAll('[data-photo-preview]').forEach(preview=>{
+      const input=$(preview.dataset.photoPreview);if(!input)return;
+      const urls=(input.dataset.repeatField==='photos'?input.value.split(/\n/):[input.value]).map(url=>safeURL(url.trim())).filter(Boolean);
+      preview.innerHTML=urls.map((url,i)=>`<div class="photoEditorThumb"><img src="${esc(url)}" alt="선택한 사진 ${i+1} 미리보기"><span>${i+1}</span><button type="button" data-remove-photo="${i}" data-photo-input="${input.id}" aria-label="사진 ${i+1} 제외">×</button></div>`).join('');
+    });
+  }
+  root.addEventListener('input',()=>{updateStatus();refreshPhotoPreviews();});
+  root.addEventListener('change',async event=>{
+    const picker=event.target.closest('[data-photo-target]');
+    if(!picker){updateStatus();refreshPhotoPreviews();return;}
+    const files=[...picker.files],target=$(picker.dataset.photoTarget),many=picker.dataset.photoMany==='true';
+    const message=picker.closest('.photoUploadField').querySelector('.photoUploadStatus');
+    picker.value='';if(!files.length||uploading)return;
+    if(!isSignedIn()){message.textContent='관리자 로그인 후 이용해주세요.';return;}
+    if(typeof uploadPhoto!=='function'){message.textContent='사진 업로드 연결을 확인해주세요.';return;}
+    const previous=many?target.value.split(/\n/).map(x=>x.trim()).filter(Boolean):[];
+    const cover=picker.closest('[data-repeat-key]')?.querySelector('[data-repeat-field="image"]')?.value;
+    if(many&&new Set([...previous,cover].filter(Boolean)).size+files.length>10){message.textContent='대표 사진을 포함해 한 활동에 최대 10장까지 올릴 수 있습니다.';return;}
+    uploading=true;root.inert=true;$('saveSiteContent').disabled=true;$('previewHome').disabled=true;$('editorRefresh').disabled=true;
+    let completed=0;
+    try{
+      for(const file of (many?files:files.slice(0,1))){
+        message.textContent=`사진 ${completed+1}/${files.length} 준비 중…`;
+        const url=await uploadPhoto(file,percent=>{message.textContent=`사진 ${completed+1}/${files.length} 업로드 ${percent}%`;});
+        if(!isSignedIn())throw new Error('로그인이 만료되었습니다. 다시 로그인해주세요.');
+        completed++;
+        if(many){previous.push(url);target.value=previous.join('\n');}else target.value=url;
+        refreshPhotoPreviews();
+      }
+      message.textContent=`${completed}장 업로드 완료. ‘홈페이지에 저장’을 눌러 반영해주세요.`;
+    }catch(error){message.textContent=(completed?`${completed}장은 업로드되었습니다. `:'')+photoUploadError(error);}
+    finally{uploading=false;root.inert=!loaded;$('editorRefresh').disabled=false;updateStatus();}
+  });
   root.addEventListener('click',event=>{
-    const b=event.target.closest('button');if(!b||saving)return;
+    const button=event.target.closest('[data-remove-photo]');if(!button||saving||uploading)return;
+    const input=$(button.dataset.photoInput);if(!input)return;
+    if(input.dataset.repeatField==='photos'){const urls=input.value.split(/\n/).map(x=>x.trim()).filter(Boolean);urls.splice(Number(button.dataset.removePhoto),1);input.value=urls.join('\n');}
+    else input.value='';
+    refreshPhotoPreviews();updateStatus();
+  });
+  root.addEventListener('click',event=>{
+    const b=event.target.closest('button');if(!b||saving||uploading)return;
     if(b.dataset.editorTab){active=b.dataset.editorTab;root.querySelectorAll('[data-editor-tab]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));root.querySelectorAll('.editorPanel').forEach(x=>x.hidden=x.id!=='editorPanel_'+active);}
-    if(b.dataset.add){const key=b.dataset.add,items=readArray(key);items.push({id:crypto.randomUUID(),visible:true});renderArray(key,items);updateStatus();$('editorArray_'+key).lastElementChild.querySelector('input')?.focus();}
+    if(b.dataset.add){const key=b.dataset.add,items=readArray(key);items.push({id:crypto.randomUUID(),visible:true});renderArray(key,items);refreshPhotoPreviews();updateStatus();$('editorArray_'+key).lastElementChild.querySelector('input')?.focus();}
     const row=b.closest('[data-repeat-key]');if(!row)return;
     const key=row.dataset.repeatKey,items=readArray(key),index=items.findIndex(x=>x.id===row.dataset.repeatId);
-    if(b.hasAttribute('data-remove')){if(!confirm('이 '+arrayNames[key]+'을 목록에서 삭제할까요? 저장하기 전까지 홈페이지는 그대로 유지됩니다.'))return;items.splice(index,1);renderArray(key,items);updateStatus();}
-    if(b.hasAttribute('data-move')){const to=index+Number(b.dataset.move);if(to>=0&&to<items.length){[items[index],items[to]]=[items[to],items[index]];renderArray(key,items);updateStatus();}}
+    if(b.hasAttribute('data-remove')){if(!confirm('이 '+arrayNames[key]+'을 목록에서 삭제할까요? 저장하기 전까지 홈페이지는 그대로 유지됩니다.'))return;items.splice(index,1);renderArray(key,items);refreshPhotoPreviews();updateStatus();}
+    if(b.hasAttribute('data-move')){const to=index+Number(b.dataset.move);if(to>=0&&to<items.length){[items[index],items[to]]=[items[to],items[index]];renderArray(key,items);refreshPhotoPreviews();updateStatus();}}
   });
   $('saveSiteContent').addEventListener('click',save);$('editorRefresh').addEventListener('click',()=>load(true));
   $('previewHome').addEventListener('click',()=>{if(!loaded)return;const frame=$('homePreviewFrame');if(!frame.getAttribute('src'))frame.src='index.html?preview=1';$('homePreview').showModal();sendPreview();});
   $('closeHomePreview').addEventListener('click',()=>$('homePreview').close());
   document.querySelectorAll('[data-preview-width]').forEach(b=>b.addEventListener('click',()=>{$('homePreviewFrame').style.maxWidth=b.dataset.previewWidth;document.querySelectorAll('[data-preview-width]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));}));
   window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===$('homePreviewFrame').contentWindow&&event.data?.type==='cm-home-preview-ready')sendPreview();});
-  window.addEventListener('beforeunload',event=>{if(loaded&&changedPaths().length){event.preventDefault();event.returnValue='';}});
+  window.addEventListener('beforeunload',event=>{if(uploading||(loaded&&changedPaths().length)){event.preventDefault();event.returnValue='';}});
   render();
   return {load,save,hasUnsaved:()=>loaded&&changedPaths().length>0,reset:()=>{raw={};baseline=normalized();loaded=false;render();if($('homePreview').open)$('homePreview').close();$('homePreviewFrame').removeAttribute('src');}};
 }
