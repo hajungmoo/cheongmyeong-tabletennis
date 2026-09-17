@@ -27,7 +27,7 @@ setInput('[data-repeat-field="photos"]','dreamers-logo.png\nsite/assets/arena-go
 const picker=document.querySelector('[data-photo-many="false"]'),transfer=new DataTransfer();transfer.items.add(new File(['test'],'test.jpg',{type:'image/jpeg'}));picker.files=transfer.files;picker.dispatchEvent(new Event('change',{bubbles:true}));
 await new Promise(r=>setTimeout(r,200));assert('선택 파일 업로드 UI 처리',document.querySelector('[data-repeat-field="image"]').value==='site/assets/arena-gold.webp');assert('업로드만으로 DB 저장하지 않음',patches.length===1);
 await editor.save();assert('별도 저장 성공',patches.length===2&&!editor.hasUnsaved());
-failNextUpload=true;const failedPicker=document.querySelector('[data-photo-many="false"]');failedPicker.files=transfer.files;failedPicker.dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,100));
+failNextUpload=true;const failedPicker=document.querySelector('[data-photo-many="false"]'),failedTransfer=new DataTransfer();failedTransfer.items.add(new File(['test'],'retry.jpg',{type:'image/jpeg'}));failedPicker.files=failedTransfer.files;failedPicker.dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,100));
 assert('업로드 실패 후에도 기존 대표 사진 보존',document.querySelector('[data-repeat-field="image"]').value==='site/assets/arena-gold.webp');
 assert('상단에 업로드 오류 유지',document.querySelector('#editorStatus').textContent.includes('storage/unauthorized'));
 assert('실패를 저장 완료로 표시하지 않음',document.querySelector('.photoUploadStatus[data-state="error"]')?.textContent.includes('사진 업로드 실패'));
