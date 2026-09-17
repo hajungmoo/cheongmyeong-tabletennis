@@ -9,6 +9,14 @@ export function photoUploadError(error) {
   return error?.message||'사진을 올리지 못했습니다. 입력 내용은 유지됩니다. 잠시 후 다시 시도해주세요.';
 }
 
+// Modular Firebase uses retry properties on the storage instance.
+export function configurePhotoStorage(api,app) {
+  const storage=api.getStorage(app);
+  storage.maxUploadRetryTime=20000;
+  storage.maxOperationRetryTime=15000;
+  return storage;
+}
+
 export async function preparePhoto(file) {
   if(!file||!['image/jpeg','image/png','image/webp'].includes(file.type))throw new Error('JPG, PNG, WebP 사진을 선택해주세요. HEIC 사진은 JPG로 변환 후 올려주세요.');
   if(file.size>15*1024*1024)throw new Error('사진 한 장은 15MB 이하로 선택해주세요.');
@@ -32,8 +40,7 @@ export function createPhotoUploader(app,auth) {
     if(!auth.currentUser)throw new Error('관리자 로그인 후 사진을 올릴 수 있습니다.');
     const blob=await preparePhoto(file);
     apiPromise??=import('https://www.gstatic.com/firebasejs/12.13.0/firebase-storage.js');
-    const api=await apiPromise,storage=api.getStorage(app);
-    api.setMaxUploadRetryTime(storage,20000);api.setMaxOperationRetryTime(storage,15000);
+    const api=await apiPromise,storage=configurePhotoStorage(api,app);
     if(!auth.currentUser)throw new Error('로그인이 만료되었습니다. 다시 로그인해주세요.');
     const path='homepage/activities/'+crypto.randomUUID()+'.jpg';
     const task=api.uploadBytesResumable(api.ref(storage,path),blob,{contentType:'image/jpeg',cacheControl:'public,max-age=31536000,immutable'});

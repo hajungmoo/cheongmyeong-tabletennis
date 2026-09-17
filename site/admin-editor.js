@@ -1,4 +1,4 @@
-import { photoUploadError } from './photo-upload.js?v=3.1.0';
+import { photoUploadError } from './photo-upload.js?v=3.1.1';
 import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=3.1.0';
 
 const field = (key,label,type='text',hint='') => ({key,label,type,hint});
@@ -39,12 +39,16 @@ function inputHTML(f,value,attributes,id) {
   const input=type==='photos'?`<textarea ${attr} rows="3" maxlength="20000" placeholder="추가 사진 주소를 한 줄에 하나씩 입력">${esc(Array.isArray(value)?value.join('\n'):value)}</textarea>`:type==='textarea'?`<textarea ${attr} rows="${f.key==='messageBody'?8:3}" maxlength="12000">${esc(value)}</textarea>`:
     type==='boolean'?`<select ${attr}><option value="true" ${value===false?'':'selected'}>표시함</option><option value="false" ${value===false?'selected':''}>표시 안 함</option></select>`:
     `<input ${attr} type="${['url','image'].includes(type)?'text':type}" value="${esc(value)}" maxlength="${['url','image'].includes(type)?1500:500}" ${['url','image'].includes(type)?'placeholder="https://… 또는 기존 이미지 파일명"':''}>`;
-  return `<div class="editorField"><label for="${id}">${esc(f.label)}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}${activityPhoto?`<div class="photoUploadField"><label class="photoUploadButton" for="${id}_upload">＋ ${type==='photos'?'여러 사진 선택':'사진 파일 선택'}<input id="${id}_upload" type="file" accept="image/jpeg,image/png,image/webp" ${type==='photos'?'multiple':''} data-photo-target="${id}" data-photo-many="${type==='photos'}"></label><span class="photoUploadStatus" role="status"></span><p class="photoUploadNote">JPG·PNG·WebP / 장당 15MB 이하 · 공개 가능한 사진만 선택하세요.<br>사진 업로드 후 ‘홈페이지에 저장’을 눌러야 방문자에게 표시됩니다.</p><div class="photoEditorPreview" data-photo-preview="${id}"></div></div>`:''}</div>`;
+  if(activityPhoto){
+    const buttonText=type==='photos'?'사진 여러 장 추가':'대표 사진 선택';
+    return `<div class="editorField activityPhotoField"><div class="photoFieldTitle">${esc(f.label)}</div><div class="photoUploadField"><button class="photoUploadButton" type="button" data-open-photo="${id}_upload">${buttonText}</button><input id="${id}_upload" type="file" hidden aria-label="${buttonText} 파일" accept="image/jpeg,image/png,image/webp" ${type==='photos'?'multiple':''} data-photo-target="${id}" data-photo-many="${type==='photos'}"><span class="photoUploadStatus" role="status">버튼을 눌러 휴대폰 또는 컴퓨터의 사진을 선택하세요.</span><div class="photoEditorPreview" data-photo-preview="${id}"></div><p class="photoUploadNote">① 사진 선택 → ② 업로드 완료 확인 → ③ 상단 ‘홈페이지에 저장’<br>JPG·PNG·WebP / 장당 15MB 이하 / 대표 사진 포함 최대 10장<br>공개 가능한 사진만 선택하세요.</p><details class="photoUrlDetails"><summary>사진 주소 직접 입력 · 선택 사항</summary><label for="${id}">${type==='photos'?'추가 사진 주소 · 한 줄에 하나씩':'대표 사진 주소'}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}</details></div></div>`;
+  }
+  return `<div class="editorField"><label for="${id}">${esc(f.label)}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}</div>`;
 }
 
 export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
   const $=id=>document.getElementById(id),root=$('siteEditor');
-  let raw={},baseline=normalized(),loaded=false,saving=false,active='main',previewTimer,uploading=false;
+  let raw={},baseline=normalized(),loaded=false,saving=false,active='main',previewTimer,uploading=false,uploadFailure='';
   const status=message=>{$('editorStatus').textContent=message;};
   function changedPaths(draft=readDraft()) {
     const paths=groups.flatMap(g=>[...g.fields.map(f=>pathFor(f.key)),...(g.array?['siteContent.'+g.array]:[])]);
@@ -52,10 +56,11 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
   }
   function updateStatus() {
     const n=changedPaths().length;
-    status(loaded?(n?`${n}개 항목 수정됨 · 아직 홈페이지에 반영되지 않았습니다.`:'저장된 내용과 같습니다.'):'설정을 불러오고 있습니다.');
+    status(uploading?'사진을 업로드하고 있습니다. 완료될 때까지 기다려주세요.':uploadFailure|| (loaded?(n?`${n}개 항목 수정됨 · 상단 ‘홈페이지에 저장’을 눌러 반영해주세요.`:'저장된 내용과 같습니다.'):'설정을 불러오고 있습니다.'));
+    $('editorStatus').dataset.state=uploadFailure?'error':'';
     $('saveSiteContent').disabled=!loaded||saving||uploading||!n;
-    $('previewHome').disabled=!loaded;
-    $('editorRefresh').disabled=saving;
+    $('previewHome').disabled=!loaded||uploading;
+    $('editorRefresh').disabled=saving||uploading;
     root.querySelectorAll('[data-editor-tab]').forEach(b=>{const g=groups.find(x=>x.id===b.dataset.editorTab);const dirty=changedPaths().some(p=>g.fields.some(f=>pathFor(f.key)===p)||p==='siteContent.'+g.array);b.classList.toggle('dirty',dirty);});
     clearTimeout(previewTimer);previewTimer=setTimeout(sendPreview,180);
   }
@@ -96,7 +101,7 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
   async function load(force=false) {
     if(saving||uploading)return;
     if(loaded&&changedPaths().length){if(!force)return;if(!confirm('저장하지 않은 수정 내용을 버리고 다시 불러올까요?'))return;}
-    loaded=false;root.inert=true;updateStatus();
+    loaded=false;uploadFailure='';root.inert=true;updateStatus();
     try{raw=await read();baseline=normalized(raw);
       for(const key of Object.keys(arrayFields))baseline.siteContent[key]=baseline.siteContent[key].map((x,i)=>({...x,id:x.id||'legacy-'+key+'-'+i}));
       loaded=true;render();
@@ -109,7 +114,7 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
     saving=true;root.inert=true;$('saveSiteContent').disabled=true;$('editorRefresh').disabled=true;status('홈페이지에 저장하고 있습니다.');
     try{
       const patch=Object.fromEntries(paths.map(p=>[p,get(draft,p)]));
-      raw=await write(patch,raw);baseline=normalized(raw);loaded=true;render();notify('홈페이지에 반영했습니다.');status('저장 완료 · 홈페이지에 반영했습니다.');sendPreview();
+      raw=await write(patch,raw);baseline=normalized(raw);loaded=true;uploadFailure='';render();notify('홈페이지에 반영했습니다.');status('저장 완료 · 홈페이지에 반영했습니다.');sendPreview();
     }catch(error){console.error(error);status(error.code==='cm/conflict'?'다른 화면에서 같은 항목을 수정했습니다. 입력 내용은 유지됩니다. 수정 내용을 복사한 뒤 새로 불러와 다시 저장해주세요.':'저장하지 못했습니다. 입력 내용은 유지됩니다. 잠시 후 다시 시도해주세요.');}
     finally{saving=false;root.inert=false;$('saveSiteContent').disabled=!loaded||!changedPaths().length;$('editorRefresh').disabled=false;}
   }
@@ -133,7 +138,7 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
     const previous=many?target.value.split(/\n/).map(x=>x.trim()).filter(Boolean):[];
     const cover=picker.closest('[data-repeat-key]')?.querySelector('[data-repeat-field="image"]')?.value;
     if(many&&new Set([...previous,cover].filter(Boolean)).size+files.length>10){message.textContent='대표 사진을 포함해 한 활동에 최대 10장까지 올릴 수 있습니다.';return;}
-    uploading=true;root.inert=true;$('saveSiteContent').disabled=true;$('previewHome').disabled=true;$('editorRefresh').disabled=true;
+    uploading=true;uploadFailure='';message.dataset.state='uploading';root.inert=true;updateStatus();
     let completed=0;
     try{
       for(const file of (many?files:files.slice(0,1))){
@@ -144,11 +149,13 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
         if(many){previous.push(url);target.value=previous.join('\n');}else target.value=url;
         refreshPhotoPreviews();
       }
-      message.textContent=`${completed}장 업로드 완료. ‘홈페이지에 저장’을 눌러 반영해주세요.`;
-    }catch(error){message.textContent=(completed?`${completed}장은 업로드되었습니다. `:'')+photoUploadError(error);}
+      message.dataset.state='success';message.textContent=`${completed}장 업로드 완료. 상단 ‘홈페이지에 저장’을 눌러 반영해주세요.`;
+    }catch(error){message.dataset.state='error';uploadFailure=(completed?`${completed}장은 업로드되었습니다. `:'사진 업로드 실패 · ')+photoUploadError(error)+(error?.code?' (오류 코드: '+error.code+')':'');message.textContent=uploadFailure;}
     finally{uploading=false;root.inert=!loaded;$('editorRefresh').disabled=false;updateStatus();}
   });
   root.addEventListener('click',event=>{
+    const pickerButton=event.target.closest('[data-open-photo]');
+    if(pickerButton&&!saving&&!uploading){$(pickerButton.dataset.openPhoto)?.click();return;}
     const button=event.target.closest('[data-remove-photo]');if(!button||saving||uploading)return;
     const input=$(button.dataset.photoInput);if(!input)return;
     if(input.dataset.repeatField==='photos'){const urls=input.value.split(/\n/).map(x=>x.trim()).filter(Boolean);urls.splice(Number(button.dataset.removePhoto),1);input.value=urls.join('\n');}
@@ -171,7 +178,7 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
   window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===$('homePreviewFrame').contentWindow&&event.data?.type==='cm-home-preview-ready')sendPreview();});
   window.addEventListener('beforeunload',event=>{if(uploading||(loaded&&changedPaths().length)){event.preventDefault();event.returnValue='';}});
   render();
-  return {load,save,hasUnsaved:()=>loaded&&changedPaths().length>0,reset:()=>{raw={};baseline=normalized();loaded=false;render();if($('homePreview').open)$('homePreview').close();$('homePreviewFrame').removeAttribute('src');}};
+  return {load,save,hasUnsaved:()=>loaded&&changedPaths().length>0,reset:()=>{raw={};baseline=normalized();loaded=false;uploadFailure='';render();if($('homePreview').open)$('homePreview').close();$('homePreviewFrame').removeAttribute('src');}};
 }
 
 export function initAdminNavigation() {

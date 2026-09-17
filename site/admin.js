@@ -1,5 +1,5 @@
-import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.1.0';
-import { createPhotoUploader } from './photo-upload.js?v=3.1.0';
+import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.1.1';
+import { createPhotoUploader } from './photo-upload.js?v=3.1.1';
 import {
   initializeApp
 }
