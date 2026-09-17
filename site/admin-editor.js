@@ -5,7 +5,7 @@ const field = (key,label,type='text',hint='') => ({key,label,type,hint});
 const groups = [
   {id:'main',title:'첫 화면',fields:[field('mainTitle','메인 제목','textarea'),field('mainSubtitle','메인 설명','textarea'),field('teamName','팀 이름'),field('englishName','영문 이름'),field('heroEyebrow','제목 위 작은 문구'),field('heroImage','로고 이미지 주소','image','기존 로고: team-logo.png'),field('heroAlt','로고 설명'),field('primaryLabel','체험 신청 버튼 문구'),field('secondaryLabel','훈련 일정 버튼 문구')]},
   {id:'copy',title:'영역별 문구',fields:[
-    ...[['team','선수단'],['overview','요약 소식'],['activity','활동'],['schedule','일정'],['records','대회 기록'],['notices','공지'],['faq','자주 묻는 질문'],['trial','체험 신청']].flatMap(([k,t])=>[field(k+'Title',t+' 제목'),field(k+'Description',t+' 설명','textarea')]),field('trialIntro','체험 안내','textarea'),field('mapTitle','찾아오시는 길 제목')]},
+    ...[['team','선수단'],['overview','요약 소식'],['activity','활동'],['schedule','일정'],['records','대회 기록'],['notices','공지'],['faq','자주 묻는 질문'],['trial','체험 신청']].flatMap(([k,t])=>[field(k+'Title',t+' 제목','textarea'),field(k+'Description',t+' 설명','textarea')]),field('trialIntro','체험 안내','textarea'),field('mapTitle','찾아오시는 길 제목')]},
   {id:'effects',title:'문구 · 효과',fields:[field('marqueeText','중간에 흐르는 문구','text','짧은 문구를 · 로 구분해서 입력하세요.'),field('showMarquee','흐르는 문구 표시','boolean'),field('showEffects','은은한 빛 · 마우스 효과','boolean')]},
   {id:'activities',title:'팀 이야기',fields:[],array:'activities'},
   {id:'faqs',title:'자주 묻는 질문',fields:[],array:'faqs'},
@@ -25,7 +25,15 @@ const pathFor = key => legacy.has(key)?key:'siteContent.'+key;
 const get = (obj,path) => path.split('.').reduce((o,k)=>o?.[k],obj);
 const set = (obj,path,value) => {const keys=path.split('.');let o=obj;for(const k of keys.slice(0,-1))o=o[k]??=( {} );o[keys.at(-1)]=value;};
 const equal = (a,b) => JSON.stringify(a)===JSON.stringify(b);
-function normalized(raw){const out=resolveSettings(raw);for(const key of Object.keys(arrayFields))out.siteContent[key]=out.siteContent[key].map((x,i)=>({...x,...(key==='activities'?{photos:Array.isArray(x.photos)?x.photos:[]}:{}),id:x.id||'legacy-'+key+'-'+i}));return out;}
+function normalized(raw){
+  const out=resolveSettings(raw);
+  for(const [key,fields]of Object.entries(arrayFields))out.siteContent[key]=out.siteContent[key].map((x,i)=>{
+    const item={...x,id:x.id||'legacy-'+key+'-'+i};
+    for(const f of fields)item[f.key]=f.type==='photos'?(Array.isArray(x[f.key])?x[f.key]:[]):f.type==='boolean'?x[f.key]!==false:x[f.key]??'';
+    return item;
+  });
+  return out;
+}
 function inputHTML(f,value,attributes,id) {
   const attr=`id="${id}" ${attributes}`,type=f.type,activityPhoto=f.key==='image'||f.key==='photos';
   const input=type==='photos'?`<textarea ${attr} rows="3" maxlength="20000" placeholder="추가 사진 주소를 한 줄에 하나씩 입력">${esc(Array.isArray(value)?value.join('\n'):value)}</textarea>`:type==='textarea'?`<textarea ${attr} rows="${f.key==='messageBody'?8:3}" maxlength="12000">${esc(value)}</textarea>`:
