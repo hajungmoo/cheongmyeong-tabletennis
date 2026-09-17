@@ -1,0 +1,251 @@
+/* Championship edition. Presentation is separate from Firebase and match tools. */
+.championship{--ink:#f5f5f1;--muted:#9cacc1;--gold:#dab365;--line:#b8934b44;--gold-metal:linear-gradient(125deg,#e2b666,#fff0ba 45%,#b98432 90%);background:#040e1b;color:var(--ink);font-family:Arial,"Malgun Gothic",sans-serif;overflow-x:clip}
+.championship *, .championship *::before,.championship *::after{box-sizing:border-box}
+.championship [hidden]{display:none!important}
+.championship::before{background:radial-gradient(ellipse at 0 35%,#17304b33,transparent 50%);opacity:1;pointer-events:none}
+.championship .container{width:calc(100% - 88px);max-width:1360px;margin-inline:auto}
+.championship h2,.championship h3{background:none;-webkit-text-fill-color:currentColor;color:#f2f4f7;filter:none;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.045em}
+.championship .section{padding:28px 0;background:transparent;border:0;position:relative}
+.championship .sectionPale{background:transparent}
+.championship .sectionHead{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:0 0 18px}
+.championship .sectionHead h2{font-size:clamp(22px,2.05vw,30px);line-height:1.25;margin:6px 0 0}
+.championship .sectionHead>p{max-width:420px;font-size:12px;line-height:1.7;color:var(--muted);margin:0;border-left:1px solid #6981a144;padding-left:18px}
+.championship .sectionKicker{font-size:10px;letter-spacing:2.6px;color:#e1be7a;font-weight:700;line-height:1.5;gap:8px}
+.championship .sectionKicker::before,.championship .sectionKicker::after{display:none}
+.championship a{text-decoration:none}
+.championship button,.championship a{ -webkit-tap-highlight-color:transparent }
+.championship :focus-visible{outline:2px solid #ffe2a1;outline-offset:4px}
+.championship .btn{min-height:44px;padding:10px 22px;gap:20px;border-radius:4px;font-size:13px;line-height:1.5;font-weight:800;transition:transform .2s,box-shadow .2s;border:1px solid #8a754f;color:#e9edf2;background:#06111cc7}
+.championship .btnGold{background:var(--gold-metal);color:#20190a;border-color:#f0d398;box-shadow:inset 0 1px #fff6dc,0 7px 25px #dba73e24}
+.championship .btn:hover{transform:translateY(-3px);box-shadow:0 8px 26px #dfa63230}
+.championship .textLink{font-size:12px;color:#e3c188;gap:12px;margin-top:12px}
+.championship .topbar{background:#040e1bee;backdrop-filter:blur(18px);border-bottom:1px solid #ad8a425e;box-shadow:0 5px 28px #0004;z-index:40}
+.championship .nav{min-height:77px;gap:24px}
+.championship .logo{gap:12px;min-width:225px}
+.championship .logo img{width:61px;height:61px;object-fit:contain;filter:drop-shadow(0 0 7px #dca74d33)}
+.championship .logo strong{font-size:21px;color:white;letter-spacing:-.04em}
+.championship .logo small{display:block;font-size:8px;letter-spacing:1.2px;margin-top:4px;max-width:170px;line-height:1.5;color:#9cacbc}
+.championship .navlinks{gap:20px;flex:1;justify-content:flex-end;align-items:center;font-size:12px}
+.championship .navlinks>a{font-weight:700;white-space:nowrap;position:relative}
+.championship .navlinks>a:hover{color:#ffdfa0}
+.championship .navlinks>a[aria-current=location]::after{content:'';position:absolute;left:12%;right:12%;bottom:-14px;height:2px;background:var(--gold-metal)}
+.championship .navlinks .navCta{background:var(--gold-metal);color:#211607;border:1px solid #eed195;border-radius:3px;padding:8px 16px}
+.championship .navParent{border:1px solid #34445b;border-radius:3px;padding:8px 12px}
+.championship .hero{background:linear-gradient(90deg,#03102075,transparent 60%),url('./assets/arena-gold.webp') center 54%/cover no-repeat;border-bottom:1px solid #b99a5b88;box-shadow:0 10px 60px #0007;overflow:hidden;isolation:isolate}
+.championship .hero::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#04101c77,transparent 40%);pointer-events:none;z-index:-1}
+.championship .hero::after{display:none}
+.championship .heroGrid{display:grid;grid-template-columns:.95fr 1.05fr;gap:0;align-items:center;min-height:480px;padding:26px 0 20px}
+.championship .heroCopy{position:relative;z-index:2;padding:0;max-width:580px;text-align:left;animation:heroEntrance .65s ease both}
+.championship .eyebrow{font-size:10px;color:#e4e3db;letter-spacing:2px;line-height:1.7;margin:0 0 16px;display:block}
+.championship .eyebrow::before{display:none}
+.championship .hero .heroSlogan{font-family:Arial,sans-serif;line-height:.86;font-weight:950;letter-spacing:-.035em;white-space:normal;margin:0 0 24px;filter:drop-shadow(0 3px 0 #684019) drop-shadow(0 2px 14px #a06d2f33);font-style:italic;background:none;-webkit-text-fill-color:initial}
+.championship .heroSlogan span,.championship .heroSlogan strong{display:block;background:linear-gradient(165deg,#fff6d5 8%,#efc373 39%,#fcdda0 45%,#bd8634 79%,#f5d493);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;white-space:nowrap}
+.championship .heroSlogan span{font-size:clamp(26px,3.7vw,53px);letter-spacing:-.035em;margin-bottom:8px}
+.championship .heroSlogan strong{font-size:clamp(75px,9vw,126px);letter-spacing:-.055em}
+.championship .heroTeamName{font-size:32px;font-weight:900;line-height:1.25;margin:0 0 7px}
+.championship .heroTagline{font-size:21px;line-height:1.5;white-space:normal;color:#f1efeb;margin:0 0 4px;letter-spacing:-.035em}
+.championship .heroDescription{max-width:410px;white-space:normal;font-size:12px;line-height:1.8;color:#b8c7d7;margin:0}
+.championship .hero .actions{gap:12px;margin-top:20px;justify-content:flex-start}
+.championship .heroVisual{position:relative;max-width:535px;width:100%;padding:0;margin:0;justify-self:start;filter:none;animation:emblemEntrance .8s ease both}
+.championship .heroVisual::before,.championship .heroVisual::after{display:none}
+.championship .heroVisual img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;max-height:475px;filter:drop-shadow(0 0 22px #dfaf4830);mix-blend-mode:screen;border-radius:50%;mask-image:radial-gradient(circle,#000 64%,#000d 67%,transparent 72%)}
+.championship .visualCaption{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:8px;letter-spacing:2px;color:#ad9871}
+.championship .heroHandwriting{position:absolute;left:92%;top:38px;width:145px;transform:rotate(-8deg);font-family:Georgia,serif;font-size:24px;font-style:italic;line-height:1.7;color:#eee8df;white-space:nowrap;text-align:center}
+.championship .heroHandwriting small{display:block;font-family:Arial,sans-serif;font-size:8px;letter-spacing:2px;line-height:1.5;margin-top:8px;color:#b3aa98;font-style:normal}
+.championship .heroBottom{display:flex;justify-content:space-between;padding:13px 0;border-top:1px solid #aab6c124;background:transparent;min-height:0}
+.championship .heroStats{display:flex;gap:27px;width:auto}
+.championship .heroStat{display:flex;gap:8px;align-items:center}
+.championship .heroStat b{font-size:17px;font-weight:850;color:#e9c784;background:none;-webkit-text-fill-color:currentColor;line-height:1}
+.championship .heroStat span{font-size:10px;color:#b3bdc9;margin:0}
+.championship .heroNote{display:block;font-size:9px;letter-spacing:1px;color:#c2c4c4;margin:0}
+.championship #team{padding-top:28px;padding-bottom:22px}
+.championship #team .sectionHead{margin-bottom:11px}
+.championship #teamCount{font-size:10px;text-align:right;color:#91a1b8;margin:-9px 0 10px}
+.championship .players{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px}
+.championship .player{position:relative;min-width:0;display:flex;align-items:center;flex-direction:column;padding:12px 9px 14px;border:1px solid #a5864f99;border-top:2px solid #e3b768;border-radius:5px;background:radial-gradient(ellipse at 50% 25%,#17345466,transparent 80%),#05101f;box-shadow:inset 0 0 15px #0006,0 6px 15px #0005;transition:transform .2s,box-shadow .2s}
+.championship .player::before{display:none}
+.championship .playerMeta{display:flex;align-items:center;justify-content:space-between;width:100%;font-size:8px;margin:0;color:#b6c6dd;gap:5px}
+.championship .playerMeta>span:last-child{background:none;border:0;padding:0;color:#ddbc77}
+.championship .jersey{width:100%;max-width:134px;height:auto;aspect-ratio:1.1;overflow:visible;filter:drop-shadow(0 5px 4px #000b);margin:4px 0}
+.championship .player h3{font-size:19px;font-weight:850;letter-spacing:-.06em;margin:5px 0 5px;line-height:1.25;display:block;color:#f8f7f2}
+.championship .playerGrade{font-size:10px;color:#d2dae8;margin-bottom:6px}
+.championship .player>p{font-size:10px;line-height:1.6;text-align:center;margin:0;color:#b8c7db}
+.championship .playerAward{border-top:1px solid #9badc92a;padding-top:7px;margin-top:8px;font-size:10px;color:#a9b9ce;line-height:1.6;text-align:center;width:100%}
+.championship .stories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.championship .story{min-width:0;position:relative;border:1px solid #a68a5966;border-radius:5px;background:#071524;overflow:hidden;box-shadow:0 7px 20px #0005;transition:transform .2s,border-color .2s}
+.championship .story:last-child{grid-column:auto}
+.championship .storyImageButton{display:block;border:0;padding:0;width:100%;height:180px;position:relative;background:#081627;overflow:hidden;color:#eed4a1}
+.championship .storyImage{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s;filter:none;border:0}
+.championship .storyImageButton:hover .storyImage{transform:scale(1.055)}
+.championship .storyImageButton::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#04101abf,transparent 48%);pointer-events:none}
+.championship .storyPhotoCount{position:absolute;z-index:2;right:10px;bottom:10px;font-size:10px;color:#fff4d9;background:#08111cbb;border:1px solid #ccb2786e;border-radius:3px;padding:4px 7px}
+.championship .storyPlaceholder{display:grid;place-content:center;gap:7px;background:linear-gradient(#06101d99,#07122199),url('./assets/arena-gold.webp') center/cover;font-size:11px;color:#b6c4d5;text-align:center;height:100%}
+.championship .storyPlaceholder b{font-size:24px;color:#d2b571;font-style:italic;letter-spacing:3px}
+.championship .storyBody{padding:15px 17px 17px;min-height:0;display:block}
+.championship .storyMeta{font-size:9px;gap:6px;margin:0 0 9px;color:#99aabd;line-height:1.5}
+.championship .storyMeta>span{color:#d3b980;font-size:8px;letter-spacing:.8px}
+.championship .story h3{font-size:18px;line-height:1.45;margin:0 0 9px;color:#f3f4f6}
+.championship .storyTitleButton{padding:0;text-align:left;background:none;border:0;color:inherit;font:inherit;line-height:inherit;letter-spacing:inherit}
+.championship .story p{font-size:11px;color:#aabbd1;line-height:1.75;margin:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.championship .storyOpen{border:1px solid #314860;background:#0b2037;color:#cad8ea;border-radius:3px;font-size:10px;padding:5px 10px;margin-top:13px;cursor:pointer}
+.championship .activityFootnote{font-size:10px;color:#7187a0;margin-top:10px;text-align:right}
+.championship #overview{padding:4px 0 14px}
+.championship #overview .sectionHead{display:none}
+.championship .overviewGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.championship .nextCard,.championship .noticeFeature{padding:14px 18px;border-radius:4px;background:#071628;border:1px solid #6581a333;box-shadow:none;min-height:0}
+.championship .nextCard::after,.championship .noticeFeature::after{display:none}
+.championship .nextCard h3,.championship .noticeFeature h3{font-size:16px;margin:6px 0;color:#e4d7b8;line-height:1.5}
+.championship .nextCard p,.championship .noticeFeature p{font-size:11px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:#9cacc2;margin:2px 0}
+.championship .noticeFeature .storyMeta{margin:0}
+.championship .nextCard .textLink,.championship .noticeFeature .textLink{font-size:10px;margin-top:6px}
+.championship .teamMarquee{padding:9px 0;border-block:1px solid #8599b020;background:linear-gradient(90deg,#0b1d2c,#050f1b,#141912);box-shadow:none}
+.championship .marqueeWords{font-size:13px;letter-spacing:1.8px;line-height:1.5;color:#bea36c}
+.championship .marqueeToggle{width:26px;height:26px;font-size:11px}
+.championship .competitionDesk{display:grid;grid-template-columns:.95fr 1.05fr;gap:28px;align-items:start}
+.championship .competitionDesk>.section{min-width:0;padding:28px 0}
+.championship .competitionDesk .container{width:100%;max-width:none}
+.championship .competitionDesk .sectionHead{display:block;margin-bottom:16px}
+.championship .competitionDesk .sectionHead>p{display:none}
+.championship .filterBar{gap:8px;margin-bottom:10px;flex-wrap:nowrap}
+.championship .segments{padding:3px;border-radius:4px;background:#0a1b2f;gap:2px;border-color:#56678155;flex-wrap:nowrap}
+.championship .segments button{min-height:30px;font-size:10px;white-space:nowrap;padding:5px 8px;border-radius:2px;color:#98adc7}
+.championship .segments button[aria-pressed=true]{color:#261d0c}
+.championship .searchInput{min-height:36px;height:36px;font-size:11px;padding:5px 9px;background:#051120;border-color:#49638666;border-radius:4px;width:100%}
+.championship .filterBar>label{margin:0;max-width:140px}
+.championship .scheduleSummary{font-size:10px;margin-bottom:7px;color:#9eb2c8}
+.championship .scheduleList{border:1px solid #6c819c70;border-radius:5px;max-height:308px;overflow:auto;scrollbar-width:thin;scrollbar-color:#53647d #04101e;background:linear-gradient(135deg,#0b2039,#05101e)}
+.championship .scheduleRow{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:13px 14px;border-color:#7796b327;align-items:center}
+.championship .scheduleDay{display:block}
+.championship .scheduleDay time{font-size:10px;margin-top:4px;color:#d0dce9}
+.championship .stateTag{font-size:8px;line-height:1.3;padding:3px 6px;color:#e6c584;background:#8065262a;border-color:#a08a5361}
+.championship .scheduleRow h3{font-size:13px;margin:0 0 4px;line-height:1.5}
+.championship .scheduleRow p{font-size:10px;line-height:1.4;margin:0;color:#8eabc5}
+.championship .scheduleTime{grid-column:2;text-align:left;font-size:10px;margin:-6px 0 0;color:#e2c391}
+.championship .results{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.championship .record{padding:17px 12px;min-width:0;text-align:center;border:1px solid #ad8c4b9c;border-radius:5px;background:radial-gradient(ellipse at top,#72591d55,transparent 70%),#0b1418;box-shadow:0 5px 16px #0005}
+.championship .record[data-medal=silver]{background:radial-gradient(ellipse at top,#4a64704d,transparent 70%),#091722;border-color:#7595a685}
+.championship .record[data-medal=bronze]{background:radial-gradient(ellipse at top,#7e4d384b,transparent 70%),#191416;border-color:#b4836285}
+.championship .recordIcon{display:block;width:65px;height:65px;margin:0 auto 10px;color:#e7bd62;filter:drop-shadow(0 0 12px #d6a74250)}
+.championship .record[data-medal=silver] .recordIcon{color:#b6cddc;filter:drop-shadow(0 0 12px #91aec650)}
+.championship .record[data-medal=bronze] .recordIcon{color:#d29574}
+.championship .recordDate{font-size:9px;color:#aeb7c2}
+.championship .recordResult{font-size:20px;line-height:1.4;letter-spacing:-.03em;margin:10px 0;color:#f4d690;background:none;-webkit-text-fill-color:currentColor;white-space:pre-line}
+.championship .record h3{font-size:11px;line-height:1.65;border-top:1px solid #8a919233;padding-top:10px;margin:12px 0 5px;color:#d5dce5}
+.championship .record p{font-size:10px;line-height:1.6;margin:0;color:#a9b4c1}
+.championship .moreRow{margin-top:12px}
+.championship .moreRow .btn{font-size:10px;min-height:32px;padding:6px 13px}
+.championship .coachSection{border-block:1px solid #aa8a464c;background:linear-gradient(90deg,#03101d,#071321 70%,#1e1c12);overflow:hidden}
+.championship .coachGrid{display:grid;grid-template-columns:.8fr 1.3fr .8fr;gap:25px;align-items:center}
+.championship .coachArt{position:relative;min-height:230px;display:flex;align-items:end;padding:20px;isolation:isolate;overflow:hidden}
+.championship .coachArt::before{content:'';position:absolute;inset:0;background:url('./assets/arena-gold.webp') 40% 65%/cover;opacity:.18;filter:grayscale(1);z-index:-1}
+.championship .coachArt span{font-size:21px;line-height:1.1;font-weight:900;font-style:italic;letter-spacing:-1px;color:#b0bfd166;z-index:1}
+.championship .paddleArt{width:132px;height:154px;position:absolute;left:32%;top:12px;border-radius:48%;border:5px solid #c8b994;background:radial-gradient(ellipse at 25% 10%,#45494c,#090e13 60%);transform:rotate(-30deg);box-shadow:9px 6px 0 #191811,12px 15px 30px #0009}
+.championship .paddleArt::after{content:'';position:absolute;width:32px;height:91px;left:46px;top:135px;border-radius:3px 3px 10px 10px;background:linear-gradient(90deg,#574935,#d0c0a0,#60503c);border:2px solid #332a22}
+.championship .coachSection h2{font-size:24px;line-height:1.45;margin:7px 0;color:#f0d391}
+.championship .coachDescription{font-size:12px;line-height:1.85;margin:10px 0 12px;color:#a8b8cc}
+.championship .coachName{font-size:13px;color:#d0bea0;font-weight:700}
+.championship .coachRole{font-size:10px;color:#7d8fa4;margin-top:4px}
+.championship .values{display:grid;grid-template-columns:1fr;gap:12px;border-left:1px solid #8090a133;padding-left:23px}
+.championship .value{border:0;background:none;border-radius:0;padding:0;display:grid;grid-template-columns:27px 1fr;gap:2px 10px}
+.championship .value>span{grid-row:1/3;font-size:11px;font-style:normal;width:26px;height:26px;border-radius:50%;border:1px solid #b89556;color:#e0be7b;display:grid;place-items:center}
+.championship .value h3{font-size:12px;margin:0;color:#d3dce9}
+.championship .value p{font-size:10px;line-height:1.5;color:#879db6;margin:0}
+.championship #message{padding:19px 0;background:#06101d}
+.championship #message .message{padding:20px 25px;max-width:1360px;display:grid;grid-template-columns:1.3fr 1fr;align-items:start;gap:25px;border:1px solid #91754133;border-radius:4px;background:linear-gradient(110deg,#151a1a,#051120);box-shadow:none}
+.championship #message .message::before{display:none}
+.championship #message .message>div:first-child{text-align:left}
+.championship #message .sectionKicker{font-size:11px;letter-spacing:3px;justify-content:flex-start;margin:0 0 8px;color:#e6c484}
+.championship #message .sectionKicker::before,.championship #message .sectionKicker::after{display:none}
+.championship #message .message h2{font-size:23px;line-height:1.5;text-align:left;filter:none;color:#f1d399;margin:0}
+.championship .coachLetter summary{font-size:12px;display:flex;justify-content:space-between;gap:12px;padding:12px 0;color:#b3c2d6;border-bottom:1px solid #465772;cursor:pointer}
+.championship #message .messageBody{font-size:12px;line-height:1.95;padding:16px 0 0;margin:0;border:0;color:#aabbd1}
+.championship #message .messageBody p:first-child{font-size:14px;line-height:1.85;color:#e5ce9f}
+.championship #message .messageBody p+p{margin-top:14px}
+.championship .faqLayout{display:grid;grid-template-columns:.65fr 2fr;gap:30px;align-items:start}
+.championship .faqLayout .sectionHead{display:block;margin:0}
+.championship .faqLayout .sectionHead p{font-size:11px;line-height:1.7;margin-top:10px}
+.championship #faqList{display:grid;grid-template-columns:1fr 1fr;gap:7px 16px}
+.championship .faqItem{border:1px solid #4c647f99;background:linear-gradient(100deg,#081829,#04101d);border-radius:4px;padding:0 12px;align-self:start;min-width:0}
+.championship .faqItem:first-child{border-top:1px solid #4c647f99}
+.championship .faqItem summary{font-size:11px;line-height:1.6;padding:12px 0;gap:9px;color:#d6e0ed;font-weight:500}
+.championship .questionNo{font-size:10px;color:#b1bed0}
+.championship .faqPlus{font-size:19px;color:#c8d6e9}
+.championship .faqAnswer{font-size:11px;line-height:1.8;padding:0 3px 12px;color:#a5b8ce}
+.championship #notice{padding:13px 0 24px}
+.championship #notice .container{display:grid;grid-template-columns:1fr 2fr;gap:10px 25px}
+.championship #notice .sectionHead{display:block;grid-column:1;grid-row:1;margin:0}
+.championship #notice .sectionHead p{font-size:11px;border:0;padding:8px 0 0}
+.championship .noticeTools{grid-column:1;grid-row:2;justify-content:start;margin:0}
+.championship #noticeList{grid-column:2;grid-row:1/4}
+.championship .noticeItem{border-color:#465c763f}
+.championship .noticeItem:last-child{border-color:#465c763f}
+.championship .noticeItem summary{padding:13px 5px}
+.championship .noticeItem h3{font-size:13px;margin-top:5px;line-height:1.5}
+.championship .noticeDate{font-size:9px;color:#8aa0b8}
+.championship .noticeBody{font-size:12px;line-height:1.8;color:#b0bfd1;padding:0 5px 14px}
+.championship .pin{font-size:8px;padding:2px 6px}
+.championship #notice .moreRow{grid-column:2}
+.championship #trial{padding:24px 0;border-block:1px solid #be995453;background:linear-gradient(90deg,#04101dee,#04101d66),url('./assets/arena-gold.webp') center 85%/cover}
+.championship .trial{display:grid;grid-template-columns:1.25fr .9fr;gap:40px;padding:12px 0;border:0;box-shadow:none;background:none;border-radius:0;align-items:center}
+.championship .trialIntro h2{font-size:27px;line-height:1.45;max-width:550px;margin-top:6px}
+.championship .trialIntro>p{font-size:11px;line-height:1.7;color:#b1c0d2;margin-top:10px;max-width:460px}
+.championship .steps{display:flex;flex-wrap:wrap;gap:12px;margin-top:15px}
+.championship .step{gap:5px}
+.championship .stepNo{font-size:8px;width:20px;height:20px;border-radius:3px;background:#112135}
+.championship .step b{font-size:9px;color:#b8c8db}
+.championship .trialIntro .textLink{margin-top:12px}
+.championship .trialApplication{min-width:0;justify-self:end;width:100%;max-width:460px}
+.championship .trialApplication>summary{max-width:250px;justify-content:space-between;display:flex;margin-left:auto;cursor:pointer}
+.championship .trialApplication[open]>summary{margin-bottom:12px}
+.championship .trialForm{padding:23px;background:#071322f5;border-color:#63748a66;border-radius:5px}
+.championship .trialForm h3{font-size:19px;margin-bottom:14px}
+.championship .trialForm label{font-size:11px;color:#c1d0e4}
+.championship #trialForm input,.championship #trialForm select,.championship #trialForm textarea{font-size:13px;padding:9px 11px;min-height:42px;line-height:1.5;border-radius:4px;background:#06101d;border-color:#52667e8f;color:#eee;margin:5px 0 12px}
+.championship .formHint{font-size:10px;line-height:1.7;margin:8px 0 14px;color:#91a4bc}
+.championship .formStatus{font-size:12px}
+.championship .sponsorSection{padding:16px 0;border-bottom:1px solid #ad884456;background:radial-gradient(ellipse at 50% 80%,#60502433,transparent 60%),#030d18}
+.championship .sponsor{display:grid;grid-template-columns:.75fr 1.25fr;max-width:980px;margin:auto;gap:36px;padding:0;background:none;border:0;box-shadow:none;overflow:visible;border-radius:0}
+.championship .sponsor::before{display:none}
+.championship .sponsorVisual{max-width:208px;justify-self:end}
+.championship .sponsor img{max-height:210px;width:100%;object-fit:contain;mix-blend-mode:screen}
+.championship .sponsor strong{font-size:42px;line-height:1.3;font-weight:900;margin-top:4px}
+.championship .sponsor p{font-size:14px;line-height:1.8;color:#b2bfc9;margin-top:9px;max-width:470px}
+.championship .sponsorCopy{padding:14px 0}
+.championship #map{padding:26px 0}
+.championship .location{grid-template-columns:1fr 1.2fr;gap:40px}
+.championship .location h2{font-size:23px;margin-bottom:13px}
+.championship .location p{font-size:11px;color:#95a9c0;line-height:1.7}
+.championship .phoneLink{font-size:22px;margin:10px 0;color:#ebce94}
+.championship .location iframe{height:200px;border-radius:4px;border-color:#7b8da652}
+.championship .location .textLink{margin-top:10px}
+.championship .footer{padding:24px 0 20px;border-color:#b88f4666;background:#040d17}
+.championship .footerTop{padding:0 0 15px;gap:20px;align-items:center}
+.championship .footerTop strong{font-size:19px;color:#eee}
+.championship .footerTop p{font-size:8px;letter-spacing:1.5px;color:#728da9}
+.championship .footerLinks{gap:17px;font-size:11px;color:#b1c2d6;align-items:center}
+.championship #musicBtn{font-size:10px;background:#0a1a2a;border-color:#49617e;color:#b6c6d8}
+.championship .footerBottom{font-size:9px;padding-top:12px;color:#7389a3;border-color:#7086a329}
+.championship .floatContact{font-size:11px;padding:10px 16px;min-height:39px;right:17px;bottom:18px;border-radius:5px}
+.championship .empty{font-size:12px;padding:25px 16px;border-radius:4px;border-color:#6d82a052;color:#8da2bd;background:#061323}
+.championship .activityDialog{padding:0;width:min(940px,calc(100vw - 28px));max-height:90dvh;border:1px solid #bd9a57;border-radius:9px;background:#061221;color:#e5eef7;overflow:auto;box-shadow:0 30px 100px #000c}
+.championship .activityDialog::backdrop{background:#010711df;backdrop-filter:blur(8px)}
+.championship .dialogClose{position:sticky;display:block;top:12px;right:12px;float:right;width:38px;height:38px;font-size:28px;background:#03101de8;border:1px solid #7b91a8;color:#fff;border-radius:50%;z-index:4;margin:12px 12px -50px;cursor:pointer}
+.championship .galleryStage{position:relative;background:#010810;min-height:200px}
+.championship #galleryImage{display:block;width:100%;max-height:61dvh;object-fit:contain;min-height:200px}
+.championship .galleryControls{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:20px;background:#04101dea;border:1px solid #53667b;border-radius:30px;padding:5px 7px;font-size:12px}
+.championship .galleryControls button{background:transparent;border:0;color:#f8e0a3;min-width:35px;min-height:35px;font-size:21px;cursor:pointer}
+.championship .galleryCopy{padding:25px 30px}
+.championship .galleryCopy h2{font-size:25px;line-height:1.4;margin:10px 0 17px}
+.championship #activityDialogBody{font-size:14px;line-height:1.95;color:#b8cadd;white-space:pre-line}
+.championship .galleryThumbs{display:flex;gap:8px;overflow-x:auto;margin:0 0 17px;padding:3px}
+.championship .galleryThumbs button{flex:0 0 70px;width:70px;height:52px;padding:0;border:2px solid transparent;border-radius:3px;background:#0c2137;overflow:hidden;cursor:pointer}
+.championship .galleryThumbs img{width:100%;height:100%;object-fit:cover}
+.championship .galleryThumbs [aria-current=true]{border-color:#e4b663}
+.championship .galleryImageError{padding:30px;text-align:center;font-size:13px;color:#c4cfdc}
+@media(min-width:1600px){.championship .heroGrid{min-height:565px}.championship .heroVisual{max-width:570px}.championship .heroVisual img{max-height:535px}}
+@media(max-width:1280px){.championship .navlinks{gap:14px;font-size:11px}.championship .logo{min-width:200px}.championship .navParent{display:none}.championship .heroHandwriting{display:none}.championship .heroGrid{min-height:430px}.championship .heroVisual img{max-height:425px}.championship .players{gap:8px}.championship .player h3{font-size:17px}.championship .player>p,.championship .playerAward{font-size:9px}.championship .filterBar{flex-wrap:wrap}.championship .filterBar>label{max-width:none;width:100%}.championship .scheduleList{max-height:315px}}
+@media(max-width:1050px){.championship .container{width:calc(100% - 44px)}.championship .nav{min-height:70px}.championship .logo{min-width:0}.championship .logo img{width:52px;height:52px}.championship .logo strong{font-size:19px}.championship .menuToggle{display:block;background:#071727;color:#e6ca90;border:1px solid #8a754c;border-radius:3px;padding:8px 13px;font-size:12px;margin-left:auto}.championship .navlinks{background:#051322fa;padding:20px 24px;gap:13px;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #a48c59}.championship .navParent{display:block}.championship .navlinks>a{padding:10px}.championship .heroGrid{min-height:400px;grid-template-columns:1fr .95fr;padding:25px 0}.championship .heroSlogan span{font-size:32px}.championship .heroSlogan strong{font-size:84px}.championship .heroVisual img{max-height:370px}.championship .heroTeamName{font-size:26px}.championship .heroTagline{font-size:17px}.championship .heroDescription{font-size:11px}.championship .players{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.championship .jersey{max-width:132px;max-height:115px}.championship .player h3{font-size:20px}.championship .player>p,.championship .playerAward{font-size:11px}.championship .storyImageButton{height:145px}.championship .storyBody{padding:13px}.championship .story h3{font-size:16px}.championship .competitionDesk{gap:18px}.championship .results{gap:7px}.championship .record{padding:14px 8px}.championship .recordResult{font-size:17px}.championship .coachGrid{grid-template-columns:1.3fr 1fr;gap:24px}.championship .coachArt{display:none}.championship .faqLayout{grid-template-columns:.7fr 1.6fr;gap:20px}.championship #faqList{grid-template-columns:1fr}.championship .sponsor{gap:26px}}
+@media(max-width:700px){.championship .container{width:calc(100% - 32px)}.championship .section{padding:23px 0}.championship .sectionHead{display:block;margin-bottom:16px}.championship .sectionHead h2{font-size:23px}.championship .sectionHead>p{font-size:11px;border:0;padding:7px 0 0;max-width:100%}.championship .nav{min-height:65px}.championship .logo{gap:8px}.championship .logo img{width:47px;height:47px}.championship .logo strong{font-size:17px}.championship .logo small{font-size:7px;letter-spacing:.8px}.championship .navlinks{grid-template-columns:repeat(2,1fr);padding:18px 20px}.championship .hero{background-position:63% center}.championship .heroGrid{grid-template-columns:1fr;min-height:0;gap:0;padding:26px 0 18px;position:relative}.championship .heroCopy{grid-row:1;text-align:left;max-width:none}.championship .eyebrow{font-size:8px;letter-spacing:1.4px;margin-bottom:18px;max-width:200px}.championship .hero .heroSlogan{margin-bottom:19px}.championship .heroSlogan span{font-size:clamp(24px,7vw,42px);margin-bottom:6px}.championship .heroSlogan strong{font-size:clamp(70px,20vw,115px)}.championship .heroTeamName{font-size:27px}.championship .heroTagline{font-size:17px;max-width:280px}.championship .heroDescription{font-size:11px;max-width:275px}.championship .heroVisual{grid-row:2;justify-self:center;max-width:340px;width:82%;margin-top:6px;padding:0}.championship .heroVisual img{max-height:none}.championship .visualCaption{font-size:7px;bottom:0}.championship .hero .actions{gap:9px;margin-top:19px}.championship .hero .btn{font-size:11px;padding:10px 14px;min-height:40px;gap:10px}.championship .heroBottom{padding:12px 0}.championship .heroStats{justify-content:space-between;gap:10px;width:100%}.championship .heroStat{display:flex;gap:6px}.championship .heroStat b{font-size:16px}.championship .heroStat span{font-size:9px}.championship .heroNote{display:none}.championship #teamCount{text-align:left;margin:0 0 12px}.championship .players{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.championship .player{padding:9px 5px 10px}.championship .playerMeta{font-size:7px}.championship .playerMeta>span:first-child{font-size:7px}.championship .jersey{margin:3px 0;max-height:85px}.championship .player h3{font-size:15px}.championship .playerGrade{font-size:8px}.championship .player>p{font-size:8px}.championship .playerAward{font-size:8px;line-height:1.65;padding-top:6px;margin-top:6px}.championship .stories{grid-template-columns:1fr;gap:12px}.championship .story{display:grid;grid-template-columns:37% 1fr;align-items:stretch}.championship .storyImageButton{height:100%;min-height:200px}.championship .storyBody{padding:14px}.championship .story h3{font-size:16px;line-height:1.55}.championship .story p{font-size:10px;-webkit-line-clamp:2}.championship .storyMeta{font-size:8px;display:block}.championship .storyMeta>span{display:block;margin-bottom:5px;font-size:7px}.championship .storyPlaceholder b{font-size:18px}.championship .storyPlaceholder{font-size:9px}.championship .storyPhotoCount{font-size:8px;right:7px;bottom:7px}.championship .storyOpen{font-size:9px}.championship .activityFootnote{font-size:9px;text-align:left}.championship .overviewGrid{grid-template-columns:1fr;gap:8px}.championship .nextCard,.championship .noticeFeature{padding:13px 15px}.championship .teamMarquee{padding:9px 0}.championship .marqueeWords{font-size:12px}.championship .competitionDesk{display:block}.championship .competitionDesk>.section{padding:24px 0}.championship .competitionDesk .sectionHead>p{display:block}.championship .filterBar{flex-wrap:wrap;gap:8px}.championship .segments{width:auto;max-width:100%}.championship .segments button{font-size:10px;padding:6px 8px}.championship .filterBar>label{max-width:none;width:100%}.championship .scheduleRow{grid-template-columns:110px 1fr;padding:13px 12px;gap:8px}.championship .scheduleTime{grid-column:2}.championship .scheduleList{max-height:350px}.championship .results{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.championship .record{padding:17px 8px}.championship .recordIcon{width:48px;height:48px;margin-bottom:8px}.championship .recordResult{font-size:17px;margin:8px 0}.championship .record h3{font-size:10px}.championship .record p{font-size:9px}.championship .coachGrid{grid-template-columns:1fr;gap:22px}.championship .coachSection h2{font-size:24px;line-height:1.5}.championship .coachDescription{font-size:12px}.championship .values{grid-template-columns:1fr 1fr;border:0;padding:0;gap:15px}.championship #message{padding:18px 0}.championship #message .message{display:block;padding:20px;border-radius:5px}.championship #message .sectionKicker{font-size:10px;letter-spacing:2px}.championship #message .message h2{font-size:22px}.championship .coachLetter{margin-top:13px}.championship #message .messageBody{font-size:12px}.championship #message .messageBody p:first-child{font-size:13px}.championship .faqLayout{display:block}.championship .faqLayout .sectionHead{margin-bottom:15px}.championship #faqList{grid-template-columns:1fr}.championship #notice .container{display:block}.championship .noticeTools{margin:12px 0}.championship .noticeTools label{width:100%}.championship .trial{grid-template-columns:1fr;gap:20px}.championship .trialIntro h2{font-size:26px}.championship .trialApplication{justify-self:start;max-width:none}.championship .trialApplication>summary{margin-left:0;max-width:240px}.championship .trialForm{padding:18px}.championship .formRow{grid-template-columns:1fr 1fr;gap:10px}.championship .sponsor{grid-template-columns:110px 1fr;gap:15px;text-align:left;padding:0}.championship .sponsorVisual{max-width:110px;width:100%}.championship .sponsorCopy{padding:10px 0}.championship .sponsor .sectionKicker{font-size:8px;letter-spacing:1.4px;justify-content:flex-start}.championship .sponsor strong{font-size:26px}.championship .sponsor p{font-size:11px;line-height:1.7;margin-top:7px}.championship .location{grid-template-columns:1fr;gap:18px}.championship .location iframe{height:190px}.championship .footerTop strong{font-size:18px}.championship .footerLinks{gap:13px;font-size:10px}.championship .footerBottom{font-size:8px;padding-bottom:42px}.championship .galleryCopy{padding:20px}.championship .galleryCopy h2{font-size:20px}.championship #activityDialogBody{font-size:12px}.championship #galleryImage{max-height:53dvh}.championship .galleryThumbs button{flex-basis:60px;width:60px;height:45px}.championship .loadState{font-size:11px;padding:12px}.championship .popupDialog{padding:24px}.championship .popupDialog h2{font-size:22px}}
+@media(max-width:700px){.championship .players{grid-template-columns:repeat(2,minmax(0,1fr))}.championship .player{padding:13px 10px}.championship .jersey{max-height:116px}.championship .player h3{font-size:19px}.championship .playerGrade{font-size:11px}.championship .player>p,.championship .playerAward{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.championship *,.championship *::before,.championship *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(forced-colors:active){.championship .heroSlogan span,.championship .heroSlogan strong{background:none;color:CanvasText;-webkit-text-fill-color:CanvasText}.championship .recordIcon{color:CanvasText}}
