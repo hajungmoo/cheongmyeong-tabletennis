@@ -1,5 +1,6 @@
-import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.1.1';
+import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.1.2';
 import { createPhotoUploader } from './photo-upload.js?v=3.1.1';
+import { assertSettingsUnchanged } from './settings-compare.js?v=3.1.2';
 import {
   initializeApp
 }
@@ -419,8 +420,7 @@ const siteEditor=initSiteEditor({
     const ref=doc(db,'settings','homepage');
     return runTransaction(db,async transaction=>{
       const snap=await transaction.get(ref),current=snap.exists()?snap.data():{};
-      const value=(o,path)=>path.split('.').reduce((v,k)=>v?.[k],o);
-      for(const path of Object.keys(patch))if(JSON.stringify(value(current,path))!==JSON.stringify(value(baseline,path))){const error=new Error('다른 화면에서 같은 항목이 변경되었습니다.');error.code='cm/conflict';throw error;}
+      assertSettingsUnchanged(current,baseline,Object.keys(patch));
       const next={...current,siteContent:{...current.siteContent}},nested={};
       for(const [path,val] of Object.entries(patch)){
         if(path.startsWith('siteContent.')){next.siteContent[path.slice(12)]=val;(nested.siteContent??={})[path.slice(12)]=val;}
