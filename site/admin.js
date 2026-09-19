@@ -17,7 +17,10 @@ import {
   setDoc,
   getDoc,
   serverTimestamp,
-  runTransaction
+  runTransaction,
+  query,
+  where,
+  getCountFromServer
 }
 from
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
@@ -1144,6 +1147,34 @@ async function loadList(type){
 ================================ */
 function mergedPlayers(){return sortData(cache.players);}
 /* ================================
+홈페이지 방문 통계
+================================ */
+async function loadVisitStats(){
+  const status=$("visitStatsStatus");
+  try{
+    const today=todayKey();
+    const month=today.slice(0,7);
+    const visits=collection(db,"siteVisits");
+    const [todaySnap,monthSnap,totalSnap]=await Promise.all([
+      getCountFromServer(query(visits,where("date","==",today))),
+      getCountFromServer(query(visits,where("month","==",month))),
+      getCountFromServer(visits)
+    ]);
+    $("visitToday").textContent=todaySnap.data().count.toLocaleString("ko-KR");
+    $("visitMonth").textContent=monthSnap.data().count.toLocaleString("ko-KR");
+    $("visitTotal").textContent=totalSnap.data().count.toLocaleString("ko-KR");
+    status.textContent="브라우저당 하루 1회 기준으로 집계됩니다.";
+    status.dataset.state="success";
+  }catch(error){
+    console.error("방문 통계",error);
+    $("visitToday").textContent="—";
+    $("visitMonth").textContent="—";
+    $("visitTotal").textContent="—";
+    status.textContent="방문 통계 권한을 확인해주세요.";
+    status.dataset.state="error";
+  }
+}
+/* ================================
 체험 신청
 ================================ */
 async function loadTrials(){
@@ -1579,6 +1610,7 @@ async function(){
         "records"
       ),
       loadTrials(),
+      loadVisitStats(),
       loadDailyStatus(),
       loadTeamLog()
     ]);
