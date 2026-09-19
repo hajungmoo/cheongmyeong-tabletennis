@@ -162,22 +162,38 @@ function renderPlayers() {
     });
   });
 }
+function eventDateFromSchedule(item){
+  const direct=scheduleDate(item);
+  if(direct)return direct;
+  const source=[item.startDate,item.date,item.day,item.title,item.memo,item.place].filter(Boolean).join(' ');
+  let m=source.match(/(\d{4})\s*[.\-/년,]\s*(\d{1,2})\s*[.\-/월,]\s*(\d{1,2})/);
+  if(m)return `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
+  m=source.match(/(?:^|\D)(\d{1,2})\s*(?:[.\-/,]|월)\s*(\d{1,2})(?:\s*일)?(?:\D|$)/);
+  if(!m)return '';
+  const year=koreaToday().slice(0,4);
+  return `${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+}
 function renderSchedules() {
   const items=sortedItems(state.schedules).filter(visible);
+  const today=koreaToday();
   const dated=items.filter(s=>['upcoming','ongoing'].includes(scheduleState(s))).sort((a,b)=>scheduleDate(a).localeCompare(scheduleDate(b)));
+  const eventCandidates=items
+    .map(s=>({item:s,date:eventDateFromSchedule(s)}))
+    .filter(x=>x.date&&x.date>=today)
+    .sort((a,b)=>a.date.localeCompare(b.date));
   const competitionPattern=/(대회|시합|오픈|컵|체전|장관기|일우배|종별|유소년|유승민|선수권|챔피언)/i;
-  const nextCompetition=dated.find(s=>competitionPattern.test([s.title,s.memo,s.place].join(' ')));
-  const badgeTarget=nextCompetition||dated[0];
+  const competitionCandidate=eventCandidates.find(x=>competitionPattern.test([x.item.title,x.item.memo,x.item.place].join(' ')));
+  const badgeTarget=competitionCandidate||eventCandidates[0];
   const badge=$('nextEventBadge');
-  if(badgeTarget&&scheduleDate(badgeTarget)){
-    const today=koreaToday(),targetDate=scheduleDate(badgeTarget);
-    const days=Math.max(0,Math.round((Date.parse(targetDate+'T00:00:00Z')-Date.parse(today+'T00:00:00Z'))/86400000));
-    text('nextEventCountdown',(nextCompetition?'NEXT COMPETITION':'NEXT EVENT')+' · '+(days===0?'D-DAY':'D-'+days));
-    text('nextEventName',badgeTarget.title||'다가오는 일정');
-    badge.hidden=false;
+  if(badgeTarget){
+    const days=Math.max(0,Math.round((Date.parse(badgeTarget.date+'T00:00:00Z')-Date.parse(today+'T00:00:00Z'))/86400000));
+    text('nextEventCountdown',(competitionCandidate?'NEXT COMPETITION':'NEXT EVENT')+' · '+(days===0?'D-DAY':'D-'+days));
+    text('nextEventName',badgeTarget.item.title||'다가오는 일정');
   }else{
-    badge.hidden=true;
+    text('nextEventCountdown','NEXT EVENT · 일정 확인');
+    text('nextEventName',items.find(s=>s.title)?.title||'다가오는 일정을 준비하고 있습니다.');
   }
+  badge.hidden=false;
   const next=dated[0]||items.find(s=>scheduleState(s)==='other');
   if(next){
     text('nextLabel',scheduleState(next)==='other'?'훈련 일정':'다가오는 일정');text('nextScheduleTitle',next.title);text('nextScheduleDate',`${next.day||scheduleDate(next)}${next.time?' · '+next.time:''}`);
