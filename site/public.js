@@ -26,10 +26,21 @@ const OFFICIAL_2026_SCHEDULES=[
   {sourceKey:'2026-samsung-43',day:'2026년 12월 중 · 2일',startDate:'',endDate:'',periodStartMonth:'2026-12',periodEndMonth:'2026-12',title:'삼성생명배 제43회 전국초등학교 우수선수초청 왕중왕전 탁구대회',time:'',memo:'경기 용인 · 삼성트레이닝센터 · 한국초등학교탁구연맹',order:1201}
 ];
 
+const OFFICIAL_WEEKLY_SCHEDULES=[
+  {sourceKey:'weekly-mon',recurring:true,day:'매주 월요일',startDate:'',endDate:'',title:'기본기 · 풋워크 집중훈련',time:'',memo:'포핸드·백핸드 기본기 / 드라이브 안정화 / 스텝·풋워크 / 자세 점검',order:10},
+  {sourceKey:'weekly-tue',recurring:true,day:'매주 화요일',startDate:'',endDate:'',title:'서브 · 리시브 집중훈련',time:'',memo:'서브 회전·코스 / 짧은볼·긴볼 리시브 / 3구 공격 연결 / 첫 공 전개',order:20},
+  {sourceKey:'weekly-wed',recurring:true,day:'매주 수요일',startDate:'',endDate:'',title:'멀티볼 · 체력훈련',time:'',memo:'볼박스 반복훈련 / 좌우 이동 / 연속 공격 / 하체·코어·기초체력',order:30},
+  {sourceKey:'weekly-thu',recurring:true,day:'매주 목요일',startDate:'',endDate:'',title:'실전 패턴 · 전술훈련',time:'',memo:'3구·5구 전개 / 랠리 패턴 / 상황별 코스 선택 / 경기 운영 훈련',order:40},
+  {sourceKey:'weekly-fri',recurring:true,day:'매주 금요일',startDate:'',endDate:'',title:'게임 · 주간 실전훈련',time:'',memo:'연습경기 / 한세트 게임 / 사다리 게임 / 주간 훈련 점검 및 보완',order:50}
+];
+
 function homepageSchedules(){
-  const officialKeys=new Set(OFFICIAL_2026_SCHEDULES.map(item=>item.sourceKey));
+  const defaults=[...OFFICIAL_WEEKLY_SCHEDULES,...OFFICIAL_2026_SCHEDULES];
+  const officialKeys=new Set(defaults.map(item=>item.sourceKey));
+  const firestoreByKey=new Map(state.schedules.filter(item=>item.sourceKey).map(item=>[item.sourceKey,item]));
+  const mergedDefaults=defaults.map(item=>firestoreByKey.has(item.sourceKey)?{...item,...firestoreByKey.get(item.sourceKey)}:item);
   const firestoreExtras=state.schedules.filter(item=>!item.sourceKey||!officialKeys.has(item.sourceKey));
-  return [...OFFICIAL_2026_SCHEDULES,...firestoreExtras];
+  return [...mergedDefaults,...firestoreExtras];
 }
 const paragraphs = value => esc(value).replace(/\n/g,'<br>');
 const maskName = value => { const s=String(value||'').trim(); return !s?'청명 선수':s.includes('○')?s:s.length<3?s[0]+'○':s[0]+'○'+s.at(-1); };
@@ -221,8 +232,9 @@ function renderSchedules() {
   const filtered=items.filter(s=>(scheduleFilter==='all'||(scheduleFilter==='upcoming'?['upcoming','ongoing'].includes(scheduleState(s)):scheduleState(s)===scheduleFilter))&&(!q||[s.title,s.day,s.memo,s.place].join(' ').toLowerCase().includes(q)));
   text('scheduleResults',`${filtered.length}개 일정`);
   $('scheduleList').innerHTML=filtered.map(s=>{
-    const status=scheduleState(s),label={past:'지난 일정',upcoming:'예정',ongoing:'진행 중',other:'정기 · 기타'}[status];
-    return `<article class="scheduleRow"><div class="scheduleDay"><span class="stateTag ${status}">${label}</span><time>${esc(s.day||scheduleDate(s)||'일정')}</time></div><div><h3>${esc(s.title)}</h3><p>${paragraphs(s.place||s.memo||'')}</p></div><div class="scheduleTime">${esc(s.time||'시간 추후 안내')}</div></article>`;
+    const status=scheduleState(s),label=s.recurring?'정기 훈련':{past:'지난 일정',upcoming:'예정',ongoing:'진행 중',other:'정기 · 기타'}[status];
+    const scheduleTime=s.time||(s.recurring?'평일 정기 훈련':'시간 추후 안내');
+    return `<article class="scheduleRow"><div class="scheduleDay"><span class="stateTag ${status}">${label}</span><time>${esc(s.day||scheduleDate(s)||'일정')}</time></div><div><h3>${esc(s.title)}</h3><p>${paragraphs(s.place||s.memo||'')}</p></div><div class="scheduleTime">${esc(scheduleTime)}</div></article>`;
   }).join('')||'<p class="empty">조건에 맞는 일정이 없습니다.</p>';
 }
 function renderNotices() {
