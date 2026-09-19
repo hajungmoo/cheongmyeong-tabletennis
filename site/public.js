@@ -3,7 +3,7 @@ import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
-import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.2.0';
+import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.3.0';
 
 const app = initializeApp({apiKey:'AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI',authDomain:'cheongmyeong-tabletennis.firebaseapp.com',projectId:'cheongmyeong-tabletennis',storageBucket:'cheongmyeong-tabletennis.firebasestorage.app',messagingSenderId:'712801821489',appId:'1:712801821489:web:501d20626d8cd12dc98610'});
 const db = getFirestore(app), $ = id => document.getElementById(id);
@@ -31,6 +31,18 @@ function renderCoachMessage(element, value) {
     const paragraph=document.createElement('p');paragraph.textContent=copy;return paragraph;
   }));
 }
+function popupToday(){
+  return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+}
+function popupDismissedToday(signature){
+  try{
+    const saved=JSON.parse(localStorage.getItem('cm-popup-dismissed')||'null');
+    return saved?.date===popupToday()&&saved?.signature===signature;
+  }catch{return false;}
+}
+function dismissPopupForToday(signature){
+  try{localStorage.setItem('cm-popup-dismissed',JSON.stringify({date:popupToday(),signature}));}catch{}
+}
 function applySettings(raw) {
   settings=resolveSettings(raw); const c=settings.siteContent;
   document.querySelectorAll('[data-content]').forEach(el=>{if(el.dataset.content==='messageBody')renderCoachMessage(el,c.messageBody);else el.textContent=c[el.dataset.content]??'';});
@@ -51,8 +63,28 @@ function applySettings(raw) {
   $('faqList').innerHTML=c.faqs.filter(visible).map((f,i)=>`<details class="faqItem"><summary><span class="questionNo">${String(i+1).padStart(2,'0')}</span><span>${esc(f.question)}</span><span class="faqPlus" aria-hidden="true">+</span></summary><div class="faqAnswer">${paragraphs(f.answer)}</div></details>`).join('')||'<p class="empty">궁금한 점은 전화로 문의해주세요.</p>';
   if(settings.popupEnabled && settings.popupTitle && settings.popupContent){
     text('popupTitle',settings.popupTitle);text('popupContent',settings.popupContent);
-    const popupKey=settings.popupTitle+'|'+settings.popupContent;
-    if(!$('popupDialog').open&&!shownPopups.has(popupKey)){shownPopups.add(popupKey);$('popupDialog').showModal();}
+    const popupImage=safeURL(settings.popupImage,'');
+    const popupButtonUrl=safeURL(settings.popupButtonUrl,'');
+    const popupImageWrap=$('popupImageWrap');
+    popupImageWrap.hidden=!popupImage;
+    if(popupImage){
+      image('popupImage',popupImage,settings.popupTitle+' 이미지');
+    }else{
+      $('popupImage').removeAttribute('src');
+      $('popupImage').alt='';
+    }
+    const popupAction=$('popupAction');
+    const hasAction=!!(String(settings.popupButtonLabel||'').trim()&&popupButtonUrl);
+    popupAction.hidden=!hasAction;
+    if(hasAction){
+      popupAction.href=popupButtonUrl;
+      popupAction.firstChild.textContent=String(settings.popupButtonLabel).trim()+' ';
+    }
+    $('popupTodayHide').hidden=preview;
+    const popupKey=[settings.popupTitle,settings.popupContent,popupImage,settings.popupButtonLabel,popupButtonUrl].join('|');
+    const mayOpen=preview||!popupDismissedToday(popupKey);
+    if(!$('popupDialog').open&&!shownPopups.has(popupKey)&&mayOpen){shownPopups.add(popupKey);$('popupDialog').showModal();}
+    $('popupDialog').dataset.signature=popupKey;
   }else if($('popupDialog').open)$('popupDialog').close();
   visualFinish.apply(c);
 }
@@ -191,6 +223,12 @@ document.querySelectorAll('[data-schedule-filter]').forEach(b=>b.addEventListene
 $('scheduleSearch').addEventListener('input',renderSchedules);$('noticeSearch').addEventListener('input',()=>{noticeLimit=6;renderNotices();});
 $('moreNotices').addEventListener('click',()=>{noticeLimit+=6;renderNotices();});$('moreRecords').addEventListener('click',()=>{recordLimit+=6;renderRecords();});
 $('retryLoad').addEventListener('click',load);$('closePopup').addEventListener('click',()=>$('popupDialog').close());
+$('popupTodayHide').addEventListener('click',()=>{
+  const signature=$('popupDialog').dataset.signature||'';
+  if(signature)dismissPopupForToday(signature);
+  $('popupDialog').close();
+});
+$('popupAction').addEventListener('click',()=>$('popupDialog').close());
 $('closePlayerDialog').addEventListener('click',()=>$('playerDialog').close());
 $('playerDialog').addEventListener('click',event=>{
   if(event.target===$('playerDialog'))$('playerDialog').close();
