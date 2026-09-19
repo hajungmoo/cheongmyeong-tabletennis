@@ -142,7 +142,7 @@ export const CONTENT_DEFAULTS = {
 export const LEGACY_DEFAULTS = {
   mainTitle: '기본을 단단하게.\n꿈은 더 크게.',
   mainSubtitle: '기술과 체력, 마음과 팀워크.\n작은 라켓으로 큰 꿈을 키우는 청명초 탁구부입니다.',
-  popupEnabled: false, popupTitle: '', popupContent: ''
+  popupEnabled: false, popupTitle: '', popupContent: '', popupImage: '', popupButtonLabel: '', popupButtonUrl: ''
 };
 export const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function resolveSettings(raw = {}) {
