@@ -1,6 +1,6 @@
 import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.1.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
-import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.1';
+import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
 import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.1.0';
@@ -61,7 +61,7 @@ function renderPlayers() {
   text('heroPlayerCount',players.length); text('teamCount',players.length+'명의 선수');
   let fallbackNumber=PLAYER_PORTRAITS.length;
   $('playerList').innerHTML=players.map(p=>{
-    const portrait=portraitForPlayer(p), number=portrait?.number||String(++fallbackNumber).padStart(2,'0');
+    const portrait=portraitForPlayer(p,players), number=portrait?.number||String(++fallbackNumber).padStart(2,'0');
     const artwork=portrait
       ? `<div class="playerPortraitFrame"><img class="playerPortrait" src="${portrait.src}" alt="${esc(maskName(p.name))} 선수 일러스트" width="600" height="800" loading="lazy" decoding="async" data-jersey-number="${number}"></div>`
       : `<div class="playerPortraitFrame isFallback">${jerseyMarkup(Number(number)-1)}</div>`;

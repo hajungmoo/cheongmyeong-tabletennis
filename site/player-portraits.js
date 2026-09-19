@@ -21,13 +21,25 @@ const byName = new Map(PLAYER_PORTRAITS.flatMap(player => [
   [player.name[0] + '○' + player.name.at(-1), player],
 ]));
 
-export function portraitForPlayer(player) {
-  return byName.get(normalizeName(player?.name)) ?? null;
+const publicName = name => {
+  const value=normalizeName(name);
+  return value.includes('○') ? value : value.length>=3 ? value[0]+'○'+value.at(-1) : value;
+};
+
+export function portraitForPlayer(player, roster = []) {
+  const direct=byName.get(normalizeName(player?.name));
+  if(direct)return direct;
+  // Legacy records may use a different internal spelling. The user supplied
+  // the portraits for the eight existing public cards, whose masked labels
+  // are unique. Never infer this match when two roster cards share a label.
+  const label=publicName(player?.name), candidate=byName.get(label);
+  if(!candidate||roster.filter(item=>publicName(item?.name)===label).length!==1)return null;
+  return candidate;
 }
 
 export function orderPlayersForHomepage(players) {
   // Stable sorting keeps the existing order of newly added, unmatched players.
   return [...players].sort((a, b) =>
-    Number(portraitForPlayer(a)?.number ?? 999) - Number(portraitForPlayer(b)?.number ?? 999)
+    Number(portraitForPlayer(a, players)?.number ?? 999) - Number(portraitForPlayer(b, players)?.number ?? 999)
   );
 }
