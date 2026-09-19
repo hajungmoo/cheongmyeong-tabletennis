@@ -355,3 +355,6 @@
 .championship .nextEventBadge span{flex-shrink:0;padding:4px 7px;border-radius:3px;background:#d7ad5a;color:#171005;font-size:8px;font-weight:900;letter-spacing:.09em}
 .championship .nextEventBadge strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e9d6aa;font-size:10px;font-weight:700}
 @media(max-width:700px){.championship .nextEventBadge{margin-top:13px;gap:8px;max-width:100%}.championship .nextEventBadge span{font-size:7px}.championship .nextEventBadge strong{font-size:9px;max-width:180px}}
+
+/* Keep NEXT EVENT visible even before schedule data finishes loading */
+.championship .nextEventBadge{min-height:34px}
