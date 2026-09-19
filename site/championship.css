@@ -259,3 +259,41 @@
 /* Administrator-uploaded player photos */
 .championship .playerPortraitFrame.hasPhoto{background:#06101d}
 .championship .playerPortraitFrame.hasPhoto .playerPortrait{object-fit:cover;object-position:center 18%}
+
+/* Player card large-view dialog */
+.championship .playerInteractive{cursor:pointer;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.championship .playerInteractive:hover{transform:translateY(-5px);border-color:#e0bb73;box-shadow:inset 0 0 15px #0006,0 16px 34px #0009,0 0 0 1px #d9b36b33}
+.championship .playerInteractive:focus-visible{outline:3px solid #e9c678;outline-offset:4px}
+.championship .playerInteractive::after{content:'크게 보기';position:absolute;right:8px;top:31px;z-index:3;padding:3px 6px;border:1px solid #b9955770;border-radius:3px;background:#03101dd9;color:#d7bd88;font-size:7px;letter-spacing:.04em;opacity:0;transform:translateY(-2px);transition:opacity .2s,transform .2s;pointer-events:none}
+.championship .playerInteractive:hover::after,.championship .playerInteractive:focus-visible::after{opacity:1;transform:none}
+.championship .playerDialog{padding:0;width:min(1020px,calc(100vw - 26px));max-width:none;max-height:92dvh;border:1px solid #c4a261;border-radius:10px;background:#04101d;color:#e9f0f7;overflow:hidden;box-shadow:0 35px 120px #000e}
+.championship .playerDialog[open]{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(300px,.82fr)}
+.championship .playerDialog::backdrop{background:#010711e8;backdrop-filter:blur(10px)}
+.championship .playerDialogClose{position:absolute;right:15px;top:15px;z-index:5;width:42px;height:42px;border-radius:50%;border:1px solid #a99773aa;background:#03101dea;color:#fff;font-size:29px;line-height:1;cursor:pointer;box-shadow:0 5px 20px #0008}
+.championship .playerDialogVisual{position:relative;min-height:620px;max-height:92dvh;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 28%,#173555,#020a12 72%)}
+.championship .playerDialogVisual::after{content:'';position:absolute;inset:auto 0 0;height:18%;background:linear-gradient(transparent,#04101d88);pointer-events:none}
+.championship .playerDialogImage{display:block;width:100%;height:100%;max-height:92dvh;object-fit:contain;object-position:center center}
+.championship .playerDialogVisual.hasPhoto .playerDialogImage{object-fit:contain}
+.championship .playerDialogVisual.isFallback .jersey{width:min(70%,360px);max-width:none;max-height:none}
+.championship .playerDialogCopy{padding:66px 40px 38px;display:flex;flex-direction:column;justify-content:center;min-width:0;background:radial-gradient(ellipse at 100% 0,#7e5a1825,transparent 58%),linear-gradient(145deg,#091827,#03101c 70%)}
+.championship .playerDialogTopline{display:flex;justify-content:space-between;gap:12px;color:#c7a763;font-size:9px;letter-spacing:.12em;border-bottom:1px solid #816a403d;padding-bottom:13px;margin-bottom:25px}
+.championship .playerDialogCopy h2{font-size:clamp(38px,5vw,66px);line-height:1.05;letter-spacing:-.065em;color:#f3d99e;margin:0 0 12px}
+.championship .playerDialogGrade{font-size:14px;color:#c5d1df;margin-bottom:7px}
+.championship .playerDialogStyle{font-size:14px;color:#9fb1c5;line-height:1.75;margin:0}
+.championship .playerDialogAward{margin-top:28px;border-top:1px solid #88713f4f;padding-top:18px}
+.championship .playerDialogAward>span{display:block;color:#d5b36e;font-size:9px;letter-spacing:.14em;margin-bottom:9px}
+.championship .playerDialogAward p{font-size:13px;line-height:1.85;color:#c8d5e4;white-space:pre-line;margin:0}
+.championship .playerDialogHint{margin-top:auto;padding-top:28px;font-size:9px;line-height:1.6;color:#6f849b}
+@media(max-width:760px){
+  .championship .playerInteractive::after{display:none}
+  .championship .playerDialog{width:calc(100vw - 18px);max-height:94dvh;overflow:auto}
+  .championship .playerDialog[open]{display:block}
+  .championship .playerDialogVisual{min-height:0;height:min(64dvh,590px);max-height:none}
+  .championship .playerDialogImage{height:100%;max-height:none}
+  .championship .playerDialogCopy{padding:25px 22px 24px}
+  .championship .playerDialogTopline{margin-bottom:16px;font-size:7px}
+  .championship .playerDialogCopy h2{font-size:38px}
+  .championship .playerDialogAward{margin-top:18px}
+  .championship .playerDialogHint{padding-top:20px}
+  .championship .playerDialogClose{position:fixed;right:17px;top:calc(3dvh + 10px)}
+}

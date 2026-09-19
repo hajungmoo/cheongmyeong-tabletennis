@@ -56,11 +56,38 @@ function applySettings(raw) {
   }else if($('popupDialog').open)$('popupDialog').close();
   visualFinish.apply(c);
 }
+let lastPlayerTrigger=null;
+function openPlayerDialog(player,card,number){
+  const dialog=$('playerDialog');
+  if(!dialog)return;
+  lastPlayerTrigger=card;
+  const visual=$('playerDialogVisual');
+  visual.replaceChildren();
+  visual.classList.toggle('hasPhoto',!!card.querySelector('.playerPortraitFrame.hasPhoto'));
+  const cardImage=card.querySelector('.playerPortrait');
+  if(cardImage){
+    const big=document.createElement('img');
+    big.className='playerDialogImage';
+    big.src=cardImage.currentSrc||cardImage.src;
+    big.alt=cardImage.alt||maskName(player.name)+' 선수 이미지';
+    visual.append(big);
+  }else{
+    visual.innerHTML=jerseyMarkup(Math.max(0,Number(number)-1));
+    visual.classList.add('isFallback');
+  }
+  text('playerDialogNumber','PLAYER '+number);
+  text('playerDialogName',maskName(player.name));
+  text('playerDialogGrade',player.grade||'');
+  text('playerDialogStyle',player.style||'청명초 선수');
+  text('playerDialogAward',player.award||'');
+  $('playerDialogAwardWrap').hidden=!String(player.award||'').trim();
+  dialog.showModal();
+}
 function renderPlayers() {
   const players=orderPlayersForHomepage(sortedItems(state.players).filter(visible));
   text('heroPlayerCount',players.length); text('teamCount',players.length+'명의 선수');
   let fallbackNumber=PLAYER_PORTRAITS.length;
-  $('playerList').innerHTML=players.map(p=>{
+  $('playerList').innerHTML=players.map((p,index)=>{
     const portrait=portraitForPlayer(p,players), number=portrait?.number||String(++fallbackNumber).padStart(2,'0');
     const uploadedPhoto=safeURL(p.image,'');
     const artwork=uploadedPhoto
@@ -68,7 +95,7 @@ function renderPlayers() {
       : portrait
         ? `<div class="playerPortraitFrame"><img class="playerPortrait" src="${portrait.src}" alt="${esc(maskName(p.name))} 선수 일러스트" width="600" height="800" loading="lazy" decoding="async" data-jersey-number="${number}"></div>`
         : `<div class="playerPortraitFrame isFallback">${jerseyMarkup(Number(number)-1)}</div>`;
-    return `<article class="player"><div class="playerMeta"><span>${number}</span><span aria-hidden="true">★ ★ ★</span></div>${artwork}<h3>${esc(maskName(p.name))}</h3><div class="playerGrade">${esc(p.grade)}</div><p>${esc(p.style||'청명초 선수')}</p>${p.award?`<div class="playerAward">${paragraphs(p.award)}</div>`:''}</article>`;
+    return `<article class="player playerInteractive" data-player-index="${index}" data-player-number="${number}" role="button" tabindex="0" aria-label="${esc(maskName(p.name))} 선수 크게 보기"><div class="playerMeta"><span>${number}</span><span aria-hidden="true">★ ★ ★</span></div>${artwork}<h3>${esc(maskName(p.name))}</h3><div class="playerGrade">${esc(p.grade)}</div><p>${esc(p.style||'청명초 선수')}</p>${p.award?`<div class="playerAward">${paragraphs(p.award)}</div>`:''}</article>`;
   }).join('')||'<p class="empty">선수단 소개를 준비하고 있습니다.</p>';
   $('playerList').querySelectorAll('.playerPortrait').forEach(img=>{
     const fallback=()=>{
@@ -88,6 +115,19 @@ function renderPlayers() {
     };
     img.addEventListener('error',fallback);
     if(img.complete&&!img.naturalWidth)fallback();
+  });
+  $('playerList').querySelectorAll('.playerInteractive').forEach(card=>{
+    const open=()=>{
+      const player=players[Number(card.dataset.playerIndex)];
+      if(player)openPlayerDialog(player,card,card.dataset.playerNumber||'');
+    };
+    card.addEventListener('click',open);
+    card.addEventListener('keydown',event=>{
+      if(event.key==='Enter'||event.key===' '){
+        event.preventDefault();
+        open();
+      }
+    });
   });
 }
 function renderSchedules() {
@@ -151,6 +191,14 @@ document.querySelectorAll('[data-schedule-filter]').forEach(b=>b.addEventListene
 $('scheduleSearch').addEventListener('input',renderSchedules);$('noticeSearch').addEventListener('input',()=>{noticeLimit=6;renderNotices();});
 $('moreNotices').addEventListener('click',()=>{noticeLimit+=6;renderNotices();});$('moreRecords').addEventListener('click',()=>{recordLimit+=6;renderRecords();});
 $('retryLoad').addEventListener('click',load);$('closePopup').addEventListener('click',()=>$('popupDialog').close());
+$('closePlayerDialog').addEventListener('click',()=>$('playerDialog').close());
+$('playerDialog').addEventListener('click',event=>{
+  if(event.target===$('playerDialog'))$('playerDialog').close();
+});
+$('playerDialog').addEventListener('close',()=>{
+  lastPlayerTrigger?.focus({preventScroll:true});
+  lastPlayerTrigger=null;
+});
 $('musicBtn').addEventListener('click',async()=>{const bgm=$('bgm');try{if(bgm.paused){await bgm.play();text('musicBtn','노래 일시정지');$('musicBtn').setAttribute('aria-pressed','true');}else{bgm.pause();text('musicBtn','팀 노래 듣기');$('musicBtn').setAttribute('aria-pressed','false');}}catch{ text('musicStatus','음악을 재생하지 못했습니다. 잠시 후 다시 눌러주세요.'); }});
 if(preview){
   $('previewBadge').hidden=false;
