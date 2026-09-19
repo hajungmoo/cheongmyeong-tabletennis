@@ -165,9 +165,20 @@ export function validISO(value) {
 }
 export function scheduleDate(item) {
   if (validISO(item.startDate)) return item.startDate;
-  const text = String(item.date || item.day || '');
-  const m = text.match(/^(\d{4})[.\-/]\s*(\d{1,2})[.\-/]\s*(\d{1,2})/);
-  return m ? validISO(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) : '';
+  const text = String(item.date || item.day || '').trim();
+
+  const full = text.match(/(\d{4})[.\-/]\s*(\d{1,2})[.\-/]\s*(\d{1,2})/);
+  if (full) {
+    return validISO(`${full[1]}-${full[2].padStart(2,'0')}-${full[3].padStart(2,'0')}`);
+  }
+
+  const short = text.match(/(?:^|\s)(\d{1,2})[.\-/]\s*(\d{1,2})(?:\D|$)/);
+  const korean = text.match(/(?:^|\s)(\d{1,2})\s*월\s*(\d{1,2})\s*일?/);
+  const match = short || korean;
+  if (!match) return '';
+
+  const year = koreaToday().slice(0,4);
+  return validISO(`${year}-${match[1].padStart(2,'0')}-${match[2].padStart(2,'0')}`);
 }
 export function koreaToday() {
   return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
