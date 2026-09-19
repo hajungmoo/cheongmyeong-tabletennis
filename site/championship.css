@@ -67,6 +67,12 @@
 .championship .playerMeta{display:flex;align-items:center;justify-content:space-between;width:100%;font-size:8px;margin:0;color:#b6c6dd;gap:5px}
 .championship .playerMeta>span:last-child{background:none;border:0;padding:0;color:#ddbc77}
 .championship .jersey{width:100%;max-width:134px;height:auto;aspect-ratio:1.1;overflow:visible;filter:drop-shadow(0 5px 4px #000b);margin:4px 0}
+.championship .playerPortraitFrame{position:relative;flex-shrink:0;width:calc(100% + 18px);aspect-ratio:3/4;margin:8px -9px 5px;overflow:hidden;background:#05101f;border-bottom:1px solid #b58c4938}
+.championship .playerPortraitFrame::after{content:'';position:absolute;inset:70% 0 0;background:linear-gradient(transparent,#05101f80);pointer-events:none}
+.championship .playerPortrait{display:block;width:100%;height:100%;object-fit:contain;object-position:center top}
+.championship .playerPortraitFrame.isFallback{display:grid;place-items:center;background:radial-gradient(ellipse at 50% 40%,#21395466,transparent 75%)}
+.championship .playerPortraitFrame.isFallback::after{display:none}
+.championship .playerPortraitFrame .jersey{width:88%}
 .championship .player h3{font-size:19px;font-weight:850;letter-spacing:-.06em;margin:5px 0 5px;line-height:1.25;display:block;color:#f8f7f2}
 .championship .playerGrade{font-size:10px;color:#d2dae8;margin-bottom:6px}
 .championship .player>p{font-size:10px;line-height:1.6;text-align:center;margin:0;color:#b8c7db}
