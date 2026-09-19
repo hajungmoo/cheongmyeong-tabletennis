@@ -1,5 +1,5 @@
 import { photoUploadError } from './photo-upload.js?v=3.2.0';
-import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=3.2.0';
+import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=3.3.0';
 import { sameSettingsValue as equal } from './settings-compare.js?v=3.1.2';
 
 const field = (key,label,type='text',hint='') => ({key,label,type,hint});
@@ -13,9 +13,9 @@ const groups = [
   {id:'coach',title:'코치 · 후원',fields:[field('coachImage','코치 사진','image','사진을 바꾸면 코치 메시지 영역과 큰 화면에 함께 반영됩니다.'),field('coachTitle','지도 방향 제목'),field('coachDescription','지도 방향 설명','textarea'),field('coachName','지도자 이름'),field('coachRole','지도자 소개'),field('messageTitle','코치 인사말 제목'),field('messageBody','코치 인사말','textarea'),field('sponsorName','후원 이름'),field('sponsorDescription','후원 소개','textarea'),field('sponsorImage','후원 로고 주소','image','기존 로고: dreamers-logo.png')],array:'values'},
   {id:'contact',title:'연락처 · 위치',fields:[field('contactAddress','주소'),field('contactPhone','문의 전화번호','tel'),field('contactNote','방문 안내','textarea'),field('mapQuery','지도에서 찾을 장소','text','정확한 장소명 또는 주소를 입력하세요.'),field('mapUrl','네이버 지도 링크','url')]},
   {id:'visibility',title:'공개 영역',fields:[...Object.keys(CONTENT_DEFAULTS).filter(k=>k.startsWith('show')&&!['showMarquee','showEffects'].includes(k)).map(key=>field(key,({showTeam:'선수단',showOverview:'요약 소식',showActivities:'팀 이야기',showSchedules:'훈련 일정',showRecords:'대회 기록',showNotices:'공지사항',showCoach:'코치 · 후원',showMessage:'코치 인사말',showFaq:'자주 묻는 질문',showTrial:'체험 신청',showMap:'찾아오시는 길',showMusic:'팀 노래'})[key],'boolean'))]},
-  {id:'popup',title:'팝업 공지',fields:[field('popupEnabled','팝업 사용','boolean'),field('popupTitle','팝업 제목'),field('popupContent','팝업 내용','textarea')]}
+  {id:'popup',title:'팝업 공지',fields:[field('popupEnabled','팝업 사용','boolean'),field('popupImage','팝업 사진','image','사진이 없으면 기존처럼 글만 표시됩니다.'),field('popupTitle','팝업 제목'),field('popupContent','팝업 내용','textarea'),field('popupButtonLabel','바로가기 버튼 문구','text','선택 사항 · 예: 체험 신청 바로가기'),field('popupButtonUrl','바로가기 링크','url','선택 사항 · 예: #trial 또는 https://…')]}
 ];
-const legacy = new Set(['mainTitle','mainSubtitle','popupEnabled','popupTitle','popupContent']);
+const legacy = new Set(['mainTitle','mainSubtitle','popupEnabled','popupImage','popupTitle','popupContent','popupButtonLabel','popupButtonUrl']);
 const arrayFields = {
   activities:[field('title','활동 제목'),field('tag','분류'),field('date','날짜'),field('body','내용','textarea'),field('image','대표 사진 · 선택','image','기존 이미지 주소도 사용할 수 있습니다. 선수의 얼굴이 드러나지 않는 사진을 사용하세요.'),field('photos','사진첩 · 최대 10장','photos','추가 사진 주소를 한 줄에 하나씩 입력하거나 아래에서 사진 파일을 선택하세요.'),field('url','관련 링크 · 선택','url'),field('visible','홈페이지에 표시','boolean')],
   faqs:[field('question','질문'),field('answer','답변','textarea'),field('visible','홈페이지에 표시','boolean')],
@@ -35,12 +35,12 @@ function normalized(raw){
   return out;
 }
 function inputHTML(f,value,attributes,id) {
-  const attr=`id="${id}" ${attributes}`,type=f.type,activityPhoto=f.key==='image'||f.key==='photos'||f.key==='coachImage';
+  const attr=`id="${id}" ${attributes}`,type=f.type,activityPhoto=f.key==='image'||f.key==='photos'||f.key==='coachImage'||f.key==='popupImage';
   const input=type==='photos'?`<textarea ${attr} rows="3" maxlength="20000" placeholder="추가 사진 주소를 한 줄에 하나씩 입력">${esc(Array.isArray(value)?value.join('\n'):value)}</textarea>`:type==='textarea'?`<textarea ${attr} rows="${f.key==='messageBody'?8:3}" maxlength="12000">${esc(value)}</textarea>`:
     type==='boolean'?`<select ${attr}><option value="true" ${value===false?'':'selected'}>표시함</option><option value="false" ${value===false?'selected':''}>표시 안 함</option></select>`:
     `<input ${attr} type="${['url','image'].includes(type)?'text':type}" value="${esc(value)}" maxlength="${['url','image'].includes(type)?1500:500}" ${['url','image'].includes(type)?'placeholder="https://… 또는 기존 이미지 파일명"':''}>`;
   if(activityPhoto){
-    const buttonText=type==='photos'?'사진 여러 장 추가':f.key==='coachImage'?'코치 사진 선택':'대표 사진 선택';
+    const buttonText=type==='photos'?'사진 여러 장 추가':f.key==='coachImage'?'코치 사진 선택':f.key==='popupImage'?'팝업 사진 선택':'대표 사진 선택';
     return `<div class="editorField activityPhotoField"><div class="photoFieldTitle">${esc(f.label)}</div><div class="photoUploadField"><button class="photoUploadButton" type="button" data-open-photo="${id}_upload">${buttonText}</button><input id="${id}_upload" type="file" hidden aria-label="${buttonText} 파일" accept="image/jpeg,image/png,image/webp" ${type==='photos'?'multiple':''} data-photo-target="${id}" data-photo-many="${type==='photos'}"><span class="photoUploadStatus" role="status">버튼을 눌러 휴대폰 또는 컴퓨터의 사진을 선택하세요.</span><div class="photoEditorPreview" data-photo-preview="${id}"></div><p class="photoUploadNote">① 사진 선택 → ② 업로드 완료 확인 → ③ 상단 ‘홈페이지에 저장’<br>JPG·PNG·WebP / 장당 15MB 이하 / 대표 사진 포함 최대 10장<br>공개 가능한 사진만 선택하세요.</p><details class="photoUrlDetails"><summary>사진 주소 직접 입력 · 선택 사항</summary><label for="${id}">${type==='photos'?'추가 사진 주소 · 한 줄에 하나씩':'대표 사진 주소'}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}</details></div></div>`;
   }
   return `<div class="editorField"><label for="${id}">${esc(f.label)}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}</div>`;
@@ -88,6 +88,7 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
   function validate(draft) {
     if(!draft.mainTitle.trim())throw new Error('첫 화면의 메인 제목을 입력해주세요.');
     if(draft.popupEnabled&&(!draft.popupTitle.trim()||!draft.popupContent.trim()))throw new Error('팝업 제목과 내용을 입력해주세요.');
+    if((draft.popupButtonLabel&&!draft.popupButtonUrl)||(!draft.popupButtonLabel&&draft.popupButtonUrl))throw new Error('팝업 바로가기 버튼은 문구와 링크를 함께 입력해주세요.');
     for(const g of groups){
       for(const f of g.fields.filter(f=>['url','image'].includes(f.type))){const v=get(draft,pathFor(f.key));if(v&&!safeURL(v))throw new Error(f.label+'에 올바른 주소를 입력해주세요.');}
       if(g.array)for(const item of draft.siteContent[g.array]){
