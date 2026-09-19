@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050505">
 <title>청명초 탁구부 관리자 | CHUNGMYEONG ADMIN</title>
-<link rel="stylesheet" href="site/admin.css?v=2.1.0">
+<link rel="stylesheet" href="site/admin.css?v=2.2.0">
 <link rel="stylesheet" href="site/photo-editor.css?v=3.2.0">
 <meta name="robots" content="noindex, nofollow">
 </head>
@@ -52,6 +52,17 @@
 <b id="countTrials">—</b>
 <span>체험 신청</span>
 </div>
+</div>
+<div class="visitStatsPanel glass">
+  <div class="visitStatsHead">
+    <div><small>HOMEPAGE ANALYTICS</small><strong>홈페이지 방문 통계</strong></div>
+    <span id="visitStatsStatus">방문 기록을 불러오는 중입니다.</span>
+  </div>
+  <div class="visitStatsGrid">
+    <div class="visitMetric"><small>TODAY</small><b id="visitToday">—</b><span>오늘 방문</span></div>
+    <div class="visitMetric"><small>THIS MONTH</small><b id="visitMonth">—</b><span>이번 달 방문</span></div>
+    <div class="visitMetric"><small>ALL TIME</small><b id="visitTotal">—</b><span>누적 방문 기록</span></div>
+  </div>
 </div>
 <div class="dashboardActions">
 <a href="#daily"><span class="actionNo">01</span><strong>오늘 훈련 · 출석</strong><span>훈련 내용과 선수 컨디션 기록</span></a><a href="#notices"><span class="actionNo">02</span><strong>새 공지 작성</strong><span>훈련 안내와 중요한 소식</span></a><a href="#settings"><span class="actionNo">03</span><strong>홈페이지 편집</strong><span>소개 · 팀 이야기 · FAQ 수정</span></a><a href="manager/"><span class="actionNo">04</span><strong>경기 관리 프로그램</strong><span>승패 · 리그전 · 경기 기록</span></a>
@@ -282,6 +293,6 @@
 </div>
 <div id="toast" class="toast">저장 완료</div>
 <!--================================ FIREBASE ================================-->
-<script type="module" src="site/admin.js?v=3.4.0"></script>
+<script type="module" src="site/admin.js?v=3.5.0"></script>
 </body>
 </html>
