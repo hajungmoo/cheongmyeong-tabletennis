@@ -255,3 +255,7 @@
 @media(max-width:700px){.championship .players{grid-template-columns:repeat(2,minmax(0,1fr))}.championship .player{padding:13px 10px}.championship .jersey{max-height:116px}.championship .player h3{font-size:19px}.championship .playerGrade{font-size:11px}.championship .player>p,.championship .playerAward{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.championship *,.championship *::before,.championship *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media(forced-colors:active){.championship .heroSlogan span,.championship .heroSlogan strong{background:none;color:CanvasText;-webkit-text-fill-color:CanvasText}.championship .recordIcon{color:CanvasText}}
+
+/* Administrator-uploaded player photos */
+.championship .playerPortraitFrame.hasPhoto{background:#06101d}
+.championship .playerPortraitFrame.hasPhoto .playerPortrait{object-fit:cover;object-position:center 18%}

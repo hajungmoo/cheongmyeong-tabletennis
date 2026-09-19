@@ -4,7 +4,7 @@
 <meta name="theme-color" content="#050505">
 <title>청명초 탁구부 관리자 | CHUNGMYEONG ADMIN</title>
 <link rel="stylesheet" href="site/admin.css?v=2.1.0">
-<link rel="stylesheet" href="site/photo-editor.css?v=3.1.1">
+<link rel="stylesheet" href="site/photo-editor.css?v=3.2.0">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body><div id="progress"></div>
@@ -99,6 +99,27 @@
 <input id="players_style" class="field" placeholder="예: 오른손 쉐이크">
 <label class="label" for="players_award">수상기록 / 소개</label>
 <textarea id="players_award" placeholder="공개 홈페이지에 표시할 선수 소개"></textarea>
+<div class="playerPhotoManager">
+  <div class="playerPhotoHeading">
+    <span class="label playerPhotoLabel">선수 이미지</span>
+    <p class="fieldHint">사진을 등록하면 홈페이지 선수 카드에 표시됩니다. 사진이 없으면 현재 캐릭터 이미지가 그대로 사용됩니다.</p>
+  </div>
+  <div class="playerPhotoBody">
+    <div id="players_photoPreview" class="playerPhotoPreview">
+      <div class="playerPhotoPlaceholder">사진 없음<small>현재 캐릭터 이미지 사용</small></div>
+    </div>
+    <div class="playerPhotoControls">
+      <input type="hidden" id="players_image">
+      <input type="file" id="players_photoFile" accept="image/jpeg,image/png,image/webp" hidden>
+      <div class="playerPhotoButtons">
+        <button class="btn btnGold" type="button" onclick="pickPlayerPhoto()">사진 선택</button>
+        <button class="btn btnDark" type="button" onclick="removePlayerPhoto()">사진 사용 안 함</button>
+      </div>
+      <p id="players_photoStatus" class="photoUploadStatus">JPG · PNG · WebP, 최대 15MB. 선택한 사진은 ‘선수 저장’을 누를 때 업로드됩니다.</p>
+      <p class="photoUploadNote">실제 사진을 공개할 선수만 등록해 주세요. 홈페이지에서는 선수 이름이 기존처럼 일부 가려 표시됩니다.</p>
+    </div>
+  </div>
+</div>
 <div>
 <label class="label" for="players_hidden">홈페이지 공개</label><select id="players_hidden"><option value="false">홈페이지에 표시</option>
 <option value="true">홈페이지에서 숨김</option></select><p class="fieldHint">숨겨도 선수 정보와 훈련 기록은 유지됩니다.</p>
@@ -261,6 +282,6 @@
 </div>
 <div id="toast" class="toast">저장 완료</div>
 <!--================================ FIREBASE ================================-->
-<script type="module" src="site/admin.js?v=3.1.2"></script>
+<script type="module" src="site/admin.js?v=3.2.0"></script>
 </body>
 </html>

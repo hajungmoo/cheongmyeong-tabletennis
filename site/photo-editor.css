@@ -19,3 +19,17 @@
 .photoEditorThumb span{position:absolute;bottom:3px;left:4px;font-size:10px;background:#030b16bb;padding:2px 4px;color:#e0c68c}
 .editorField textarea[data-repeat-field=photos]{font-size:12px;line-height:1.7;font-family:inherit}
 @media(max-width:520px){#siteEditor .photoUploadButton{width:100%;min-width:0}.photoUploadField{padding:14px}.photoUploadStatus{font-size:13px}.photoUploadNote{font-size:11px}}
+
+/* Player portrait uploader */
+.playerPhotoManager{margin-top:22px;padding:18px;border:1px solid #8f713f66;border-radius:10px;background:#0a0805}
+.playerPhotoHeading .playerPhotoLabel{margin:0 0 5px}
+.playerPhotoBody{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;align-items:start;margin-top:14px}
+.playerPhotoPreview{width:150px;aspect-ratio:3/4;border:1px solid #8e774f88;border-radius:9px;overflow:hidden;background:radial-gradient(ellipse at 50% 25%,#2c2416,#090806 72%);display:grid;place-items:center}
+.playerPhotoPreview img{width:100%;height:100%;object-fit:cover;object-position:center 18%}
+.playerPhotoPlaceholder{padding:14px;text-align:center;color:#dbc48f;font-size:13px;font-weight:700;line-height:1.55}
+.playerPhotoPlaceholder small{display:block;margin-top:6px;color:#9f9278;font-size:10px;font-weight:500}
+.playerPhotoControls{min-width:0}
+.playerPhotoButtons{display:flex;gap:8px;flex-wrap:wrap}
+.playerPhotoButtons .btn{min-width:130px}
+.playerAdminThumb{float:right;width:72px;height:90px;object-fit:cover;object-position:center 18%;border:1px solid #a9884d66;border-radius:7px;margin:0 0 10px 14px;background:#0b0a07}
+@media(max-width:520px){.playerPhotoBody{grid-template-columns:110px minmax(0,1fr);gap:13px}.playerPhotoPreview{width:110px}.playerPhotoButtons{display:grid}.playerPhotoButtons .btn{width:100%;min-width:0}.playerAdminThumb{width:58px;height:74px}}

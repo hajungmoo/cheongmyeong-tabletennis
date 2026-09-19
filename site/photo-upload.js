@@ -34,7 +34,8 @@ export async function preparePhoto(file) {
   }finally{URL.revokeObjectURL(url);}
 }
 
-export function createPhotoUploader(app,auth) {
+export function createPhotoUploader(app,auth,options={}) {
+  const folder=String(options.folder||'homepage/activities').replace(/^\/+|\/+$/g,'')||'homepage/activities';
   let apiPromise;
   return async function uploadPhoto(file,onProgress=()=>{}) {
     if(!auth.currentUser)throw new Error('관리자 로그인 후 사진을 올릴 수 있습니다.');
@@ -42,7 +43,7 @@ export function createPhotoUploader(app,auth) {
     apiPromise??=import('https://www.gstatic.com/firebasejs/12.13.0/firebase-storage.js');
     const api=await apiPromise,storage=configurePhotoStorage(api,app);
     if(!auth.currentUser)throw new Error('로그인이 만료되었습니다. 다시 로그인해주세요.');
-    const path='homepage/activities/'+crypto.randomUUID()+'.jpg';
+    const path=folder+'/'+crypto.randomUUID()+'.jpg';
     const task=api.uploadBytesResumable(api.ref(storage,path),blob,{contentType:'image/jpeg',cacheControl:'public,max-age=31536000,immutable'});
     await new Promise((resolve,reject)=>task.on('state_changed',snap=>onProgress(Math.round(snap.bytesTransferred/snap.totalBytes*100)),reject,resolve));
     return api.getDownloadURL(task.snapshot.ref);

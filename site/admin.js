@@ -1,5 +1,5 @@
 import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.1.2';
-import { createPhotoUploader } from './photo-upload.js?v=3.1.1';
+import { createPhotoUploader, photoUploadError } from './photo-upload.js?v=3.2.0';
 import { assertSettingsUnchanged } from './settings-compare.js?v=3.1.2';
 import {
   initializeApp
@@ -100,6 +100,7 @@ const fields={
     "grade",
     "style",
     "award",
+    "image",
     "hidden",
     "order"
   ],
@@ -662,6 +663,82 @@ initScheduleTimeSelectors();
 일반 데이터 저장
 ================================ */
 const pendingItems=new Set();
+const uploadPlayerPhoto=createPhotoUploader(app,auth,{folder:'homepage/players'});
+let playerPhotoObjectURL='';
+
+function renderPlayerPhotoPreview(url='',isLocal=false){
+  const box=$('players_photoPreview');
+  if(!box)return;
+  if(playerPhotoObjectURL && playerPhotoObjectURL!==url){
+    URL.revokeObjectURL(playerPhotoObjectURL);
+  }
+  playerPhotoObjectURL=isLocal?url:'';
+  box.replaceChildren();
+  if(url){
+    const img=document.createElement('img');
+    img.src=url;
+    img.alt='선수 이미지 미리보기';
+    img.addEventListener('error',()=>{
+      box.replaceChildren();
+      const placeholder=document.createElement('div');
+      placeholder.className='playerPhotoPlaceholder';
+      placeholder.append('사진을 불러올 수 없습니다.');
+      const small=document.createElement('small');
+      small.textContent='저장 전 이미지 주소를 확인해주세요.';
+      placeholder.append(small);
+      box.append(placeholder);
+    },{once:true});
+    box.append(img);
+    return;
+  }
+  const placeholder=document.createElement('div');
+  placeholder.className='playerPhotoPlaceholder';
+  placeholder.append('사진 없음');
+  const small=document.createElement('small');
+  small.textContent='현재 캐릭터 이미지 사용';
+  placeholder.append(small);
+  box.append(placeholder);
+}
+
+window.pickPlayerPhoto=function(){
+  $('players_photoFile')?.click();
+};
+
+window.removePlayerPhoto=function(){
+  const file=$('players_photoFile');
+  const image=$('players_image');
+  const status=$('players_photoStatus');
+  if(file)file.value='';
+  if(image)image.value='';
+  renderPlayerPhotoPreview('');
+  if(status){
+    status.dataset.state='';
+    status.textContent='사진 사용 안 함으로 설정했습니다. ‘선수 저장’을 누르면 홈페이지는 캐릭터 이미지로 돌아갑니다.';
+  }
+};
+
+$('players_photoFile')?.addEventListener('change',event=>{
+  const file=event.target.files?.[0];
+  const status=$('players_photoStatus');
+  if(!file)return;
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
+    event.target.value='';
+    if(status){status.dataset.state='error';status.textContent='JPG, PNG, WebP 사진만 선택할 수 있습니다.';}
+    return;
+  }
+  if(file.size>15*1024*1024){
+    event.target.value='';
+    if(status){status.dataset.state='error';status.textContent='사진 한 장은 15MB 이하로 선택해주세요.';}
+    return;
+  }
+  const localURL=URL.createObjectURL(file);
+  renderPlayerPhotoPreview(localURL,true);
+  if(status){
+    status.dataset.state='';
+    status.textContent=file.name+' 선택됨 · 선수 저장을 누르면 사진을 업로드합니다.';
+  }
+});
+
 window.saveItem=
 async function(type){
   if(!auth.currentUser || !fields[type] || pendingItems.has(type))return;
@@ -765,6 +842,29 @@ async function(type){
     if(type==='schedules' && data.endDate && (!data.startDate || data.endDate<data.startDate)){
       alert('종료 날짜는 시작 날짜 이후로 입력해주세요.');return;
     }
+    if(type==='players'){
+      const photoFile=$('players_photoFile')?.files?.[0];
+      const photoStatus=$('players_photoStatus');
+      if(photoFile){
+        try{
+          if(photoStatus){photoStatus.dataset.state='';photoStatus.textContent='사진 준비 중…';}
+          const imageURL=await uploadPlayerPhoto(photoFile,percent=>{
+            if(photoStatus)photoStatus.textContent='사진 업로드 중… '+percent+'%';
+          });
+          data.image=imageURL;
+          if($('players_image'))$('players_image').value=imageURL;
+          if($('players_photoFile'))$('players_photoFile').value='';
+          renderPlayerPhotoPreview(imageURL);
+          if(photoStatus){photoStatus.dataset.state='success';photoStatus.textContent='사진 업로드 완료 · 선수 정보를 저장합니다.';}
+        }catch(error){
+          console.error(error);
+          const message=photoUploadError(error);
+          if(photoStatus){photoStatus.dataset.state='error';photoStatus.textContent=message;}
+          alert(message);
+          return;
+        }
+      }
+    }
     if(id){
       await updateDoc(
         doc(
@@ -830,6 +930,15 @@ function(type){
   ){
     clearScheduleTimeControls();
   }
+  if(type==="players"){
+    if($('players_photoFile'))$('players_photoFile').value='';
+    renderPlayerPhotoPreview('');
+    const status=$('players_photoStatus');
+    if(status){
+      status.dataset.state='';
+      status.textContent='JPG · PNG · WebP, 최대 15MB. 선택한 사진은 ‘선수 저장’을 누를 때 업로드됩니다.';
+    }
+  }
 };
 window.editItem=
 function(type,id){
@@ -868,6 +977,15 @@ function(type,id){
       ||
       ""
     );
+  }
+  if(type==="players"){
+    if($('players_photoFile'))$('players_photoFile').value='';
+    renderPlayerPhotoPreview(data.image||'');
+    const status=$('players_photoStatus');
+    if(status){
+      status.dataset.state='';
+      status.textContent=data.image?'현재 등록된 사진입니다. 새 사진을 선택하면 저장할 때 교체됩니다.':'등록된 사진이 없습니다. 현재 캐릭터 이미지가 표시됩니다.';
+    }
   }
   location.hash=
   type;
@@ -938,8 +1056,15 @@ function itemHtml(type,data){
   maskName(title)
   :
   title;
+  const photoMarkup=
+  type==="players" && data.image
+  ?
+  `<img class="playerAdminThumb" src="${esc(data.image)}" alt="${esc(shownTitle)} 선수 이미지" loading="lazy">`
+  :
+  "";
   return `
   <article class="item">
+    ${photoMarkup}
     <span class="badge">
       ${esc(badge)}
       ${data.pinned===true||data.pinned==="true"?" · 중요 공지":""}

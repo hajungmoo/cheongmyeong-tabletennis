@@ -62,19 +62,31 @@ function renderPlayers() {
   let fallbackNumber=PLAYER_PORTRAITS.length;
   $('playerList').innerHTML=players.map(p=>{
     const portrait=portraitForPlayer(p,players), number=portrait?.number||String(++fallbackNumber).padStart(2,'0');
-    const artwork=portrait
-      ? `<div class="playerPortraitFrame"><img class="playerPortrait" src="${portrait.src}" alt="${esc(maskName(p.name))} 선수 일러스트" width="600" height="800" loading="lazy" decoding="async" data-jersey-number="${number}"></div>`
-      : `<div class="playerPortraitFrame isFallback">${jerseyMarkup(Number(number)-1)}</div>`;
+    const uploadedPhoto=safeURL(p.image,'');
+    const artwork=uploadedPhoto
+      ? `<div class="playerPortraitFrame hasPhoto"><img class="playerPortrait" src="${esc(uploadedPhoto)}" alt="${esc(maskName(p.name))} 선수 이미지" width="600" height="800" loading="lazy" decoding="async" data-jersey-number="${number}" data-fallback-src="${esc(portrait?.src||'')}"></div>`
+      : portrait
+        ? `<div class="playerPortraitFrame"><img class="playerPortrait" src="${portrait.src}" alt="${esc(maskName(p.name))} 선수 일러스트" width="600" height="800" loading="lazy" decoding="async" data-jersey-number="${number}"></div>`
+        : `<div class="playerPortraitFrame isFallback">${jerseyMarkup(Number(number)-1)}</div>`;
     return `<article class="player"><div class="playerMeta"><span>${number}</span><span aria-hidden="true">★ ★ ★</span></div>${artwork}<h3>${esc(maskName(p.name))}</h3><div class="playerGrade">${esc(p.grade)}</div><p>${esc(p.style||'청명초 선수')}</p>${p.award?`<div class="playerAward">${paragraphs(p.award)}</div>`:''}</article>`;
   }).join('')||'<p class="empty">선수단 소개를 준비하고 있습니다.</p>';
   $('playerList').querySelectorAll('.playerPortrait').forEach(img=>{
     const fallback=()=>{
       const frame=img.parentElement;
       if(!frame)return;
+      const fallbackSrc=img.dataset.fallbackSrc;
+      if(fallbackSrc){
+        frame.classList.remove('hasPhoto');
+        img.removeAttribute('data-fallback-src');
+        img.alt=img.alt.replace('선수 이미지','선수 일러스트');
+        img.src=fallbackSrc;
+        return;
+      }
       frame.classList.add('isFallback');
+      frame.classList.remove('hasPhoto');
       frame.innerHTML=jerseyMarkup(Number(img.dataset.jerseyNumber)-1);
     };
-    img.addEventListener('error',fallback,{once:true});
+    img.addEventListener('error',fallback);
     if(img.complete&&!img.naturalWidth)fallback();
   });
 }
