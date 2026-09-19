@@ -1,5 +1,8 @@
-import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.1.1';
+import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.1.2';
 import { createPhotoUploader } from './photo-upload.js?v=3.1.1';
+import { assertSettingsUnchanged } from './settings-compare.js?v=3.1.2';
+import { initPlayerPhotoEditor } from './player-photo-editor.js?v=3.3.0';
+import { playerImageFor } from './player-portraits.js?v=3.3.0';
 import {
   initializeApp
 }
@@ -96,6 +99,7 @@ const fields={
   ],
   players:[
     "name",
+    "photoUrl",
     "grade",
     "style",
     "award",
@@ -409,8 +413,20 @@ async function(){
 /* ================================
 홈페이지 설정
 ================================ */
+// Both editors use the already configured homepage media uploader and rules.
+const uploadHomepagePhoto=createPhotoUploader(app,auth);
+const playerPhotoEditor=initPlayerPhotoEditor({
+  uploadPhoto:uploadHomepagePhoto,
+  isSignedIn:()=>!!auth.currentUser,
+  getPlayer:()=>({id:$('players_id').value,name:$('players_name').value}),
+  getRoster:()=>cache.players
+});
+function playerSaveStatus(message,state=''){
+  $('playersSaveStatus').textContent=message;
+  $('playersSaveStatus').dataset.state=state;
+}
 const siteEditor=initSiteEditor({
-  uploadPhoto:createPhotoUploader(app,auth),
+  uploadPhoto:uploadHomepagePhoto,
   isSignedIn:()=>!!auth.currentUser,
   notify:toast,
   read:async()=>{const snap=await getDoc(doc(db,'settings','homepage'));return snap.exists()?snap.data():{};},
@@ -419,8 +435,7 @@ const siteEditor=initSiteEditor({
     const ref=doc(db,'settings','homepage');
     return runTransaction(db,async transaction=>{
       const snap=await transaction.get(ref),current=snap.exists()?snap.data():{};
-      const value=(o,path)=>path.split('.').reduce((v,k)=>v?.[k],o);
-      for(const path of Object.keys(patch))if(JSON.stringify(value(current,path))!==JSON.stringify(value(baseline,path))){const error=new Error('다른 화면에서 같은 항목이 변경되었습니다.');error.code='cm/conflict';throw error;}
+      assertSettingsUnchanged(current,baseline,Object.keys(patch));
       const next={...current,siteContent:{...current.siteContent}},nested={};
       for(const [path,val] of Object.entries(patch)){
         if(path.startsWith('siteContent.')){next.siteContent[path.slice(12)]=val;(nested.siteContent??={})[path.slice(12)]=val;}
@@ -665,7 +680,13 @@ const pendingItems=new Set();
 window.saveItem=
 async function(type){
   if(!auth.currentUser || !fields[type] || pendingItems.has(type))return;
+  if(type==='players'){
+    try{playerPhotoEditor.assertReady();}
+    catch(error){playerSaveStatus(error.message,'error');return;}
+  }
   pendingItems.add(type);
+  let itemSaved=false;
+  if(type==='players'){playerPhotoEditor.setSaving(true);playerSaveStatus('선수 정보를 저장하고 있습니다.');}
   try{
     if(
       type==="schedules"
@@ -715,9 +736,8 @@ async function(type){
       &&
       !data.name
     ){
-      alert(
-        "선수 이름을 입력해주세요."
-      );
+      playerSaveStatus('선수 이름을 입력해주세요.','error');
+      $('players_name').focus();
       return;
     }
     if(
@@ -786,24 +806,36 @@ async function(type){
         data
       );
     }
-    clearForm(type);
+    itemSaved=true;
+    if(type==='players')playerPhotoEditor.markSaved();
+    resetItemForm(type);
+    if(type==='players')playerPhotoEditor.setSaving(true);
     await loadList(type);
+    if(type==='players')playerSaveStatus('선수 정보와 사진을 저장했습니다. 홈페이지 선수단에 반영되었습니다.','success');
     toast(
       "저장 완료"
     );
   }
   catch(error){
     console.error(error);
-    alert(
+    if(type==='players')playerSaveStatus(itemSaved
+      ? '선수 정보와 사진은 저장되었습니다. 목록을 다시 불러오지 못했으니 새로고침해주세요.'
+      : '선수 정보를 저장하지 못했습니다. 사진 선택과 입력 내용은 유지됩니다. 다시 ‘선수 저장’을 눌러주세요.'+(error.code?' ('+error.code+')':''),'error');
+    else alert(
       "저장 중 오류가 발생했습니다.\n\n"
       +
       error.message
     );
   }
-  finally{pendingItems.delete(type);}
+  finally{pendingItems.delete(type);if(type==='players')playerPhotoEditor.setSaving(false);}
 };
 window.clearForm=
 function(type){
+  if(type==='players'&&(pendingItems.has(type)||playerPhotoEditor.busy)){toast('사진 업로드 또는 저장이 끝날 때까지 기다려주세요.');return;}
+  resetItemForm(type);
+  if(type==='players')playerSaveStatus('');
+};
+function resetItemForm(type){
   const hidden=
   $(type+"_id");
   if(hidden){
@@ -830,9 +862,11 @@ function(type){
   ){
     clearScheduleTimeControls();
   }
-};
+  if(type==='players')playerPhotoEditor.load('');
+}
 window.editItem=
 function(type,id){
+  if(type==='players'&&(pendingItems.has(type)||playerPhotoEditor.busy)){toast('사진 업로드 또는 저장이 끝날 때까지 기다려주세요.');return;}
   const data=
   cache[type]
   .find(
@@ -869,11 +903,13 @@ function(type,id){
       ""
     );
   }
+  if(type==='players'){playerPhotoEditor.load(data.photoUrl||'');playerSaveStatus('사진을 선택한 뒤 ‘선수 저장’을 누르면 반영됩니다.');}
   location.hash=
   type;
 };
 window.deleteItem=
 async function(type,id){
+  if(type==='players'&&(pendingItems.has(type)||playerPhotoEditor.busy)){toast('사진 업로드 또는 저장이 끝날 때까지 기다려주세요.');return;}
   if(
     !confirm(
       "정말 삭제할까요?"
@@ -938,8 +974,10 @@ function itemHtml(type,data){
   maskName(title)
   :
   title;
+  const artwork=type==='players'?playerImageFor(data,cache.players):null;
   return `
   <article class="item">
+    ${artwork?.src?`<img class="playerListPhoto" src="${esc(artwork.src)}" alt="${esc(shownTitle)} 선수 사진" width="54" height="72" loading="lazy" data-fallback-src="${esc(artwork.fallbackSrc)}">`:''}
     <span class="badge">
       ${esc(badge)}
       ${data.pinned===true||data.pinned==="true"?" · 중요 공지":""}
@@ -995,6 +1033,11 @@ async function loadList(type){
       </p>
     </article>
     `;
+    if(type==='players')list.querySelectorAll('.playerListPhoto').forEach(image=>image.addEventListener('error',()=>{
+      const fallback=image.dataset.fallbackSrc;
+      if(fallback&&image.getAttribute('src')!==fallback){image.dataset.fallbackSrc='';image.src=fallback;}
+      else image.hidden=true;
+    }));
     if(
       type==="players"
     ){
@@ -1515,6 +1558,7 @@ onAuthStateChanged(
     }
     else{
       siteEditor.reset();
+      playerPhotoEditor.load('');
       $("loginScreen")
       .classList
       .remove(

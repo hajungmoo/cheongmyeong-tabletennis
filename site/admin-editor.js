@@ -1,5 +1,6 @@
 import { photoUploadError } from './photo-upload.js?v=3.1.1';
 import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=3.1.0';
+import { sameSettingsValue as equal } from './settings-compare.js?v=3.1.2';
 
 const field = (key,label,type='text',hint='') => ({key,label,type,hint});
 const groups = [
@@ -24,7 +25,6 @@ const arrayNames = {activities:'활동',faqs:'질문',values:'지도 키워드'}
 const pathFor = key => legacy.has(key)?key:'siteContent.'+key;
 const get = (obj,path) => path.split('.').reduce((o,k)=>o?.[k],obj);
 const set = (obj,path,value) => {const keys=path.split('.');let o=obj;for(const k of keys.slice(0,-1))o=o[k]??=( {} );o[keys.at(-1)]=value;};
-const equal = (a,b) => JSON.stringify(a)===JSON.stringify(b);
 function normalized(raw){
   const out=resolveSettings(raw);
   for(const [key,fields]of Object.entries(arrayFields))out.siteContent[key]=out.siteContent[key].map((x,i)=>{
@@ -115,7 +115,7 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
     try{
       const patch=Object.fromEntries(paths.map(p=>[p,get(draft,p)]));
       raw=await write(patch,raw);baseline=normalized(raw);loaded=true;uploadFailure='';render();notify('홈페이지에 반영했습니다.');status('저장 완료 · 홈페이지에 반영했습니다.');sendPreview();
-    }catch(error){console.error(error);status(error.code==='cm/conflict'?'다른 화면에서 같은 항목을 수정했습니다. 입력 내용은 유지됩니다. 수정 내용을 복사한 뒤 새로 불러와 다시 저장해주세요.':'저장하지 못했습니다. 입력 내용은 유지됩니다. 잠시 후 다시 시도해주세요.');}
+    }catch(error){console.error(error);$('editorStatus').dataset.state='error';status(error.code==='cm/conflict'?'다른 화면에서 같은 항목을 수정했습니다. 사진과 입력 내용은 유지됩니다. 수정 내용을 복사한 뒤 새로 불러와 다시 저장해주세요.':'홈페이지에 저장하지 못했습니다. 사진과 입력 내용은 유지됩니다. 잠시 후 다시 시도해주세요.'+(error.code?' (오류 코드: '+error.code+')':''));}
     finally{saving=false;root.inert=false;$('saveSiteContent').disabled=!loaded||!changedPaths().length;$('editorRefresh').disabled=false;}
   }
   function sendPreview(){if($('homePreview').open&&$('homePreviewFrame').contentWindow)$('homePreviewFrame').contentWindow.postMessage({type:'cm-home-preview-v2',settings:readDraft()},location.origin);}

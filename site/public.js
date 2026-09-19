@@ -1,5 +1,6 @@
 import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.1.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
+import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage, playerImageFor } from './player-portraits.js?v=3.3.0';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
 import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.1.0';
@@ -56,9 +57,33 @@ function applySettings(raw) {
   visualFinish.apply(c);
 }
 function renderPlayers() {
-  const players=sortedItems(state.players).filter(visible);
+  const players=orderPlayersForHomepage(sortedItems(state.players).filter(visible));
   text('heroPlayerCount',players.length); text('teamCount',players.length+'명의 선수');
-  $('playerList').innerHTML=players.map((p,i)=>`<article class="player"><div class="playerMeta"><span>${String(i+1).padStart(2,'0')}</span><span aria-hidden="true">★ ★ ★</span></div>${jerseyMarkup(i)}<h3>${esc(maskName(p.name))}</h3><div class="playerGrade">${esc(p.grade)}</div><p>${esc(p.style||'청명초 선수')}</p>${p.award?`<div class="playerAward">${paragraphs(p.award)}</div>`:''}</article>`).join('')||'<p class="empty">선수단 소개를 준비하고 있습니다.</p>';
+  let fallbackNumber=PLAYER_PORTRAITS.length;
+  $('playerList').innerHTML=players.map(p=>{
+    const portrait=portraitForPlayer(p,players), number=portrait?.number||String(++fallbackNumber).padStart(2,'0');
+    const photo=playerImageFor(p,players);
+    const artwork=photo.src
+      ? `<div class="playerPortraitFrame"><img class="playerPortrait" src="${esc(photo.src)}" alt="${esc(maskName(p.name))} 선수 ${photo.custom?'사진':'일러스트'}" width="600" height="800" loading="lazy" decoding="async" data-jersey-number="${number}" data-fallback-src="${esc(photo.fallbackSrc)}"></div>`
+      : `<div class="playerPortraitFrame isFallback">${jerseyMarkup(Number(number)-1)}</div>`;
+    return `<article class="player"><div class="playerMeta"><span>${number}</span><span aria-hidden="true">★ ★ ★</span></div>${artwork}<h3>${esc(maskName(p.name))}</h3><div class="playerGrade">${esc(p.grade)}</div><p>${esc(p.style||'청명초 선수')}</p>${p.award?`<div class="playerAward">${paragraphs(p.award)}</div>`:''}</article>`;
+  }).join('')||'<p class="empty">선수단 소개를 준비하고 있습니다.</p>';
+  $('playerList').querySelectorAll('.playerPortrait').forEach(img=>{
+    const fallback=()=>{
+      const defaultSrc=img.dataset.fallbackSrc;
+      if(defaultSrc&&img.getAttribute('src')!==defaultSrc){
+        img.dataset.fallbackSrc='';
+        img.src=defaultSrc;
+        return;
+      }
+      const frame=img.parentElement;
+      if(!frame)return;
+      frame.classList.add('isFallback');
+      frame.innerHTML=jerseyMarkup(Number(img.dataset.jerseyNumber)-1);
+    };
+    img.addEventListener('error',fallback);
+    if(img.complete&&!img.naturalWidth)fallback();
+  });
 }
 function renderSchedules() {
   const items=sortedItems(state.schedules).filter(visible);
@@ -131,8 +156,12 @@ if(preview){
 }
 applySettings({});
 load();
-// Only homepage presentation settings are observed; manager/parents data paths stay unchanged.
+// Observe public homepage content without changing manager/parents data paths.
 onSnapshot(doc(db,'settings','homepage'),snap=>{
   rawSettings=snap.exists()?snap.data():{};
   applySettings(previewDraft?{...rawSettings,...previewDraft,siteContent:{...rawSettings.siteContent,...previewDraft.siteContent}}:rawSettings);
 },error=>console.warn('홈페이지 실시간 설정 갱신 불가',error.code));
+onSnapshot(collection(db,'players'),snap=>{
+  state.players=snap.docs.map(d=>({...d.data(),id:d.id}));
+  renderPlayers();
+},error=>console.warn('홈페이지 선수 사진 실시간 갱신 불가',error.code));

@@ -1,0 +1,56 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>선수 사진 편집 화면 검증</title><link rel="stylesheet" href="site/admin.css?v=2.1.0"><link rel="stylesheet" href="site/photo-editor.css?v=3.1.1"><link rel="stylesheet" href="site/player-photo-editor.css?v=3.3.0"><style>body{margin:0;background:#050b15}header{padding:16px;color:#ead29b;background:#121512}header button{margin:4px;padding:8px 12px}.qaContent{max-width:800px;margin:20px auto;padding:0 12px}.formCard{padding:22px}iframe{display:block;margin:0 auto;border:0;max-width:100%;height:1200px;background:#050b15}#qaState{padding:12px;color:#b8d6bc;white-space:pre-wrap}</style><body><header>선수 사진 기능 검증 · 실제 데이터 저장 없음</header><main class="qaContent"><div class="formCard glass"><h3>선수 등록 / 수정</h3>
+<input type="hidden" id="players_id">
+<label class="label" for="players_name">이름</label>
+<input id="players_name" class="field" placeholder="예: 강다윤">
+<div id="playerPhotoEditor" class="playerPhotoEditor" aria-busy="false">
+<h4>선수 사진 / 그림</h4>
+<input type="hidden" id="players_photoUrl">
+<input type="file" id="players_photoFile" accept="image/jpeg,image/png,image/webp" aria-label="선수 사진 파일" hidden>
+<div class="playerPhotoLayout">
+<div class="playerPhotoFrame"><img id="playerPhotoPreview" alt="선수 사진 미리보기" width="600" height="800" hidden><div id="playerPhotoEmpty" class="playerPhotoEmpty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 5 9.5 3h5L16 5h4a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/><circle cx="12" cy="12" r="4"/></svg>사진 미리보기</div></div>
+<div><div class="playerPhotoButtons"><button id="choosePlayerPhoto" class="photoUploadButton" type="button">선수 사진 선택</button><button id="removePlayerPhoto" class="miniBtn" type="button" disabled>사진 삭제</button><button id="cancelPlayerPhoto" class="miniBtn" type="button" hidden>변경 취소</button></div><p id="playerPhotoCaption" class="playerPhotoCaption">직접 찍은 사진이나 그림을 넣을 수 있습니다.</p></div>
+</div>
+<p id="playerPhotoStatus" class="photoUploadStatus" role="status" aria-live="polite">사진 선택 → 업로드 완료 → 아래 ‘선수 저장’</p>
+<p class="photoUploadNote">JPG·PNG·WebP / 15MB 이하<br>사진 삭제 후 저장하면 기본 일러스트 또는 유니폼 그림이 표시됩니다.</p>
+</div>
+<div class="row2"><div><label class="label" for="players_grade">학년</label>
+<input id="players_grade" class="field" placeholder="예: 6학년">
+</div>
+<div><label class="label" for="players_order">정렬순서</label>
+<input id="players_order" class="field" type="number" placeholder="1">
+</div>
+</div>
+<label class="label" for="players_style">전형 / 특징</label>
+<input id="players_style" class="field" placeholder="예: 오른손 쉐이크">
+<label class="label" for="players_award">수상기록 / 소개</label>
+<textarea id="players_award" placeholder="공개 홈페이지에 표시할 선수 소개"></textarea>
+<div>
+<label class="label" for="players_hidden">홈페이지 공개</label><select id="players_hidden"><option value="false">홈페이지에 표시</option>
+<option value="true">홈페이지에서 숨김</option></select><p class="fieldHint">숨겨도 선수 정보와 훈련 기록은 유지됩니다.</p>
+</div>
+<div class="btnRow"><button id="savePlayer" class="btn btnGold" type="button" onclick="saveItem('players')">선수 저장</button>
+<button id="newPlayer" class="btn btnDark" type="button" onclick="clearForm('players')">새로 작성</button>
+</div>
+<p id="playersSaveStatus" role="status" aria-live="polite"></p>
+</div>
+<pre id="qaState"></pre></main><script type="module">
+import {initPlayerPhotoEditor} from './site/player-photo-editor.js?v=3.3.0';
+import {preparePhoto} from './site/photo-upload.js?v=3.1.1';
+if(!new URLSearchParams(location.search).has('frame')){
+ document.body.innerHTML='<header>사진 편집 미리보기 · 실제 데이터 저장 없음 <button id="desktop">PC 화면</button><button id="mobile">휴대폰 390px</button></header><iframe id="qaFrame" title="선수 사진 편집 검증" width="1000" src="qa-player-photo.html?frame=1"></iframe>';
+ document.getElementById('desktop').onclick=()=>document.getElementById('qaFrame').width=1000;
+ document.getElementById('mobile').onclick=()=>document.getElementById('qaFrame').width=390;
+}else{
+ const $=id=>document.getElementById(id),roster=[{id:'qa-player',name:'강다윤',grade:'6학년',photoUrl:''}];
+ $('players_id').value='qa-player';$('players_name').value='강다윤';$('players_grade').value='6학년';
+ const editor=initPlayerPhotoEditor({getPlayer:()=>({name:$('players_name').value}),getRoster:()=>roster,isSignedIn:()=>true,uploadPhoto:async(file,progress)=>{
+  const blob=await preparePhoto(file);progress(50);await new Promise(r=>setTimeout(r,500));progress(100);
+  $('qaState').textContent='변환 확인: '+blob.type+' / '+blob.size+' bytes / 외부 업로드 없음';
+  return 'https://cheongmyeong-tabletennis.vercel.app/site/assets/players/player-02.webp';
+ }});
+ editor.load();
+ window.saveItem=async()=>{try{editor.assertReady();editor.setSaving(true);roster[0].photoUrl=$('players_photoUrl').value;editor.markSaved();$('playersSaveStatus').textContent='검증용 저장 완료 · 실제 선수 데이터는 변경하지 않았습니다.';$('qaState').textContent+='
+저장할 photoUrl: '+roster[0].photoUrl;}finally{editor.setSaving(false);}};
+ window.clearForm=()=>{editor.load(roster[0].photoUrl);$('playersSaveStatus').textContent='저장한 사진 다시 불러옴';};
+}
+</script></body></html>

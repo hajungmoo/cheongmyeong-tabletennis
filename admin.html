@@ -5,6 +5,7 @@
 <title>청명초 탁구부 관리자 | CHUNGMYEONG ADMIN</title>
 <link rel="stylesheet" href="site/admin.css?v=2.1.0">
 <link rel="stylesheet" href="site/photo-editor.css?v=3.1.1">
+<link rel="stylesheet" href="site/player-photo-editor.css?v=3.3.0">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body><div id="progress"></div>
@@ -88,6 +89,17 @@
 <input type="hidden" id="players_id">
 <label class="label" for="players_name">이름</label>
 <input id="players_name" class="field" placeholder="예: 강다윤">
+<div id="playerPhotoEditor" class="playerPhotoEditor" aria-busy="false">
+<h4>선수 사진 / 그림</h4>
+<input type="hidden" id="players_photoUrl">
+<input type="file" id="players_photoFile" accept="image/jpeg,image/png,image/webp" aria-label="선수 사진 파일" hidden>
+<div class="playerPhotoLayout">
+<div class="playerPhotoFrame"><img id="playerPhotoPreview" alt="선수 사진 미리보기" width="600" height="800" hidden><div id="playerPhotoEmpty" class="playerPhotoEmpty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 5 9.5 3h5L16 5h4a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/><circle cx="12" cy="12" r="4"/></svg>사진 미리보기</div></div>
+<div><div class="playerPhotoButtons"><button id="choosePlayerPhoto" class="photoUploadButton" type="button">선수 사진 선택</button><button id="removePlayerPhoto" class="miniBtn" type="button" disabled>사진 삭제</button><button id="cancelPlayerPhoto" class="miniBtn" type="button" hidden>변경 취소</button></div><p id="playerPhotoCaption" class="playerPhotoCaption">직접 찍은 사진이나 그림을 넣을 수 있습니다.</p></div>
+</div>
+<p id="playerPhotoStatus" class="photoUploadStatus" role="status" aria-live="polite">사진 선택 → 업로드 완료 → 아래 ‘선수 저장’</p>
+<p class="photoUploadNote">JPG·PNG·WebP / 15MB 이하<br>사진 삭제 후 저장하면 기본 일러스트 또는 유니폼 그림이 표시됩니다.</p>
+</div>
 <div class="row2"><div><label class="label" for="players_grade">학년</label>
 <input id="players_grade" class="field" placeholder="예: 6학년">
 </div>
@@ -103,9 +115,10 @@
 <label class="label" for="players_hidden">홈페이지 공개</label><select id="players_hidden"><option value="false">홈페이지에 표시</option>
 <option value="true">홈페이지에서 숨김</option></select><p class="fieldHint">숨겨도 선수 정보와 훈련 기록은 유지됩니다.</p>
 </div>
-<div class="btnRow"><button class="btn btnGold" onclick="saveItem('players')">선수 저장</button>
-<button class="btn btnDark" onclick="clearForm('players')">새로 작성</button>
+<div class="btnRow"><button id="savePlayer" class="btn btnGold" type="button" onclick="saveItem('players')">선수 저장</button>
+<button id="newPlayer" class="btn btnDark" type="button" onclick="clearForm('players')">새로 작성</button>
 </div>
+<p id="playersSaveStatus" role="status" aria-live="polite"></p>
 </div>
 <div class="listCard glass"><h3>등록 선수</h3>
 <div id="playersList" class="list"></div>
@@ -261,6 +274,6 @@
 </div>
 <div id="toast" class="toast">저장 완료</div>
 <!--================================ FIREBASE ================================-->
-<script type="module" src="site/admin.js?v=3.1.1"></script>
+<script type="module" src="site/admin.js?v=3.3.0"></script>
 </body>
 </html>
