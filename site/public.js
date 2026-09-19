@@ -1,6 +1,6 @@
 import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.1.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
-import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.0';
+import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.1';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
 import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.1.0';

@@ -14,7 +14,12 @@ export const PLAYER_PORTRAITS = Object.freeze([
 })));
 
 const normalizeName = name => String(name ?? '').normalize('NFC').replace(/\s+/gu, '');
-const byName = new Map(PLAYER_PORTRAITS.map(player => [player.name, player]));
+// Some existing public roster records already contain the masked name.
+// Only exact full names or these explicitly derived masked names can match.
+const byName = new Map(PLAYER_PORTRAITS.flatMap(player => [
+  [player.name, player],
+  [player.name[0] + '○' + player.name.at(-1), player],
+]));
 
 export function portraitForPlayer(player) {
   return byName.get(normalizeName(player?.name)) ?? null;
