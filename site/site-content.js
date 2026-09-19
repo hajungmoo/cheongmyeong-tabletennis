@@ -185,7 +185,15 @@ export function koreaToday() {
 }
 export function scheduleState(item, today = koreaToday()) {
   const start = scheduleDate(item), end = validISO(item.endDate) || start;
-  return !start ? 'other' : end < today ? 'past' : start <= today ? 'ongoing' : 'upcoming';
+  if (start) return end < today ? 'past' : start <= today ? 'ongoing' : 'upcoming';
+
+  const monthPattern=/^\d{4}-\d{2}$/;
+  const periodStart=monthPattern.test(item.periodStartMonth||'') ? item.periodStartMonth : '';
+  const periodEnd=monthPattern.test(item.periodEndMonth||'') ? item.periodEndMonth : periodStart;
+  if (!periodStart) return 'other';
+
+  const todayMonth=String(today).slice(0,7);
+  return periodEnd < todayMonth ? 'past' : periodStart <= todayMonth ? 'ongoing' : 'upcoming';
 }
 export function sortedItems(items) { return [...items].sort((a,b)=>(Number(a.order??999)-Number(b.order??999)) || String(b.date||b.createdAt||'').localeCompare(String(a.date||a.createdAt||''))); }
 export const isPinned = item => item.pinned === true || item.pinned === 'true';
