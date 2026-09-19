@@ -297,3 +297,54 @@
   .championship .playerDialogHint{padding-top:20px}
   .championship .playerDialogClose{position:fixed;right:17px;top:calc(3dvh + 10px)}
 }
+
+/* Coach photo card + large coach message */
+.championship .coachPhotoArt{padding:0;min-height:230px;border:1px solid #9e824f66;background:#030c16;overflow:hidden;border-radius:7px}
+.championship .coachPhotoArt::before{display:none}
+.championship .coachPortraitButton{position:relative;display:block;width:100%;height:100%;min-height:230px;padding:0;border:0;background:#030c16;color:inherit;cursor:pointer;overflow:hidden}
+.championship .coachPortrait{display:block;width:100%;height:100%;min-height:230px;object-fit:cover;object-position:center}
+.championship .coachPortraitButton::after{content:'';position:absolute;inset:52% 0 0;background:linear-gradient(transparent,#020a14e8);pointer-events:none}
+.championship .coachZoomHint{position:absolute;left:13px;right:13px;bottom:11px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border:1px solid #c4a35b66;background:#03101dcc;color:#e8d09a;font-size:9px;letter-spacing:.03em;border-radius:4px;backdrop-filter:blur(7px)}
+.championship .coachZoomHint b{font-size:15px}
+.championship .coachPortraitButton:hover .coachPortrait{transform:scale(1.025)}
+.championship .coachPortrait{transition:transform .28s ease}
+.championship .coachPortraitButton:focus-visible{outline:3px solid #e9c678;outline-offset:-4px}
+
+.championship .coachDialog{padding:0;width:min(1120px,calc(100vw - 26px));max-width:none;max-height:92dvh;border:1px solid #c1a061;border-radius:10px;background:#04101d;color:#e9f0f7;overflow:hidden;box-shadow:0 35px 120px #000e}
+.championship .coachDialog[open]{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr)}
+.championship .coachDialog::backdrop{background:#010711e8;backdrop-filter:blur(10px)}
+.championship .coachDialogClose{position:absolute;right:15px;top:15px;z-index:5;width:42px;height:42px;border-radius:50%;border:1px solid #a99773aa;background:#03101dea;color:#fff;font-size:29px;line-height:1;cursor:pointer;box-shadow:0 5px 20px #0008}
+.championship .coachDialogVisual{min-height:640px;max-height:92dvh;display:grid;place-items:center;background:#020a13;overflow:hidden}
+.championship .coachDialogVisual img{display:block;width:100%;height:100%;max-height:92dvh;object-fit:contain;object-position:center}
+.championship .coachDialogCopy{padding:62px 42px 38px;overflow:auto;background:radial-gradient(ellipse at 100% 0,#7e5a1825,transparent 58%),linear-gradient(145deg,#091827,#03101c 70%)}
+.championship .coachDialogCopy .sectionKicker{justify-content:flex-start;margin:0 0 14px;color:#d7b66f;font-size:10px;letter-spacing:.16em}
+.championship .coachDialogCopy .sectionKicker::before,.championship .coachDialogCopy .sectionKicker::after{display:none}
+.championship .coachDialogCopy h2{font-size:clamp(28px,3.4vw,48px);line-height:1.35;color:#f2d89b;margin:0 0 18px}
+.championship .coachDialogIdentity{display:flex;flex-direction:column;gap:3px;padding-bottom:20px;border-bottom:1px solid #816a403d}
+.championship .coachDialogIdentity strong{font-size:15px;color:#ead09a}
+.championship .coachDialogIdentity span{font-size:10px;color:#8498ae}
+.championship .coachDialogBody{padding-top:20px}
+.championship .coachDialogBody p{font-size:13px;line-height:1.95;color:#b8cadd;margin:0}
+.championship .coachDialogBody p+p{margin-top:15px}
+.championship .coachDialogBody p:first-child{font-size:14px;color:#e3cca0}
+
+@media(max-width:1050px){
+  .championship .coachGrid{grid-template-columns:220px minmax(0,1fr)}
+  .championship .coachArt.coachPhotoArt{display:block;min-height:220px}
+  .championship .coachPortraitButton,.championship .coachPortrait{min-height:220px}
+  .championship .coachGrid .values{grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));border-left:0;padding-left:0}
+}
+@media(max-width:700px){
+  .championship .coachGrid{grid-template-columns:1fr}
+  .championship .coachArt.coachPhotoArt{display:block;width:min(100%,360px);min-height:0}
+  .championship .coachPortraitButton,.championship .coachPortrait{min-height:0;aspect-ratio:1/1}
+  .championship .coachGrid .values{grid-column:auto}
+  .championship .coachDialog{width:calc(100vw - 18px);max-height:94dvh;overflow:auto}
+  .championship .coachDialog[open]{display:block}
+  .championship .coachDialogVisual{min-height:0;height:auto;max-height:none}
+  .championship .coachDialogVisual img{height:auto;max-height:none}
+  .championship .coachDialogCopy{padding:26px 22px 28px}
+  .championship .coachDialogCopy h2{font-size:27px}
+  .championship .coachDialogBody p{font-size:12px}
+  .championship .coachDialogClose{position:fixed;right:17px;top:calc(3dvh + 10px)}
+}

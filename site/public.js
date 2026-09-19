@@ -3,7 +3,7 @@ import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
-import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.1.0';
+import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.2.0';
 
 const app = initializeApp({apiKey:'AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI',authDomain:'cheongmyeong-tabletennis.firebaseapp.com',projectId:'cheongmyeong-tabletennis',storageBucket:'cheongmyeong-tabletennis.firebasestorage.app',messagingSenderId:'712801821489',appId:'1:712801821489:web:501d20626d8cd12dc98610'});
 const db = getFirestore(app), $ = id => document.getElementById(id);
@@ -35,7 +35,7 @@ function applySettings(raw) {
   settings=resolveSettings(raw); const c=settings.siteContent;
   document.querySelectorAll('[data-content]').forEach(el=>{if(el.dataset.content==='messageBody')renderCoachMessage(el,c.messageBody);else el.textContent=c[el.dataset.content]??'';});
   text('mainTitle',settings.mainTitle); text('mainSubtitle',settings.mainSubtitle);
-  image('heroImage',c.heroImage,c.heroAlt); image('navLogo',c.heroImage,c.teamName+' 로고'); image('sponsorImage',c.sponsorImage,c.sponsorName);
+  image('heroImage',c.heroImage,c.heroAlt); image('navLogo',c.heroImage,c.teamName+' 로고'); image('sponsorImage',c.sponsorImage,c.sponsorName); image('coachImage',c.coachImage||'site/assets/coach-profile.webp',(c.coachName||'코치')+' 프로필'); image('coachDialogImage',c.coachImage||'site/assets/coach-profile.webp',(c.coachName||'코치')+' 프로필 크게 보기');
   text('primaryLabel',c.primaryLabel); text('secondaryLabel',c.secondaryLabel);
   const sections={team:'showTeam',overview:'showOverview',activity:'showActivities',schedule:'showSchedules',records:'showRecords',notice:'showNotices',coach:'showCoach',message:'showMessage',faq:'showFaq',trial:'showTrial',map:'showMap',sponsor:'showCoach'};
   Object.entries(sections).forEach(([id,key])=>{$(id).hidden=c[key]===false;});
@@ -199,6 +199,12 @@ $('playerDialog').addEventListener('close',()=>{
   lastPlayerTrigger?.focus({preventScroll:true});
   lastPlayerTrigger=null;
 });
+$('openCoachDialog').addEventListener('click',()=>$('coachDialog').showModal());
+$('closeCoachDialog').addEventListener('click',()=>$('coachDialog').close());
+$('coachDialog').addEventListener('click',event=>{
+  if(event.target===$('coachDialog'))$('coachDialog').close();
+});
+$('coachDialog').addEventListener('close',()=>$('openCoachDialog').focus({preventScroll:true}));
 $('musicBtn').addEventListener('click',async()=>{const bgm=$('bgm');try{if(bgm.paused){await bgm.play();text('musicBtn','노래 일시정지');$('musicBtn').setAttribute('aria-pressed','true');}else{bgm.pause();text('musicBtn','팀 노래 듣기');$('musicBtn').setAttribute('aria-pressed','false');}}catch{ text('musicStatus','음악을 재생하지 못했습니다. 잠시 후 다시 눌러주세요.'); }});
 if(preview){
   $('previewBadge').hidden=false;

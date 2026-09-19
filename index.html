@@ -8,7 +8,7 @@
   <meta name="description" content="수원청명초등학교 엘리트 탁구부 공식 홈페이지">
   <title>수원청명초 탁구부 | CHEONGMYEONG TABLE TENNIS</title>
   <link rel="stylesheet" href="site/public.css?v=2.1.2">
-  <link rel="stylesheet" href="site/championship.css?v=3.4.0">
+  <link rel="stylesheet" href="site/championship.css?v=3.5.0">
 </head>
 <body class="championship">
 <a class="skipLink" href="#main">본문 바로가기</a>
@@ -73,7 +73,7 @@
   </div></section>
   </div>
 
-  <section id="coach" class="section coachSection"><div class="container coachGrid"><div class="coachArt" aria-hidden="true"><div class="paddleArt"></div><span>ONE TEAM.<br>ONE DREAM.</span></div>
+  <section id="coach" class="section coachSection"><div class="container coachGrid"><div class="coachArt coachPhotoArt"><button id="openCoachDialog" class="coachPortraitButton" type="button" aria-label="코치 사진과 메시지 크게 보기"><img id="coachImage" class="coachPortrait" src="site/assets/coach-profile.webp" alt="하정무 코치 프로필" width="420" height="420" loading="lazy"><span class="coachZoomHint">사진 · 메시지 크게 보기 <b>↗</b></span></button></div>
     <div><div class="sectionKicker">COACH MESSAGE</div><h2 data-content="coachTitle">선수를 만드는 건 기술만이 아닙니다.</h2><p class="coachDescription" data-content="coachDescription"></p><div class="coachName" data-content="coachName">하정무 코치</div><p class="coachRole" data-content="coachRole"></p></div>
     <div class="values" id="coachValues"></div>
   </div></section>
@@ -113,6 +113,18 @@
     <p class="playerDialogHint">선수 개인정보 보호를 위해 이름은 일부 가려 표시됩니다.</p>
   </div>
 </dialog>
-<script type="module" src="site/public.js?v=3.4.0"></script>
+<dialog id="coachDialog" class="coachDialog" aria-labelledby="coachDialogTitle">
+  <button type="button" id="closeCoachDialog" class="coachDialogClose" aria-label="코치 메시지 닫기">×</button>
+  <div class="coachDialogVisual">
+    <img id="coachDialogImage" src="site/assets/coach-profile.webp" alt="하정무 코치 프로필 크게 보기">
+  </div>
+  <div class="coachDialogCopy">
+    <div class="sectionKicker">FROM THE COACH</div>
+    <h2 id="coachDialogTitle" data-content="messageTitle">시작은 같을 수 있어도, 성장의 모습은 모두 다릅니다.</h2>
+    <div class="coachDialogIdentity"><strong data-content="coachName">하정무 코치</strong><span data-content="coachRole"></span></div>
+    <div class="coachDialogBody messageBody" data-content="messageBody"></div>
+  </div>
+</dialog>
+<script type="module" src="site/public.js?v=3.5.0"></script>
 </body>
 </html>
