@@ -175,6 +175,14 @@ const officialCompetitionSchedules=[
     order:1201
   }
 ];
+
+const officialWeeklySchedules=[
+  {sourceKey:"weekly-mon",recurring:true,day:"매주 월요일",startDate:"",endDate:"",title:"기본기 · 풋워크 집중훈련",time:"",memo:"포핸드·백핸드 기본기 / 드라이브 안정화 / 스텝·풋워크 / 자세 점검",order:10},
+  {sourceKey:"weekly-tue",recurring:true,day:"매주 화요일",startDate:"",endDate:"",title:"서브 · 리시브 집중훈련",time:"",memo:"서브 회전·코스 / 짧은볼·긴볼 리시브 / 3구 공격 연결 / 첫 공 전개",order:20},
+  {sourceKey:"weekly-wed",recurring:true,day:"매주 수요일",startDate:"",endDate:"",title:"멀티볼 · 체력훈련",time:"",memo:"볼박스 반복훈련 / 좌우 이동 / 연속 공격 / 하체·코어·기초체력",order:30},
+  {sourceKey:"weekly-thu",recurring:true,day:"매주 목요일",startDate:"",endDate:"",title:"실전 패턴 · 전술훈련",time:"",memo:"3구·5구 전개 / 랠리 패턴 / 상황별 코스 선택 / 경기 운영 훈련",order:40},
+  {sourceKey:"weekly-fri",recurring:true,day:"매주 금요일",startDate:"",endDate:"",title:"게임 · 주간 실전훈련",time:"",memo:"연습경기 / 한세트 게임 / 사다리 게임 / 주간 훈련 점검 및 보완",order:50}
+];
 /* ================================
 캐시
 ================================ */
@@ -372,12 +380,13 @@ async function docsOf(name){
 async function seedOfficialCompetitionSchedules(){
   const markerRef=doc(db,"settings","calendar2026");
   const marker=await getDoc(markerRef);
-  if(marker.exists() && marker.data().officialCompetitionsVersion===2)return;
+  if(marker.exists() && marker.data().officialCompetitionsVersion===3)return;
 
   const existing=await docsOf("schedules");
   const compact=value=>String(value||"").replace(/\s+/g,"").toLowerCase();
+  const scheduleTemplates=[...officialWeeklySchedules,...officialCompetitionSchedules];
 
-  for(const schedule of officialCompetitionSchedules){
+  for(const schedule of scheduleTemplates){
     const found=existing.find(item=>
       item.sourceKey===schedule.sourceKey
       ||
@@ -406,7 +415,7 @@ async function seedOfficialCompetitionSchedules(){
     markerRef,
     {
       officialCompetitionsSeeded:true,
-      officialCompetitionsVersion:2,
+      officialCompetitionsVersion:3,
       updatedAt:serverTimestamp()
     },
     {merge:true}
