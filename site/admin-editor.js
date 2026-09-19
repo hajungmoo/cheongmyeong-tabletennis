@@ -1,5 +1,5 @@
 import { photoUploadError } from './photo-upload.js?v=3.2.0';
-import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=3.3.0';
+import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=3.4.0';
 import { sameSettingsValue as equal } from './settings-compare.js?v=3.1.2';
 
 const field = (key,label,type='text',hint='') => ({key,label,type,hint});
