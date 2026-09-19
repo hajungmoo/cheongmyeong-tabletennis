@@ -70,6 +70,63 @@ const officialPlayers=[
   {name:"양하은", grade:"2학년", style:"청명초 선수", order:7},
   {name:"임수아", grade:"1학년", style:"청명초 선수", order:8}
 ];
+
+const officialCompetitionSchedules=[
+  {
+    sourceKey:"2026-chairman-52",
+    day:"2026.04.08 ~ 04.12 · 5일",
+    startDate:"2026-04-08",
+    endDate:"2026-04-12",
+    title:"제52회 회장기 전국초등학교 탁구대회",
+    time:"",
+    memo:"경남 밀양시 배드민턴경기장 · 한국초등학교탁구연맹",
+    order:408
+  },
+  {
+    sourceKey:"2026-hopes-u12-selection",
+    day:"2026.06.26 ~ 06.29 · 4일",
+    startDate:"2026-06-26",
+    endDate:"2026-06-29",
+    title:"2026 탁구 호프스(U12) 국가대표 선발전",
+    time:"",
+    memo:"무주국민체육센터 · 대한체육회 · 대한탁구협회 · 한국초등학교탁구연맹",
+    order:626
+  },
+  {
+    sourceKey:"2026-kyobo-42",
+    day:"2026.07.24 ~ 07.28 · 5일",
+    startDate:"2026-07-24",
+    endDate:"2026-07-28",
+    title:"교보컵 제42회 전국초등학교 꿈나무 탁구대회",
+    time:"",
+    memo:"무주국민체육센터 · 한국초등학교탁구연맹",
+    order:724
+  },
+  {
+    sourceKey:"2026-yoo-seung-min-4",
+    day:"2026년 10월 말 ~ 11월 초 · 5일",
+    startDate:"",
+    endDate:"",
+    periodStartMonth:"2026-10",
+    periodEndMonth:"2026-11",
+    title:"제4회 유승민 IOC위원배 U12 전국 챔피언 탁구대회",
+    time:"",
+    memo:"충북 제천시 제천실내체육관 · 한국초등학교탁구연맹",
+    order:1031
+  },
+  {
+    sourceKey:"2026-samsung-43",
+    day:"2026년 12월 중 · 2일",
+    startDate:"",
+    endDate:"",
+    periodStartMonth:"2026-12",
+    periodEndMonth:"2026-12",
+    title:"삼성생명배 제43회 전국초등학교 우수선수초청 왕중왕전 탁구대회",
+    time:"",
+    memo:"삼성트레이닝센터 탁구장 · 한국초등학교탁구연맹",
+    order:1201
+  }
+];
 /* ================================
 캐시
 ================================ */
@@ -261,6 +318,42 @@ async function docsOf(name){
       id:d.id,
       ...d.data()
     })
+  );
+}
+
+async function seedOfficialCompetitionSchedules(){
+  const markerRef=doc(db,"settings","calendar2026");
+  const marker=await getDoc(markerRef);
+  if(marker.exists() && marker.data().officialCompetitionsSeeded===true)return;
+
+  const existing=await docsOf("schedules");
+  const compact=value=>String(value||"").replace(/\s+/g,"").toLowerCase();
+
+  for(const schedule of officialCompetitionSchedules){
+    const exists=existing.some(item=>
+      item.sourceKey===schedule.sourceKey
+      ||
+      compact(item.title)===compact(schedule.title)
+    );
+    if(exists)continue;
+
+    await addDoc(
+      collection(db,"schedules"),
+      {
+        ...schedule,
+        createdAt:new Date().toISOString(),
+        updatedAt:serverTimestamp()
+      }
+    );
+  }
+
+  await setDoc(
+    markerRef,
+    {
+      officialCompetitionsSeeded:true,
+      updatedAt:serverTimestamp()
+    },
+    {merge:true}
   );
 }
 /* ================================
@@ -747,18 +840,8 @@ async function(type){
   if(!auth.currentUser || !fields[type] || pendingItems.has(type))return;
   pendingItems.add(type);
   try{
-    if(
-      type==="schedules"
-    ){
+    if(type==="schedules"){
       syncScheduleTime();
-      if(
-        !$("schedules_time").value
-      ){
-        alert(
-          "시작 시간과 종료 시간을 모두 선택해주세요."
-        );
-        return;
-      }
     }
     const id=
     $(type+"_id").value;
@@ -1595,6 +1678,7 @@ async function(){
 window.reloadAll=
 async function(){
   try{
+    await seedOfficialCompetitionSchedules();
     await Promise.all([
       loadSettings(),
       loadList(
