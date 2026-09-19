@@ -13,6 +13,24 @@ const shownPopups=new Set();
 const preview = new URLSearchParams(location.search).get('preview') === '1' && window.parent !== window;
 let settings = resolveSettings(), rawSettings = {}, previewDraft = null, failed = [], scheduleFilter = 'all', noticeLimit = 6, recordLimit = 3, submitting = false;
 const state = {players:[],notices:[],schedules:[],records:[]};
+const OFFICIAL_2026_SCHEDULES=[
+  {sourceKey:'2026-national-individual-72',day:'2026.03.19 ~ 03.26 · 8일',startDate:'2026-03-19',endDate:'2026-03-26',title:'제72회 전국남녀종별탁구선수권대회',time:'',memo:'대전광역시 한밭체육관 · 대한탁구협회',order:319},
+  {sourceKey:'2026-chairman-52',day:'2026.04.08 ~ 04.12 · 5일',startDate:'2026-04-08',endDate:'2026-04-12',title:'제52회 회장기 전국초등학교 탁구대회',time:'',memo:'경남 밀양 · 밀양배드민턴경기장 · 한국초등학교탁구연맹',order:408},
+  {sourceKey:'2026-national-youth-sports-55',day:'2026.05.23 ~ 05.26 · 4일',startDate:'2026-05-23',endDate:'2026-05-26',title:'제55회 전국소년체육대회(탁구)',time:'',memo:'부산광역시 기장체육관 · 대한체육회',order:523},
+  {sourceKey:'2026-hopes-u12-selection',day:'2026.06.26 ~ 06.29 · 4일',startDate:'2026-06-26',endDate:'2026-06-29',title:'2026 탁구 호프스(U12) 국가대표 선발전',time:'',memo:'전북 무주 · 무주국민체육센터 · 한국초등학교탁구연맹',order:626},
+  {sourceKey:'2026-president-42',day:'2026.07.14 ~ 07.21 · 8일',startDate:'2026-07-14',endDate:'2026-07-21',title:'제42회 대통령기 전국탁구대회',time:'',memo:'경북 경주 · 경주실내체육관 · 대한탁구협회',order:714},
+  {sourceKey:'2026-kyobo-42',day:'2026.07.24 ~ 07.28 · 5일',startDate:'2026-07-24',endDate:'2026-07-28',title:'교보컵 제41회 전국초등학교 꿈나무 탁구대회',time:'',memo:'전북 무주 · 무주국민체육센터 · 한국초등학교탁구연맹',order:724},
+  {sourceKey:'2026-culture-minister-59',day:'2026.08.21 ~ 08.27 · 7일',startDate:'2026-08-21',endDate:'2026-08-27',title:'제59회 문화체육관광부장관기 전국남녀학생종별탁구대회',time:'',memo:'전남 해남 · 우슬체육관 · 대한탁구협회',order:821},
+  {sourceKey:'2026-ilwoo-5',day:'2026.08.29 ~ 08.30 · 2일',startDate:'2026-08-29',endDate:'2026-08-30',title:'제5회 일우배 전국탁구대회',time:'',memo:'인천광역시 계양체육관 · 한국초등학교탁구연맹',order:829},
+  {sourceKey:'2026-yoo-seung-min-4',day:'2026.10.30 ~ 11.03 · 5일',startDate:'2026-10-30',endDate:'2026-11-03',title:'제4회 유승민 IOC위원배 U12 전국 챔피언 탁구대회',time:'',memo:'충북 제천 · 제천체육관 · 한국초등학교탁구연맹',order:1030},
+  {sourceKey:'2026-samsung-43',day:'2026년 12월 중 · 2일',startDate:'',endDate:'',periodStartMonth:'2026-12',periodEndMonth:'2026-12',title:'삼성생명배 제43회 전국초등학교 우수선수초청 왕중왕전 탁구대회',time:'',memo:'경기 용인 · 삼성트레이닝센터 · 한국초등학교탁구연맹',order:1201}
+];
+
+function homepageSchedules(){
+  const officialKeys=new Set(OFFICIAL_2026_SCHEDULES.map(item=>item.sourceKey));
+  const firestoreExtras=state.schedules.filter(item=>!item.sourceKey||!officialKeys.has(item.sourceKey));
+  return [...OFFICIAL_2026_SCHEDULES,...firestoreExtras];
+}
 const paragraphs = value => esc(value).replace(/\n/g,'<br>');
 const maskName = value => { const s=String(value||'').trim(); return !s?'청명 선수':s.includes('○')?s:s.length<3?s[0]+'○':s[0]+'○'+s.at(-1); };
 const visible = item => item.hidden !== true && item.hidden !== 'true' && item.visible !== false;
@@ -174,7 +192,7 @@ function eventDateFromSchedule(item){
   return `${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
 }
 function renderSchedules() {
-  const items=sortedItems(state.schedules).filter(visible);
+  const items=sortedItems(homepageSchedules()).filter(visible);
   const today=koreaToday();
   const dated=items.filter(s=>['upcoming','ongoing'].includes(scheduleState(s))).sort((a,b)=>scheduleDate(a).localeCompare(scheduleDate(b)));
   const eventCandidates=items
