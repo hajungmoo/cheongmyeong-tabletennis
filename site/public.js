@@ -3,7 +3,7 @@ import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
-import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned } from './site-content.js?v=3.3.0';
+import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned, koreaToday } from './site-content.js?v=3.3.0';
 
 const app = initializeApp({apiKey:'AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI',authDomain:'cheongmyeong-tabletennis.firebaseapp.com',projectId:'cheongmyeong-tabletennis',storageBucket:'cheongmyeong-tabletennis.firebasestorage.app',messagingSenderId:'712801821489',appId:'1:712801821489:web:501d20626d8cd12dc98610'});
 const db = getFirestore(app), $ = id => document.getElementById(id);
@@ -165,6 +165,19 @@ function renderPlayers() {
 function renderSchedules() {
   const items=sortedItems(state.schedules).filter(visible);
   const dated=items.filter(s=>['upcoming','ongoing'].includes(scheduleState(s))).sort((a,b)=>scheduleDate(a).localeCompare(scheduleDate(b)));
+  const competitionPattern=/(대회|시합|오픈|컵|체전|장관기|일우배|종별|유소년|유승민|선수권|챔피언)/i;
+  const nextCompetition=dated.find(s=>competitionPattern.test([s.title,s.memo,s.place].join(' ')));
+  const badgeTarget=nextCompetition||dated[0];
+  const badge=$('nextEventBadge');
+  if(badgeTarget&&scheduleDate(badgeTarget)){
+    const today=koreaToday(),targetDate=scheduleDate(badgeTarget);
+    const days=Math.max(0,Math.round((Date.parse(targetDate+'T00:00:00Z')-Date.parse(today+'T00:00:00Z'))/86400000));
+    text('nextEventCountdown',(nextCompetition?'NEXT COMPETITION':'NEXT EVENT')+' · '+(days===0?'D-DAY':'D-'+days));
+    text('nextEventName',badgeTarget.title||'다가오는 일정');
+    badge.hidden=false;
+  }else{
+    badge.hidden=true;
+  }
   const next=dated[0]||items.find(s=>scheduleState(s)==='other');
   if(next){
     text('nextLabel',scheduleState(next)==='other'?'훈련 일정':'다가오는 일정');text('nextScheduleTitle',next.title);text('nextScheduleDate',`${next.day||scheduleDate(next)}${next.time?' · '+next.time:''}`);
@@ -251,8 +264,25 @@ if(preview){
     previewDraft=event.data.settings||{};applySettings({...rawSettings,...previewDraft,siteContent:{...rawSettings.siteContent,...previewDraft.siteContent}});
   });
 }
+async function trackSiteVisit(){
+  if(preview)return;
+  const date=koreaToday(),storageKey='cm-site-visit-'+date;
+  try{
+    if(localStorage.getItem(storageKey)==='1')return;
+    await addDoc(collection(db,'siteVisits'),{
+      date,
+      month:date.slice(0,7),
+      path:location.pathname.slice(0,120)||'/',
+      createdAt:new Date().toISOString()
+    });
+    localStorage.setItem(storageKey,'1');
+  }catch(error){
+    console.warn('방문 통계 기록 불가',error?.code||error);
+  }
+}
 applySettings({});
 load();
+trackSiteVisit();
 // Only homepage presentation settings are observed; manager/parents data paths stay unchanged.
 onSnapshot(doc(db,'settings','homepage'),snap=>{
   rawSettings=snap.exists()?snap.data():{};
