@@ -11,7 +11,7 @@ export async function api(action,data={},token='',admin=false){
   try{const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json',...(token?{[admin?'Authorization':'X-Member-Token']:admin?'Bearer '+token:token}:{})},body:JSON.stringify({action,...data}),signal:controller.signal});
     let result;try{result=await response.json();}catch{throw new Error('알림 서버 연결을 준비하고 있습니다. 잠시 후 다시 확인해주세요.');}
     if(!response.ok)throw Object.assign(new Error(result.error||'요청을 완료하지 못했습니다.'),{status:response.status});return result;
-  }catch(error){if(error.name==='AbortError')throw new Error('응답이 늦어지고 있습니다. 잠시 후 다시 시도해주세요.');if(error instanceof TypeError)throw new Error('알림 서버에 연결하지 못했습니다. 인터넷 연결을 확인해주세요.');throw error;}finally{clearTimeout(timer);}
+  }catch(error){if(error.name==='AbortError')throw new Error('응답이 늦어지고 있습니다. 잠시 후 다시 시도해주세요.');if(error instanceof TypeError)throw new Error('알림 서버와 연결되지 않았습니다. 서버 준비가 끝나면 다시 연결해주세요.');throw error;}finally{clearTimeout(timer);}
 }
 export const categoryLabels={uniform:'단체복',training:'훈련',competition:'대회',general:'공지'};
 export const icons={bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>',check:'<path d="m5 12 4 4L19 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',image:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="m3 16 6-6 8 11m-4-7 3-3 5 5"/><circle cx="16" cy="7" r="1"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',users:'<circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m0-16a3 3 0 0 1 0 6m4 10v-3a6 6 0 0 0-2-4"/>',arrow:'<path d="M5 12h14m-5-5 5 5-5 5"/>',download:'<path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/>',close:'<path d="m6 6 12 12M6 18 18 6"/>',logout:'<path d="M9 4H4v16h5m5-13 5 5-5 5m-7-5h12"/>'};
