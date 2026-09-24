@@ -1,0 +1,7 @@
+{
+  "id":"/team-notices/", "name":"청명초 탁구부 알림장", "short_name":"청명 알림장",
+  "description":"함께 성장하는 청명초 탁구부의 공지와 준비물 알림",
+  "lang":"ko", "start_url":"/team-notices/", "scope":"/team-notices/",
+  "display":"standalone", "background_color":"#07121e", "theme_color":"#07121e",
+  "icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]
+}

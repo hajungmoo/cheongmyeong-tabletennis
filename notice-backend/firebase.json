@@ -1,0 +1,1 @@
+{"functions":[{"source":"functions","codebase":"cm-notices","ignore":["node_modules","test","*.log"]}],"firestore":[{"database":"cm-notices","location":"asia-northeast3","rules":"firestore.rules","indexes":"firestore.indexes.json"}]}
