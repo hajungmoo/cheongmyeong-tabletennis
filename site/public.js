@@ -1,3 +1,4 @@
+import { withTeamHolidays } from './team-holidays.js?v=1.0.0';
 import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.1.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
@@ -40,7 +41,7 @@ function homepageSchedules(){
   const firestoreByKey=new Map(state.schedules.filter(item=>item.sourceKey).map(item=>[item.sourceKey,item]));
   const mergedDefaults=defaults.map(item=>firestoreByKey.has(item.sourceKey)?{...item,...firestoreByKey.get(item.sourceKey)}:item);
   const firestoreExtras=state.schedules.filter(item=>!item.sourceKey||!officialKeys.has(item.sourceKey));
-  return [...mergedDefaults,...firestoreExtras];
+  return withTeamHolidays([...mergedDefaults,...firestoreExtras]);
 }
 const paragraphs = value => esc(value).replace(/\n/g,'<br>');
 const maskName = value => { const s=String(value||'').trim(); return !s?'청명 선수':s.includes('○')?s:s.length<3?s[0]+'○':s[0]+'○'+s.at(-1); };
@@ -205,7 +206,7 @@ function eventDateFromSchedule(item){
 function renderSchedules() {
   const items=sortedItems(homepageSchedules()).filter(visible);
   const today=koreaToday();
-  const dated=items.filter(s=>['upcoming','ongoing'].includes(scheduleState(s))).sort((a,b)=>scheduleDate(a).localeCompare(scheduleDate(b)));
+  const dated=items.filter(s=>['upcoming','ongoing'].includes(scheduleState(s))).sort((a,b)=>(scheduleDate(a)||a.periodStartMonth+'-01').localeCompare(scheduleDate(b)||b.periodStartMonth+'-01'));
   const eventCandidates=items
     .map(s=>({item:s,date:eventDateFromSchedule(s)}))
     .filter(x=>x.date&&x.date>=today)
@@ -232,8 +233,8 @@ function renderSchedules() {
   const filtered=items.filter(s=>(scheduleFilter==='all'||(scheduleFilter==='upcoming'?['upcoming','ongoing'].includes(scheduleState(s)):scheduleState(s)===scheduleFilter))&&(!q||[s.title,s.day,s.memo,s.place].join(' ').toLowerCase().includes(q)));
   text('scheduleResults',`${filtered.length}개 일정`);
   $('scheduleList').innerHTML=filtered.map(s=>{
-    const status=scheduleState(s),label=s.recurring?'정기 훈련':{past:'지난 일정',upcoming:'예정',ongoing:'진행 중',other:'정기 · 기타'}[status];
-    const scheduleTime=s.time||(s.recurring?'평일 정기 훈련':'시간 추후 안내');
+    const status=scheduleState(s),label=s.isHoliday?'휴가':s.recurring?'정기 훈련':{past:'지난 일정',upcoming:'예정',ongoing:'진행 중',other:'정기 · 기타'}[status];
+    const scheduleTime=s.isHoliday?'휴가 · 훈련 없음':s.time||(s.recurring?'평일 정기 훈련':'시간 추후 안내');
     return `<article class="scheduleRow"><div class="scheduleDay"><span class="stateTag ${status}">${label}</span><time>${esc(s.day||scheduleDate(s)||'일정')}</time></div><div><h3>${esc(s.title)}</h3><p>${paragraphs(s.place||s.memo||'')}</p></div><div class="scheduleTime">${esc(scheduleTime)}</div></article>`;
   }).join('')||'<p class="empty">조건에 맞는 일정이 없습니다.</p>';
 }

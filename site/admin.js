@@ -1,3 +1,4 @@
+import { TEAM_HOLIDAYS, matchesHoliday } from './team-holidays.js?v=1.0.0';
 import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=3.3.0';
 import { createPhotoUploader, photoUploadError } from './photo-upload.js?v=3.2.0';
 import { assertSettingsUnchanged } from './settings-compare.js?v=3.1.2';
@@ -375,6 +376,31 @@ async function docsOf(name){
       ...d.data()
     })
   );
+}
+
+
+async function seedTeamHolidays(){
+  if(!auth.currentUser)return;
+  const markerRef=doc(db,"settings","calendar2026");
+  const marker=await getDoc(markerRef);
+  if(marker.exists() && marker.data().chuseok2026Seeded)return;
+  const existing=await docsOf("schedules");
+  // A fixed ID plus a transaction makes concurrent admin sessions safe.
+  const holiday=TEAM_HOLIDAYS[0];
+  const holidayRef=doc(db,"schedules",holiday.sourceKey);
+  await runTransaction(db,async transaction=>{
+    const currentMarker=await transaction.get(markerRef);
+    if(currentMarker.exists() && currentMarker.data().chuseok2026Seeded)return;
+    const savedHoliday=await transaction.get(holidayRef);
+    if(!savedHoliday.exists() && !existing.some(item=>matchesHoliday(item,holiday))){
+      transaction.set(holidayRef,{
+        ...holiday,
+        createdAt:new Date().toISOString(),
+        updatedAt:serverTimestamp()
+      });
+    }
+    transaction.set(markerRef,{chuseok2026Seeded:true},{merge:true});
+  });
 }
 
 async function seedOfficialCompetitionSchedules(){
@@ -1744,6 +1770,7 @@ window.reloadAll=
 async function(){
   try{
     await seedOfficialCompetitionSchedules();
+    await seedTeamHolidays();
     await Promise.all([
       loadSettings(),
       loadList(
