@@ -37,7 +37,7 @@ async function handle(req){
   if(action==='adminImage'){fail(!validId(input.noticeId)||!validId(input.imageId),'사진을 찾지 못했습니다.',404);const n=await db.doc('notices/'+input.noticeId).get();fail(!n.exists||!n.data().imageIds.includes(input.imageId),'사진을 찾지 못했습니다.',404);const image=await db.doc('images/'+input.imageId).get();fail(!image.exists,'사진을 찾지 못했습니다.',404);return {image:image.data().data};}
   if(action==='dashboard'){
    const [members,notices,subs]=await Promise.all([db.collection('members').get(),db.collection('notices').orderBy('createdAt','desc').limit(100).get(),db.collection('subscriptions').get()]);
-   return {members:members.docs.map(d=>({id:d.id,name:d.data().name,active:d.data().active,connected:!!d.data().connected,pushDevices:subs.docs.filter(s=>s.data().memberId===d.id).length})),notices:notices.docs.map(d=>({id:d.id,...d.data()})),pushCount:subs.size};
+   return {members:members.docs.map(d=>({id:d.id,name:d.data().name,active:d.data().active,connected:!!d.data().connected,pushDevices:subs.docs.filter(s=>s.data().memberId===d.id).length})),notices:notices.docs.map(d=>({id:d.id,...d.data()})),pushCount:subs.size,capabilities:{deleteNotice:true}};
   }
   if(action==='invite'){
    const name=String(input.name||'').trim();fail(!name||name.length>20,'선수 이름을 입력해주세요.');const existing=await db.collection('members').where('name','==',name).limit(1).get();
