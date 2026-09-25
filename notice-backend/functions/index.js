@@ -30,7 +30,7 @@ async function handle(req){
   return db.runTransaction(async tx=>{const invite=await tx.get(ref);fail(!invite.exists,'초대코드를 다시 확인해주세요.');const data=invite.data();fail(data.expiresAt<now()||data.uses>=3,'초대코드가 만료되었습니다. 코치님에게 새 코드를 받아주세요.');const memberRef=db.doc('members/'+data.memberId),member=await tx.get(memberRef);fail(!member.exists||!member.data().active,'사용할 수 없는 초대코드입니다.');
    tx.create(sessionRef,{memberId:member.id,createdAt:now(),expiresAt:now()+180*86400000,deviceLabel:String(input.deviceLabel||'휴대폰').slice(0,30)});tx.update(ref,{uses:data.uses+1});tx.update(memberRef,{connected:true,lastConnectedAt:now()});return {token,member:{id:member.id,name:member.data().name}};});
  }
- const adminActions=new Set(['bootstrap','dashboard','invite','save','cancel','receipts','revoke','adminImage']);
+ const adminActions=new Set(['bootstrap','dashboard','invite','save','cancel','delete','receipts','revoke','adminImage']);
  if(adminActions.has(action)){
   await adminAuth(req);
   if(action==='bootstrap')return bootstrap();
@@ -58,6 +58,11 @@ async function handle(req){
   }
   if(action==='cancel'){
    fail(!validId(input.id),'공지를 찾지 못했습니다.');await db.runTransaction(async tx=>{const ref=db.doc('notices/'+input.id),n=await tx.get(ref);fail(!n.exists||n.data().state!=='scheduled','이미 발행되어 예약을 취소할 수 없습니다.',409);tx.update(ref,{state:'cancelled',updatedAt:now()});tx.delete(db.doc('outbox/'+input.id));});return {ok:true};
+  }
+  if(action==='delete'){
+   fail(!validId(input.id),'공지를 찾지 못했습니다.');const noticeRef=db.doc('notices/'+input.id),notice=await noticeRef.get();fail(!notice.exists,'공지를 찾지 못했습니다.',404);
+   const [receipts,deliveries]=await Promise.all([noticeRef.collection('receipts').get(),noticeRef.collection('deliveries').get()]);const imageIds=Array.isArray(notice.data().imageIds)?notice.data().imageIds:[];
+   const batch=db.batch();batch.delete(db.doc('outbox/'+input.id));receipts.docs.forEach(d=>batch.delete(d.ref));deliveries.docs.forEach(d=>batch.delete(d.ref));imageIds.forEach(id=>batch.delete(db.doc('images/'+id)));batch.delete(noticeRef);await batch.commit();return {ok:true};
   }
   if(action==='receipts'){
    fail(!validId(input.id),'공지를 찾지 못했습니다.');const [n,members,receipts]=await Promise.all([db.doc('notices/'+input.id).get(),db.collection('members').get(),db.collection('notices').doc(input.id).collection('receipts').get()]);fail(!n.exists,'공지를 찾지 못했습니다.',404);const seen=new Map(receipts.docs.map(r=>[r.id,r.data().at]));return {members:members.docs.filter(m=>m.data().active&&(n.data().audience==='all'||n.data().audience.includes(m.id))).map(m=>({id:m.id,name:m.data().name,confirmedAt:seen.get(m.id)||null})),delivery:n.data().delivery};
