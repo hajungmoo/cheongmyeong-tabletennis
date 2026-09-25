@@ -14,6 +14,22 @@
 
 Firebase/Google Cloud 프로젝트 관리 권한으로 로그인한 Cloud Shell 또는 개발 환경에서 진행합니다. 비밀번호·서비스 계정 키를 소스나 채팅에 넣지 않습니다.
 
+### 자동 설정
+
+프로젝트에 접근할 수 있는 Google 계정으로 Cloud Shell을 연 다음 실행합니다. 이미 코드를 받았다면 `notice-backend` 폴더에서 `bash deploy.sh`만 실행합니다.
+
+```bash
+notice_workspace="$(mktemp -d -t cm-notices.XXXXXX)"
+git clone --depth 1 https://github.com/hajungmoo/cheongmyeong-tabletennis.git "$notice_workspace"
+bash "$notice_workspace/notice-backend/deploy.sh"
+```
+
+이 스크립트는 접근 권한·기존 DB 설정 확인 → 의존성 설치·검사 → 필요한 경우에만 공지 DB 생성 → 지정 함수와 규칙 배포 → 서버 응답 확인 순서로 진행합니다. 기존 DB가 예상과 다르거나 인증·배포가 실패하면 즉시 멈춥니다. 자체 IAM 역할 부여·비밀번호 입력·다른 DB 변경은 포함하지 않습니다. Firebase CLI의 인증·필수 API 설정 안내는 화면에서 확인합니다. Node.js 22 이상이 필요합니다.
+
+서버 응답 확인은 휴대폰 수신 검증을 대신하지 않습니다. 관리자 첫 로그인과 본인 기기 알림 확인이 남아 있습니다.
+
+### 수동 설정
+
 1. 저장소를 받아 `notice-backend` 폴더로 이동합니다.
 2. `cm-notices` 데이터베이스가 없으면 다음 명령으로 서울 리전에 생성합니다. 기존 데이터베이스는 삭제하거나 대체하지 않습니다.
 
