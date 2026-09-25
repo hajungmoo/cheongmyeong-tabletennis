@@ -7,6 +7,8 @@ import {onDocumentWritten} from 'firebase-functions/v2/firestore';
 import {defineString} from 'firebase-functions/params';
 import webpush from 'web-push';
 import {AppError,fail,hash,secret,validId,validCode,validateNotice,validateSubscription,canRead,publicNotice,retryDelay,deliveryOutcome,shouldClaim} from './domain.js';
+import {deleteNoticeData,readNoticeForSave,acknowledgeNotice} from './notice-lifecycle.js';
+import {BACKEND_VERSION,CAPABILITIES} from './release.js';
 initializeApp();
 // Deliberately separate from the existing website/manager database and rules.
 const db=getFirestore('cm-notices');
@@ -23,7 +25,7 @@ async function bootstrap(){return db.runTransaction(async tx=>{const snap=await 
 async function requireNotice(id,member){fail(!validId(id),'공지를 찾지 못했습니다.',404);const ref=db.doc('notices/'+id),snap=await ref.get();fail(!snap.exists||!canRead(snap.data(),member.id),'공지를 찾지 못했습니다.',404);return {ref,...snap.data()};}
 async function handle(req){
  const input=req.body||{},action=input.action;
- if(action==='status'){const config=await runtimeRef.get();return {ready:config.exists,publicKey:config.exists?config.data().publicKey:'',version:'1.0.0'};}
+ if(action==='status'){const config=await runtimeRef.get();return {ready:config.exists,publicKey:config.exists?config.data().publicKey:'',version:BACKEND_VERSION,capabilities:CAPABILITIES};}
  if(action==='join'){
   await rateLimit(req);fail(!validCode(input.code),'초대코드를 다시 확인해주세요.');
   const ref=db.doc('invites/'+hash(input.code)),token=secret(),sessionRef=db.doc('sessions/'+hash(token));
@@ -34,10 +36,10 @@ async function handle(req){
  if(adminActions.has(action)){
   await adminAuth(req);
   if(action==='bootstrap')return bootstrap();
-  if(action==='adminImage'){fail(!validId(input.noticeId)||!validId(input.imageId),'사진을 찾지 못했습니다.',404);const n=await db.doc('notices/'+input.noticeId).get();fail(!n.exists||!n.data().imageIds.includes(input.imageId),'사진을 찾지 못했습니다.',404);const image=await db.doc('images/'+input.imageId).get();fail(!image.exists,'사진을 찾지 못했습니다.',404);return {image:image.data().data};}
+  if(action==='adminImage'){fail(!validId(input.noticeId)||!validId(input.imageId),'사진을 찾지 못했습니다.',404);const n=await db.doc('notices/'+input.noticeId).get();fail(!n.exists||n.data().state==='deleting'||!n.data().imageIds.includes(input.imageId),'사진을 찾지 못했습니다.',404);const image=await db.doc('images/'+input.imageId).get();fail(!image.exists,'사진을 찾지 못했습니다.',404);return {image:image.data().data};}
   if(action==='dashboard'){
    const [members,notices,subs]=await Promise.all([db.collection('members').get(),db.collection('notices').orderBy('createdAt','desc').limit(100).get(),db.collection('subscriptions').get()]);
-   return {members:members.docs.map(d=>({id:d.id,name:d.data().name,active:d.data().active,connected:!!d.data().connected,pushDevices:subs.docs.filter(s=>s.data().memberId===d.id).length})),notices:notices.docs.map(d=>({id:d.id,...d.data()})),pushCount:subs.size,capabilities:{deleteNotice:true}};
+   return {members:members.docs.map(d=>({id:d.id,name:d.data().name,active:d.data().active,connected:!!d.data().connected,pushDevices:subs.docs.filter(s=>s.data().memberId===d.id).length})),notices:notices.docs.map(d=>({id:d.id,...d.data()})),pushCount:subs.size,capabilities:CAPABILITIES};
   }
   if(action==='invite'){
    const name=String(input.name||'').trim();fail(!name||name.length>20,'선수 이름을 입력해주세요.');const existing=await db.collection('members').where('name','==',name).limit(1).get();
@@ -49,21 +51,17 @@ async function handle(req){
    const id=input.id;fail(!validId(id),'공지 번호를 확인해주세요.');const data=validateNotice(input);
    if(data.audience!=='all'){const members=await db.getAll(...data.audience.map(id=>db.doc('members/'+id)));fail(members.some(m=>!m.exists||!m.data().active),'받을 선수를 다시 확인해주세요.');}
    const noticeRef=db.doc('notices/'+id),jobRef=db.doc('outbox/'+id);const imageIds=data.images.map(()=>db.collection('images').doc().id);const operation=String(input.operationId||'');fail(!validId(operation),'저장 요청을 확인해주세요.');
-   const saved=await db.runTransaction(async tx=>{const prior=await tx.get(noticeRef);if(prior.exists&&prior.data().operationId===operation)return {duplicate:true,oldImages:[]};fail(prior.exists&&prior.data().state!=='scheduled','이미 발행되거나 취소된 공지는 수정할 수 없습니다.',409);
+   const saved=await db.runTransaction(async tx=>{const prior=await readNoticeForSave(tx,db,id);if(prior.exists&&prior.data().operationId===operation)return {duplicate:true,oldImages:[]};fail(prior.exists&&prior.data().state!=='scheduled','이미 발행되거나 취소된 공지는 수정할 수 없습니다.',409);
     const version=(prior.exists?prior.data().version:0)+1,{images,...notice}=data;tx.set(noticeRef,{...notice,imageIds,state:'scheduled',createdAt:prior.exists?prior.data().createdAt:now(),updatedAt:now(),version,operationId:operation,delivery:{state:'waiting',sent:0,failed:0}});tx.set(jobRef,{noticeId:id,version,dueAt:data.dueAt,leaseUntil:0,attempt:0});
     images.forEach((image,i)=>tx.create(db.doc('images/'+imageIds[i]),{noticeId:id,data:image,createdAt:now()}));return {duplicate:false,oldImages:prior.exists?prior.data().imageIds||[]:[]};});
    if(saved.oldImages.length){const batch=db.batch();saved.oldImages.forEach(id=>batch.delete(db.doc('images/'+id)));await batch.commit();}
    // An authenticated database trigger starts immediate delivery; the scheduler recovers missed/retry jobs.
-   const final=await noticeRef.get();return {id,state:final.data().state,delivery:final.data().delivery,duplicate:saved.duplicate};
+   const final=await noticeRef.get();fail(!final.exists||final.data().state==='deleting','삭제된 공지입니다.',409);return {id,state:final.data().state,delivery:final.data().delivery,duplicate:saved.duplicate};
   }
   if(action==='cancel'){
    fail(!validId(input.id),'공지를 찾지 못했습니다.');await db.runTransaction(async tx=>{const ref=db.doc('notices/'+input.id),n=await tx.get(ref);fail(!n.exists||n.data().state!=='scheduled','이미 발행되어 예약을 취소할 수 없습니다.',409);tx.update(ref,{state:'cancelled',updatedAt:now()});tx.delete(db.doc('outbox/'+input.id));});return {ok:true};
   }
-  if(action==='delete'){
-   fail(!validId(input.id),'공지를 찾지 못했습니다.');const noticeRef=db.doc('notices/'+input.id),notice=await noticeRef.get();fail(!notice.exists,'공지를 찾지 못했습니다.',404);
-   const [receipts,deliveries]=await Promise.all([noticeRef.collection('receipts').get(),noticeRef.collection('deliveries').get()]);const imageIds=Array.isArray(notice.data().imageIds)?notice.data().imageIds:[];
-   const batch=db.batch();batch.delete(db.doc('outbox/'+input.id));receipts.docs.forEach(d=>batch.delete(d.ref));deliveries.docs.forEach(d=>batch.delete(d.ref));imageIds.forEach(id=>batch.delete(db.doc('images/'+id)));batch.delete(noticeRef);await batch.commit();return {ok:true};
-  }
+  if(action==='delete')return deleteNoticeData(db,input.id,now);
   if(action==='receipts'){
    fail(!validId(input.id),'공지를 찾지 못했습니다.');const [n,members,receipts]=await Promise.all([db.doc('notices/'+input.id).get(),db.collection('members').get(),db.collection('notices').doc(input.id).collection('receipts').get()]);fail(!n.exists,'공지를 찾지 못했습니다.',404);const seen=new Map(receipts.docs.map(r=>[r.id,r.data().at]));return {members:members.docs.filter(m=>m.data().active&&(n.data().audience==='all'||n.data().audience.includes(m.id))).map(m=>({id:m.id,name:m.data().name,confirmedAt:seen.get(m.id)||null})),delivery:n.data().delivery};
   }
@@ -79,7 +77,7 @@ async function handle(req){
   return {notices:readable.map((d,i)=>publicNotice(d.id,d.data(),receipts[i].exists))};
  }
  if(action==='image'){const notice=await requireNotice(input.noticeId,member);fail(!validId(input.imageId)||!notice.imageIds.includes(input.imageId),'사진을 찾지 못했습니다.',404);const image=await db.doc('images/'+input.imageId).get();fail(!image.exists,'사진을 찾지 못했습니다.',404);return {image:image.data().data};}
- if(action==='ack'){const n=await requireNotice(input.noticeId,member),ref=n.ref.collection('receipts').doc(member.id);await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)tx.create(ref,{at:now()});});return {ok:true};}
+ if(action==='ack')return acknowledgeNotice(db,input.noticeId,member.id,now);
  if(action==='subscribe'){
   const subscription=validateSubscription(input.subscription),id=hash(subscription.endpoint);const existing=await db.collection('subscriptions').where('sessionId','==',member.sessionId).get();const batch=db.batch();existing.docs.filter(d=>d.id!==id).forEach(d=>batch.delete(d.ref));batch.set(db.doc('subscriptions/'+id),{memberId:member.id,sessionId:member.sessionId,subscription,updatedAt:now()});await batch.commit();return {ok:true};
  }
@@ -91,7 +89,7 @@ export async function noticeHttpHandler(req,res){
  if(req.method!=='POST'){res.status(405).json({error:'POST 요청을 사용해주세요.'});return;}
  if(!req.is('application/json')){res.status(415).json({error:'JSON 요청을 사용해주세요.'});return;}
  if((req.rawBody?.length||0)>2*1024*1024){res.status(413).json({error:'사진 용량을 줄여주세요.'});return;}
- try{res.json(await handle(req));}catch(error){const status=error instanceof AppError?error.status:503;if(status===503)console.error('Notice request failed',{code:error.code||'server-error',action:String(req.body?.action||'').slice(0,30)});res.status(status).json({error:error instanceof AppError?error.message:'알림 서버 연결을 준비하고 있습니다. 잠시 후 다시 확인해주세요.'});}
+ try{res.json(await handle(req));}catch(error){const status=error instanceof AppError?error.status:503;if(status===503)console.error('Notice request failed',{code:error.code||'server-error',action:String(req.body?.action||'').slice(0,30)});res.status(status).json({error:error instanceof AppError?error.message:req.body?.action==='delete'?'삭제를 완료하지 못했습니다. 잠시 후 공지 삭제를 다시 눌러주세요.':'알림 서버 연결을 준비하고 있습니다. 잠시 후 다시 확인해주세요.'});}
 }
 export const cmTeamNotices=onRequest({...opts,cors:[APP_ORIGIN],invoker:'public',concurrency:20},noticeHttpHandler);
 

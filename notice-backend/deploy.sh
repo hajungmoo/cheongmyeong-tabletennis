@@ -8,6 +8,12 @@ notice_database='cm-notices'
 notice_region='asia-northeast3'
 notice_backend_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 notice_cli_version='15.31.0'
+notice_deploy_targets='firestore:cm-notices,functions:cm-notices'
+case "${1:-}" in
+  '') ;;
+  --functions-only) notice_deploy_targets='functions:cm-notices' ;;
+  *) printf '사용법: bash deploy.sh [--functions-only]\n' >&2; exit 1 ;;
+esac
 
 on_exit() {
   notice_exit_code=$?
@@ -26,7 +32,11 @@ done
 node -e 'if(Number(process.versions.node.split(".")[0])<22){console.error("Node.js 22 이상이 필요합니다.");process.exit(1)}'
 
 printf '청명 알림장 서버 설정을 시작합니다.\n대상 프로젝트: %s\n' "$notice_project"
-printf '공지 전용 DB와 알림 함수 3개만 배포합니다.\n'
+if [ "$notice_deploy_targets" = 'functions:cm-notices' ]; then
+  printf '기존 공지 서버의 함수 3개만 업데이트합니다. DB·규칙·로그인은 변경하지 않습니다.\n'
+else
+  printf '공지 전용 DB와 알림 함수 3개만 배포합니다.\n'
+fi
 
 # Firebase loads project-scoped dotenv parameters before asking terminal questions.
 # Keep an existing administrator configuration; only supply the agreed default if absent.
@@ -42,7 +52,11 @@ notice_database_state="$(printf '%s' "$notice_database_json" | node --input-type
   console.log(database ? [database.type,database.locationId].join(":") : "missing");
 ')"
 case "$notice_database_state" in
-  missing|FIRESTORE_NATIVE:asia-northeast3) ;;
+  missing)
+    if [ "$notice_deploy_targets" = 'functions:cm-notices' ]; then
+      printf '기존 cm-notices DB가 없습니다. 업데이트를 중단합니다.\n' >&2; exit 1
+    fi ;;
+  FIRESTORE_NATIVE:asia-northeast3) ;;
   *) printf '기존 cm-notices DB 설정이 예상과 다릅니다: %s\n' "$notice_database_state" >&2; exit 1 ;;
 esac
 
@@ -68,20 +82,15 @@ printf '\n공지 서버를 배포합니다. Google 인증·필수 서비스 설�
 npm exec --yes --package="firebase-tools@$notice_cli_version" -- firebase deploy \
   --project "$notice_project" \
   --config "$notice_backend_dir/firebase.json" \
-  --only 'firestore:cm-notices,functions:cm-notices'
+  --only "$notice_deploy_targets"
 
 printf '\n배포한 서버의 데이터베이스 연결을 확인합니다.\n'
 notice_api_response="$(curl --fail --silent --show-error --max-time 45 \
   -H 'Content-Type: application/json' \
   --data '{"action":"status"}' \
   'https://asia-northeast3-cheongmyeong-tabletennis.cloudfunctions.net/cmTeamNotices')"
-printf '%s' "$notice_api_response" | node --input-type=module -e '
-  import fs from "node:fs";
-  const response=JSON.parse(fs.readFileSync(0,"utf8"));
-  if(typeof response.ready!=="boolean"||response.version!=="1.0.0")throw new Error("알림 서버 응답을 확인해주세요.");
-  console.log(response.ready ? "서버 응답 정상 · 관리자 초기 설정 완료" : "서버 응답 정상 · 관리자 첫 로그인을 기다리고 있습니다.");
-'
+printf '%s' "$notice_api_response" | node "$notice_backend_dir/verify-deployment.mjs"
 
 printf '\n서버 배포 완료. 아래 주소에서 기존 홈페이지 관리자 계정으로 로그인해주세요.\n'
 printf 'https://cheongmyeong-tabletennis.vercel.app/team-notices/admin.html\n'
-printf '선수 초대 전에 코치님 본인 휴대폰으로 즉시 알림과 예약 알림을 확인해주세요.\n'
+printf '코치 화면을 새로고침하면 각 공지 아래 공지 삭제 버튼이 표시됩니다.\n'

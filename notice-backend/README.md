@@ -4,11 +4,35 @@
 
 ## 구현된 기능
 
-- 관리자: 기존 Firebase 관리자 계정으로 로그인, 공지·JPEG 사진 3장, 전체/선택 선수, 한국시간 예약, 예약 변경·취소, 선수별 초대, 확인 현황.
+- 관리자: 기존 Firebase 관리자 계정으로 로그인, 공지·JPEG 사진 3장, 전체/선택 선수, 한국시간 예약, 예약 변경·취소, 공지 삭제, 선수별 초대, 확인 현황.
 - 선수: 개인 초대코드, 최대 3대 기기 연결, 본인에게 발행된 공지만 열람, 확인 표시, 홈 화면 설치, Apple/Chrome/Firefox Web Push.
 - 즉시 공지는 Firestore 이벤트로 전달을 시작하고, 1분 간격 예약 작업이 예약·재시도를 처리합니다. 단말 수신 시각·소리는 OS/네트워크 설정에 따릅니다.
 - 푸시 서비스의 수신 승인은 단말 열람 확인이 아닙니다. 선수의 확인 버튼 기록을 따로 저장합니다.
 - 예시 화면 `?demo=1`은 실제 서버 저장·발송을 하지 않습니다. 서버 배포 전 라이브 화면은 연결 준비 상태로 표시됩니다.
+
+## 운영 서버 업데이트
+
+### 이미 운영 중인 서버에 공지 삭제 기능 업데이트
+
+프로젝트 관리 계정으로 로그인한 Cloud Shell에서 아래 명령을 실행합니다. 기존 공지 함수 3개만 업데이트하며 데이터베이스와 규칙은 배포하지 않습니다.
+
+```bash
+notice_delete_workspace="$(mktemp -d -t cm-notice-delete.XXXXXX)"
+git clone --depth 1 https://github.com/hajungmoo/cheongmyeong-tabletennis.git "$notice_delete_workspace" &&
+bash "$notice_delete_workspace/notice-backend/deploy.sh" --functions-only
+```
+
+마지막에 **`서버 1.1.0 확인 · 공지 삭제 기능 배포 완료`**가 나와야 완료입니다. 코치 페이지를 새로고침하면 공지별 `공지 삭제` 버튼이 표시됩니다. 배포 전에는 버튼이 숨겨집니다. HTTP 서버 응답이 구버전이거나 삭제 기능을 지원하지 않으면 스크립트는 성공 처리하지 않습니다.
+
+삭제하면 본문·사진·확인 기록·알림 전달 기록·예약 작업이 제거됩니다. 이미 도착한 휴대폰 알림은 회수할 수 없습니다. 전송 중에는 잠시 후 다시 삭제하도록 안내합니다. 삭제한 내용을 복구할 수 없으며, 지연된 저장 요청으로 되살아나는 것을 막는 **내용 없는 공지 ID·삭제 시각**만 `cm-notices`에 남습니다. 정리 중 실패한 공지는 선수에게 보이지 않으며 코치 화면에서 삭제를 다시 눌러 정리를 마칠 수 있습니다.
+
+로컬 Firestore 검증은 운영 프로젝트와 연결하지 않는 `demo-cm-notices` 에뮬레이터에서만 실행합니다. 이 테스트에는 Java 21 이상이 필요합니다.
+
+```bash
+npm exec --yes --package=firebase-tools@15.31.0 -- firebase emulators:exec \
+  --project demo-cm-notices --config firebase.test.json --only firestore \
+  'npm --prefix functions run test:firestore'
+```
 
 ## 최초 서버 연결
 

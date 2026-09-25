@@ -13,8 +13,8 @@ test('예약은 한국시간 20시를 UTC 11시로 전달하고, 조기 발송�
 test('지난 시간, 빈 내용, 잘못된 수신 대상은 저장 전에 거절한다',()=>{
  for(const patch of [{sendAt:'2026-09-24T09:00:00Z'},{title:''},{body:''},{audience:[]},{audience:['../members']},{images:Array(4).fill('')}])assert.throws(()=>validateNotice({...base,...patch},now));
 });
-test('예약·취소·다른 선수의 공지는 선수 화면에 노출하지 않는다',()=>{
- for(const state of ['scheduled','cancelled'])assert.equal(canRead({...base,state},'member-01'),false);
+test('예약·취소·삭제 중·다른 선수의 공지는 선수 화면에 노출하지 않는다',()=>{
+ for(const state of ['scheduled','cancelled','deleting'])assert.equal(canRead({...base,state},'member-01'),false);
  assert.equal(canRead({...base,state:'published'},'member-01'),true);
  assert.equal(canRead({...base,audience:['member-02'],state:'published'},'member-01'),false);
  assert.equal(canRead({...base,audience:['member-01'],state:'published'},'member-01'),true);
