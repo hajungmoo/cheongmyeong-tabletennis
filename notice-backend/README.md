@@ -28,6 +28,12 @@ bash "$notice_workspace/notice-backend/deploy.sh"
 
 서버 응답 확인은 휴대폰 수신 검증을 대신하지 않습니다. 관리자 첫 로그인과 본인 기기 알림 확인이 남아 있습니다.
 
+관리자 UID는 `prepare-config.mjs`가 프로젝트 전용 `.env` 파일에 미리 채워 터미널 입력 단계를 줄입니다. 이미 저장된 관리자 값과 다른 환경 변수는 보존합니다. 생성된 `.env` 파일은 Git에 올리지 않습니다.
+
+### 설정 입력 단계에서 배포가 중단된 경우
+
+이미 받은 저장소에서 `git pull --ff-only`로 수정본을 받은 뒤 `bash notice-backend/deploy.sh`를 실행합니다. 이미 만들어진 `cm-notices` DB는 그대로 사용합니다. `Enter a string value for NOTICES_ADMIN_UID`에서 발생한 오류의 상세 원인은 추가 오류 기록이 있어야 확정할 수 있으며, 이 수정은 해당 대화형 입력 자체를 없애는 방식입니다.
+
 ### 수동 설정
 
 1. 저장소를 받아 `notice-backend` 폴더로 이동합니다.

@@ -28,6 +28,10 @@ node -e 'if(Number(process.versions.node.split(".")[0])<22){console.error("Node.
 printf '청명 알림장 서버 설정을 시작합니다.\n대상 프로젝트: %s\n' "$notice_project"
 printf '공지 전용 DB와 알림 함수 3개만 배포합니다.\n'
 
+# Firebase loads project-scoped dotenv parameters before asking terminal questions.
+# Keep an existing administrator configuration; only supply the agreed default if absent.
+node "$notice_backend_dir/prepare-config.mjs"
+
 # A failed permission/auth request stops here; it is never mistaken for a missing DB.
 notice_database_json="$(gcloud firestore databases list --project="$notice_project" --format=json)"
 notice_database_state="$(printf '%s' "$notice_database_json" | node --input-type=module -e '
