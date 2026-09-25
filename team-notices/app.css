@@ -82,3 +82,74 @@ input,textarea,select{font-size:16px;min-height:50px;padding:13px 14px}
   .dialogHeading h2{font-size:21px}
   .composeActions .button{font-size:14px}
 }
+
+/* Colorful refresh v3 */
+body{position:relative;background:
+radial-gradient(circle at 12% 8%,rgba(74,196,255,.18),transparent 24%),
+radial-gradient(circle at 88% 10%,rgba(255,120,176,.16),transparent 24%),
+radial-gradient(circle at 78% 68%,rgba(91,232,193,.14),transparent 22%),
+radial-gradient(circle at 18% 82%,rgba(255,203,107,.14),transparent 20%),
+linear-gradient(180deg,#081522 0%,#07121e 38%,#0a1624 100%);
+background-attachment:fixed}
+body::before,body::after{content:"";position:fixed;pointer-events:none;z-index:0;filter:blur(8px);opacity:.9}
+body::before{width:260px;height:260px;left:-70px;top:110px;border-radius:50%;background:radial-gradient(circle,rgba(77,193,255,.22),transparent 68%)}
+body::after{width:320px;height:320px;right:-110px;top:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,110,167,.18),transparent 70%)}
+.appHeader,.studentMain,.coachMain,.bottomNav,.toast,.sheet{position:relative;z-index:1}
+.appHeader{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(8,18,31,.92),rgba(10,24,38,.84));backdrop-filter:blur(16px);box-shadow:0 10px 35px rgba(0,0,0,.18)}
+.brand img{filter:drop-shadow(0 6px 14px rgba(231,194,122,.28))}
+.brand b{text-shadow:0 2px 16px rgba(255,210,133,.15)}
+.welcome{padding:48px 0 38px}
+.welcome::before,.welcome::after{content:"";position:absolute;border-radius:999px;pointer-events:none;z-index:-1}
+.welcome::before{width:180px;height:180px;left:-20px;top:6px;background:radial-gradient(circle,rgba(86,201,255,.12),transparent 70%)}
+.welcome::after{width:210px;height:210px;right:-40px;bottom:-20px;background:radial-gradient(circle,rgba(255,123,179,.11),transparent 68%)}
+.heroOrbit{font-size:120px;color:rgba(231,194,122,.1);text-shadow:0 0 40px rgba(255,191,88,.08)}
+.panel,.noticeCard,.stat,.statusPanel,.pushPanel,.clockBadge,.outboxItem,.inviteResult,.audiencePicker,.scheduleFields,.sheet,.bottomNav{position:relative;overflow:hidden}
+.panel{background:linear-gradient(150deg,rgba(20,39,58,.95),rgba(10,24,39,.96));border:1px solid rgba(255,255,255,.1);box-shadow:0 22px 60px rgba(0,0,0,.23),inset 0 1px 0 rgba(255,255,255,.04)}
+.panel::before,.sheet::before,.stat::before,.statusPanel::before,.pushPanel::before,.clockBadge::before,.outboxItem::before{content:"";position:absolute;inset:-1px;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.10),transparent 24%,transparent 75%,rgba(255,255,255,.05));pointer-events:none}
+.joinPanel{background:linear-gradient(150deg,rgba(17,38,60,.97),rgba(12,26,41,.98))}
+.joinPanel::after,.composePanel::after,.outboxPanel::after,.membersPanel::after{content:"";position:absolute;right:-48px;top:-48px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(231,194,122,.18),transparent 72%);pointer-events:none}
+.statusPanel{background:linear-gradient(120deg,rgba(231,194,122,.12),rgba(82,178,255,.08));border-color:rgba(255,207,133,.22);box-shadow:0 12px 30px rgba(0,0,0,.14)}
+.statusDot{box-shadow:0 0 0 6px rgba(231,194,122,.12),0 0 18px rgba(231,194,122,.4)}
+.button.gold{background:linear-gradient(135deg,#ffe7ae 0%,#ffb86f 48%,#ff8b7c 100%);color:#2b1b0c;box-shadow:0 10px 24px rgba(255,168,91,.25)}
+.button.secondary{background:linear-gradient(135deg,rgba(100,176,255,.12),rgba(215,117,255,.08));border-color:rgba(155,194,255,.25);color:#eef7ff}
+input,textarea,select{background:linear-gradient(180deg,rgba(9,24,37,.88),rgba(7,18,30,.96));border-color:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+input:focus,textarea:focus,select:focus{border-color:rgba(246,200,120,.55);box-shadow:0 0 0 4px rgba(231,194,122,.10),0 0 18px rgba(87,179,255,.10)}
+.pushPanel{background:linear-gradient(120deg,rgba(123,91,255,.12),rgba(73,212,190,.11) 55%,rgba(231,194,122,.11));border-color:rgba(255,255,255,.08);box-shadow:0 14px 38px rgba(0,0,0,.16)}
+.pushPanel .roundIcon,.roundIcon{background:linear-gradient(135deg,rgba(255,190,104,.22),rgba(90,188,255,.18));box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.chip{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border-color:rgba(255,255,255,.11)}
+.chip.active{background:linear-gradient(135deg,#ffe29f,#ffbe70 55%,#ff9b88);color:#24170d;box-shadow:0 8px 24px rgba(255,179,97,.22)}
+.noticeCard{background:linear-gradient(145deg,rgba(18,37,54,.98),rgba(10,24,38,.98));border-color:rgba(255,255,255,.1);box-shadow:0 18px 42px rgba(0,0,0,.18)}
+.noticeCard::before{content:"";position:absolute;left:0;top:0;width:100%;height:4px;background:linear-gradient(90deg,#ffd36f,#ff8a8a 35%,#8b8cff 68%,#56e0cb)}
+.noticeFeed .noticeCard:nth-child(3n+1)::before{background:linear-gradient(90deg,#ffd36f,#ff8a8a)}
+.noticeFeed .noticeCard:nth-child(3n+2)::before{background:linear-gradient(90deg,#67d5ff,#56e0cb)}
+.noticeFeed .noticeCard:nth-child(3n+3)::before{background:linear-gradient(90deg,#b08cff,#ff88c8)}
+.noticeCard.unread{border-color:rgba(255,210,115,.30);box-shadow:0 18px 42px rgba(0,0,0,.2),0 0 0 1px rgba(255,210,115,.06)}
+.category{background:linear-gradient(135deg,rgba(255,215,133,.18),rgba(255,160,110,.15));border:1px solid rgba(255,212,133,.18);padding:6px 10px;border-radius:999px}
+.category.training{color:#7ee6cb;background:linear-gradient(135deg,rgba(80,220,189,.16),rgba(82,178,255,.12));border-color:rgba(104,226,198,.18)}
+.category.competition{color:#b3bdff;background:linear-gradient(135deg,rgba(135,150,255,.18),rgba(212,125,255,.10));border-color:rgba(179,189,255,.16)}
+.noticeCard h3{color:#fff6e7;text-shadow:0 2px 18px rgba(255,190,92,.08)}
+.ackButton{background:linear-gradient(135deg,rgba(255,211,111,.14),rgba(255,160,122,.09));border-color:rgba(255,212,133,.24)}
+.ackButton.done{background:linear-gradient(135deg,rgba(94,219,179,.13),rgba(81,177,255,.08));border-color:rgba(113,225,193,.18)}
+.bottomNav{background:linear-gradient(180deg,rgba(11,24,38,.92),rgba(9,20,33,.98));box-shadow:0 -12px 38px rgba(0,0,0,.22);border-top:1px solid rgba(255,255,255,.08)}
+.bottomNav .selected{color:#ffd58e;text-shadow:0 0 18px rgba(255,209,123,.18)}
+.sheet{background:linear-gradient(155deg,rgba(19,39,58,.98),rgba(9,22,36,.98));box-shadow:0 30px 90px rgba(0,0,0,.42)}
+.toast{background:linear-gradient(135deg,#ffe0aa,#ffc883 55%,#ffb3a2);border-color:#ffd79c;color:#2a1e10;box-shadow:0 10px 32px rgba(0,0,0,.28)}
+.statsGrid .stat{box-shadow:0 15px 38px rgba(0,0,0,.18)}
+.statsGrid .stat:nth-child(1){background:linear-gradient(145deg,rgba(32,63,92,.95),rgba(16,34,52,.98))}
+.statsGrid .stat:nth-child(2){background:linear-gradient(145deg,rgba(63,46,102,.95),rgba(20,28,49,.98))}
+.statsGrid .stat:nth-child(3){background:linear-gradient(145deg,rgba(74,56,39,.94),rgba(25,24,38,.98))}
+.statsGrid .stat:nth-child(4){background:linear-gradient(145deg,rgba(27,72,71,.95),rgba(13,31,39,.98))}
+.clockBadge{background:linear-gradient(135deg,rgba(255,212,133,.12),rgba(106,191,255,.10));border-color:rgba(255,255,255,.08);box-shadow:0 15px 38px rgba(0,0,0,.16)}
+.outboxItem{background:linear-gradient(145deg,rgba(13,27,41,.92),rgba(9,21,34,.98));box-shadow:0 12px 30px rgba(0,0,0,.16)}
+.badge{padding:5px 9px;border-radius:999px;background:linear-gradient(135deg,rgba(255,212,133,.15),rgba(255,154,124,.10));border:1px solid rgba(255,212,133,.16)}
+.badge.published{background:linear-gradient(135deg,rgba(109,228,194,.15),rgba(80,176,255,.08));border-color:rgba(113,225,193,.14)}
+.inviteResult{background:linear-gradient(145deg,rgba(255,211,111,.10),rgba(86,196,255,.08));box-shadow:0 12px 30px rgba(0,0,0,.14)}
+.memberRow .memberAvatar{background:linear-gradient(135deg,rgba(255,211,111,.15),rgba(105,185,255,.10))}
+@media(max-width:480px){
+body::before{width:180px;height:180px;left:-50px;top:100px}
+body::after{width:220px;height:220px;right:-80px;top:280px}
+.welcome{padding:38px 0 30px}
+.heroOrbit{font-size:98px;right:-12px;bottom:18px}
+.panel{box-shadow:0 16px 40px rgba(0,0,0,.22)}
+.noticeCard{box-shadow:0 14px 30px rgba(0,0,0,.20)}
+}
