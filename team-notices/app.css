@@ -153,3 +153,7 @@ body::after{width:220px;height:220px;right:-80px;top:280px}
 .panel{box-shadow:0 16px 40px rgba(0,0,0,.22)}
 .noticeCard{box-shadow:0 14px 30px rgba(0,0,0,.20)}
 }
+
+/* Notice delete action v4 */
+.textButton.danger{color:#ff9f9f;font-weight:700;padding:8px 10px;border-radius:8px;background:rgba(255,92,92,.06);border:1px solid rgba(255,111,111,.14)}
+.textButton.danger:hover{color:#ffd0d0;background:rgba(255,92,92,.12);border-color:rgba(255,125,125,.24)}
