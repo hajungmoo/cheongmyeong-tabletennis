@@ -1,4 +1,4 @@
-const CACHE='cm-notices-shell-v2';
+const CACHE='cm-notices-shell-v3';
 const SHELL=['./','./index.html','./app.css','./student.js','./push-ui.js','./shared.js','./config.js','./icon-192.png','./icon-512.png','./manifest.webmanifest'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));self.skipWaiting();});
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('cm-notices-shell-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));

@@ -20,7 +20,7 @@ function selectPhone(phone){
 }
 function openNotifications(){
  updatePushPanel();selectPhone(ios()?'ios':'android');
- const blocked='Notification' in window&&Notification.permission==='denied';
+ const blocked=!isDemo&&'Notification' in window&&Notification.permission==='denied';
  $('androidBlockedHelp').open=blocked;$('iosBlockedHelp').open=blocked;
  if(!$('notificationDialog').open)$('notificationDialog').showModal();
 }
