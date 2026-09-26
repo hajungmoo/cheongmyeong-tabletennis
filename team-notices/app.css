@@ -157,3 +157,95 @@ body::after{width:220px;height:220px;right:-80px;top:280px}
 /* Notice delete action v4 */
 .textButton.danger{color:#ff9f9f;font-weight:700;padding:8px 10px;border-radius:8px;background:rgba(255,92,92,.06);border:1px solid rgba(255,111,111,.14)}
 .textButton.danger:hover{color:#ffd0d0;background:rgba(255,92,92,.12);border-color:rgba(255,125,125,.24)}
+
+/* Student notification setup: visible at the top and in the fixed bottom menu. */
+.studentBody{overflow-x:clip}
+.studentBody .appHeader{gap:12px}
+.studentBody .brand{min-width:0;gap:9px}
+.studentBody .brand small{font-size:8px;letter-spacing:.7px}
+.headerAlertButton{display:flex;align-items:center;justify-content:center;gap:7px;flex-shrink:0;min-height:44px;padding:10px 12px;border:1px solid #ffd28b66;border-radius:13px;background:#ffca7618;color:#ffe0a4;font-size:14px;font-weight:800;white-space:nowrap}
+.headerAlertButton svg{width:19px;height:19px}
+.headerAlertButton[data-state=on]{border-color:#7cdec466;color:#a4f2d5;background:#71dfac12}
+.studentBody .welcome{padding:27px 0 24px}
+.studentBody .welcome h1{font-size:30px;line-height:1.45}
+.studentBody .welcome .eyebrow{font-size:10px;margin-bottom:9px}
+.studentBody .welcome p{font-size:14px;margin-top:10px}
+.studentBody .studentMain{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
+.notificationCard{position:relative;overflow:hidden;margin:0 0 28px;padding:24px;border:1px solid #f6c36a66;border-radius:23px;background:radial-gradient(ellipse at 100% 0,#ffbd5924,transparent 64%),linear-gradient(135deg,#28304b,#162b3f 68%,#182637);box-shadow:0 18px 44px #0003,inset 0 1px 0 #ffe5ae22;scroll-margin-top:96px}
+.notificationCard::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#ffe09b,#ffab83,#b8abff)}
+.notificationCardTop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.notificationBell{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;color:#ffdf9b;background:#ffce831c;border:1px solid #ffdf9b22}
+.notificationBell svg{width:25px;height:25px;stroke-width:1.8}
+.notificationState{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:6px 11px;font-size:13px;font-weight:800;background:#ffd18a17;color:#ffe0a6;border:1px solid #ffd48b44;line-height:1.5}
+.notificationState::before{content:"";width:7px;height:7px;flex-shrink:0;border-radius:50%;background:currentColor}
+.notificationCard h2{font-size:24px;line-height:1.4;color:#fff5df;letter-spacing:-.7px;word-break:keep-all}
+.notificationCard>p{color:#c2cedd;font-size:15px;line-height:1.7;margin-top:9px;word-break:keep-all}
+.notificationCta{width:100%;min-height:58px;margin-top:20px;font-size:18px;font-weight:800;line-height:1.45;border-radius:14px}
+.notificationCta>span:nth-child(2){flex:1;min-width:0;text-align:left}
+.notificationCta>span:last-child svg{width:21px;height:21px}
+.notificationCardFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;flex-wrap:wrap}
+.notificationCardFooter>span{font-size:12px;color:#b2bfd1}
+.notificationCardFooter .textButton{min-height:44px;padding:9px 0;font-size:13px;font-weight:700;color:#ffe0a4}
+.notificationCard .notificationError{padding:11px 13px;border-radius:10px;background:#ff8d8214;border:1px solid #ff9d8844;color:#ffd0c3;font-size:14px;margin-top:12px}
+.notificationCard[data-state=on]{border-color:#77d9b766;background:radial-gradient(ellipse at 100% 0,#64deb51e,transparent 64%),linear-gradient(135deg,#1b3c3a,#162b3f)}
+.notificationCard[data-state=on]::before{background:linear-gradient(90deg,#a2f2ce,#58cbbd,#74bde7)}
+.notificationCard[data-state=on] .notificationBell,.notificationCard[data-state=on] .notificationState{color:#aff1d4;background:#75dbae18;border-color:#75dbae44}
+.notificationCard[data-state=on] .notificationCta{background:linear-gradient(135deg,#bef4d8,#7fdac1);color:#102c25;box-shadow:0 8px 22px #60d6a91c}
+.notificationCard[data-state=blocked] .notificationState,.notificationCard[data-state=error] .notificationState{color:#ffbcaa;background:#ff998218;border-color:#ff998255}
+.studentBody .bottomNav{position:fixed;z-index:40;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,720px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:8px 8px calc(8px + env(safe-area-inset-bottom));overflow:visible}
+.studentBody .bottomNav a,.studentBody .bottomNav button{min-height:58px;padding:6px 3px;font-size:12px;gap:5px;align-content:center;border-radius:12px}
+.studentBody .bottomNav .notificationNav{color:#ffe0a6;background:#ffd18616;border:1px solid #ffd18a2e;font-weight:800}
+.studentBody .bottomNav .notificationNav[data-state=on]{color:#a9efd1;background:#72dcb411;border-color:#7addb52e}
+.studentBody .toast{position:fixed;z-index:60;bottom:calc(98px + env(safe-area-inset-bottom))}
+.studentBody .sheet{position:fixed;overflow-y:auto;overscroll-behavior:contain;max-height:calc(100dvh - 32px)}
+.studentBody .sheet .iconButton{flex-shrink:0;min-width:44px;min-height:44px}
+.studentBody .joinPanel{scroll-margin-top:96px}
+.notificationSheet{width:min(560px,calc(100% - 24px));padding:26px}
+.notificationSheet .dialogHeading{margin-bottom:17px}
+.notificationSheet .sectionLabel{font-size:11px;letter-spacing:.5px;margin-bottom:6px}
+.notificationSheet .dialogHeading h2{font-size:24px}
+.notificationDialogStatus{display:flex;align-items:center;gap:12px;padding:15px;background:#ffffff06;border:1px solid #ffffff12;border-radius:14px;margin-bottom:18px}
+.notificationDialogStatus>span{color:#ffd99b}
+.notificationDialogStatus strong{font-size:16px;color:#fff0d3}
+.notificationDialogStatus p{font-size:14px;line-height:1.65;color:#b6c6d5;margin-top:3px}
+.deviceTabs{display:grid;grid-template-columns:1.45fr 1fr;gap:8px;margin-bottom:16px}
+.deviceTabs button{min-height:47px;background:#ffffff06;border:1px solid #ffffff1a;border-radius:12px;font-size:14px;font-weight:700;color:#a9bdce;padding:10px 5px}
+.deviceTabs button[aria-pressed=true]{background:linear-gradient(130deg,#334b6e,#2c4660);border-color:#8bc3f47a;color:#e9f7ff;box-shadow:inset 0 1px 0 #b9e2ff11}
+.notificationSteps{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.notificationSteps li{display:flex;gap:12px;padding:14px 12px;background:#07172280;border:1px solid #ffffff0d;border-radius:13px}
+.stepNumber{display:grid;place-items:center;flex-shrink:0;width:29px;height:29px;background:#ffe0a614;border:1px solid #ffd38a30;color:#ffdfa4;border-radius:9px;font-size:15px;font-weight:800}
+.notificationSteps strong{display:block;font-size:16px;line-height:1.5;color:#f3f6fc;word-break:keep-all}
+.notificationSteps p{font-size:14px;line-height:1.7;color:#afc2d2;margin-top:4px;word-break:keep-all}
+.notificationSteps p b{color:#ffe3ad}
+.notificationTrouble{margin-top:12px;border:1px solid #ffffff16;border-radius:12px;padding:0 13px}
+.notificationTrouble summary{min-height:48px;padding:12px 0;font-size:14px;font-weight:600;color:#e7c992;cursor:pointer;line-height:1.7}
+.notificationTrouble p{font-size:14px;line-height:1.8;padding-bottom:13px;color:#bdc9d8;word-break:keep-all}
+.notificationTrouble strong{color:#f4dfbb}
+.notificationPlatformNote{font-size:13px!important;line-height:1.75;margin:12px 2px 0;color:#aec4d5;word-break:keep-all}
+.notificationSheet #notificationInstall{width:100%;margin-top:10px;min-height:48px;font-size:14px}
+.notificationQuietNote{margin:17px 0 0;font-size:12px!important;line-height:1.75;text-align:center;color:#9eafbf;word-break:keep-all}
+@media(max-width:480px){
+ .studentBody .appHeader{height:76px;padding:0 16px;gap:9px}
+ .studentBody .studentMain{padding-left:16px;padding-right:16px}
+ .studentBody .brand b{font-size:18px}
+ .studentBody .brand img{width:35px;height:35px}
+ .studentBody .welcome{padding:24px 0 21px}
+ .studentBody .welcome h1{font-size:26px}
+ .headerAlertButton{padding:9px 10px;font-size:13px;gap:5px}
+ .notificationCard{padding:19px 18px 12px;border-radius:20px;margin-bottom:25px}
+ .notificationCardTop{margin-bottom:12px}
+ .notificationCard h2{font-size:21px}
+ .notificationCard>p{font-size:15px}
+ .notificationCta{font-size:17px;min-height:57px;margin-top:17px;padding:13px 15px}
+ .notificationCardFooter>span{font-size:11px}
+ .notificationCardFooter .textButton{font-size:12px}
+ .studentBody .notificationSheet{inset:auto 0 0;margin:0 auto;width:100%;max-height:94dvh;border-radius:24px 24px 0 0;padding:23px 18px calc(22px + env(safe-area-inset-bottom))}
+ .notificationSheet .dialogHeading h2{font-size:22px}
+}
+@media(max-width:360px){
+ .studentBody .brand small{display:none}
+ .notificationCard{padding-left:15px;padding-right:15px}
+ .notificationCard h2{font-size:20px}
+ .notificationCardFooter{gap:0}
+ .studentBody .bottomNav a,.studentBody .bottomNav button{font-size:11px}
+}
