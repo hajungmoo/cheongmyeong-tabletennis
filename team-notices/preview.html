@@ -1,6 +1,23 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07121e"><title>청명 알림장 미리보기</title><link rel="icon" href="icon.svg"><link rel="stylesheet" href="app.css?v=1"><style>
-body{padding:24px 18px 40px}.previewHeader{max-width:1140px;margin:0 auto 25px;display:flex;align-items:center;justify-content:space-between;gap:20px}.previewHeader p{font-size:12px;margin-top:7px}.previewTabs{display:flex;gap:8px;flex-wrap:wrap}.previewBody{margin:auto;display:flex;justify-content:center}.device{width:410px;max-width:100%;padding:9px;border:1px solid #e7c27a42;border-radius:32px;background:#101c29;box-shadow:0 30px 90px #0005;transition:width .2s}iframe{display:block;width:100%;height:830px;border:0;border-radius:24px;background:#07121e}.device.wide{width:1140px;border-radius:20px}.device.wide iframe{border-radius:12px}.previewNote{text-align:center;margin:18px auto 0;max-width:650px;font-size:12px}.previewHeader .brand{flex-shrink:0}@media(max-width:650px){.previewHeader{display:block}.previewTabs{margin-top:18px}.device{padding:0;border:0;box-shadow:none}iframe{height:780px;border-radius:18px}body{padding:18px 10px}.previewHeader{padding:0 9px}}
-</style></head><body><header class="previewHeader"><div><a class="brand" href="./?demo=1"><img src="icon.svg" width="42" height="42" alt=""><span><b>청명 알림장</b><small>함께 준비하는 우리 팀의 내일</small></span></a><p>사진과 공지를 담은 우리 팀 전용 알림장</p></div><nav class="previewTabs" aria-label="미리보기 화면"><button class="chip active" data-view="student" aria-pressed="true">선수 휴대폰</button><button class="chip" data-view="coach-mobile" aria-pressed="false">코치 휴대폰</button><button class="chip" data-view="coach" aria-pressed="false">코치 PC</button></nav></header><main class="previewBody"><div class="device" id="device"><iframe id="appPreview" title="청명 알림장 미리보기" src="./?demo=1"></iframe></div></main><p class="previewNote">예시 화면입니다. 작성·사진 첨부·예약 변경을 체험할 수 있으며,<br>실제 저장이나 휴대폰 알림은 발송되지 않습니다.</p><script>
-const frame=document.getElementById('appPreview'),device=document.getElementById('device');document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-view]').forEach(other=>{other.classList.toggle('active',other===button);other.setAttribute('aria-pressed',String(other===button));});device.classList.toggle('wide',button.dataset.view==='coach');frame.src=button.dataset.view==='student'?'./?demo=1':'admin.html?demo=1';}));
-</script></body></html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07121e">
+<meta name="robots" content="noindex,nofollow">
+<title>청명 알림장 서비스 종료</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at top,#192c40,#07121e 65%);color:#edf3fa;font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif}main{width:min(100%,560px);padding:36px 28px;border:1px solid #bc9d55;border-radius:24px;background:#0c1b2be8;box-shadow:0 22px 70px #0005}.brand{display:flex;gap:12px;align-items:center;color:#e7bf68;font-weight:700;letter-spacing:.05em}.brand img{width:56px;height:56px;object-fit:contain}h1{font-size:clamp(26px,5vw,34px);line-height:1.5;letter-spacing:-.06em;margin:28px 0 16px}p{font-size:17px;line-height:1.85;color:#c0cedd;margin:14px 0}.hint{font-size:14px;color:#99aabd;margin-top:24px}.links{display:grid;gap:12px;margin-top:28px}a{display:flex;justify-content:center;align-items:center;min-height:54px;padding:12px;border-radius:12px;text-decoration:none;font-size:17px;font-weight:750;color:#101820;background:linear-gradient(120deg,#f6d58d,#d9aa51)}a.secondary{background:transparent;color:#e6c788;border:1px solid #9b814d}a:focus-visible{outline:3px solid white;outline-offset:4px}
+</style>
+<script src="/team-notices/retired.js" defer></script>
+</head>
+<body><main>
+<div class="brand"><img src="/team-logo.png" alt=""><span>청명초 탁구부</span></div>
+<h1>청명 알림장 서비스가<br>종료되었습니다.</h1>
+<p>청명초 탁구부 홈페이지와<br>경기기록 프로그램은 계속 이용하실 수 있습니다.</p>
+<nav class="links" aria-label="청명초 서비스">
+<a href="/">청명초 홈페이지</a>
+<a class="secondary" href="/manager/">경기기록 프로그램</a>
+</nav>
+<p class="hint">홈 화면에 추가한 청명 알림장 아이콘은 삭제해 주세요.</p>
+</main></body></html>

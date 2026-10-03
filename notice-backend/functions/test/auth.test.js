@@ -1,14 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {noticeHttpHandler} from '../index.js';
-async function request(action,headers={}){
- const req={method:'POST',body:{action},rawBody:Buffer.from('{}'),is:type=>type==='application/json',get:name=>headers[name]};
- const out={status:200,body:null};const res={set(){return this;},status(status){out.status=status;return this;},json(body){out.body=body;return this;}};
- await noticeHttpHandler(req,res);return out;
-}
-test('관리자 토큰 없이 공지 저장·삭제·예약 취소·사진 조회·초대를 할 수 없다',async()=>{
- for(const action of ['bootstrap','dashboard','save','cancel','delete','receipts','invite','revoke','adminImage']){const result=await request(action);assert.equal(result.status,401,action);assert.match(result.body.error,/로그인/);}
+import {noticeHttpHandler,ignoreRetiredNotice} from '../retirement.js';
+test('Every former API operation is closed without inspecting credentials or data',()=>{
+  for(const method of ['GET','POST','DELETE'])for(const action of ['status','join','bootstrap','dashboard','save','cancel','delete','receipts','invite','revoke','adminImage','me','feed','image','ack','subscribe','leave']){
+    const req=new Proxy({method,body:{action}},{get(){throw new Error('Retired API must not inspect user data');}});
+    const output={headers:{}};
+    const res={set(k,v){output.headers[k]=v;return this;},status(v){output.status=v;return this;},json(v){output.body=v;return this;}};
+    noticeHttpHandler(req,res);
+    assert.equal(output.status,410);
+    assert.equal(output.body.ready,false);
+    assert.equal(output.body.retired,true);
+    assert.equal(output.body.capabilities.deleteNotice,false);
+    assert.equal(output.headers['Cache-Control'],'no-store');
+  }
 });
-test('연결되지 않은 기기는 공지·사진·확인·구독 기능에 접근할 수 없다',async()=>{
- for(const action of ['me','feed','image','ack','subscribe','leave']){const result=await request(action);assert.equal(result.status,401,action);assert.match(result.body.error,/초대코드/);}
+test('Scheduled and queued notices perform no work',()=>{
+  const event=new Proxy({},{get(){throw new Error('Retired trigger must not inspect an event');}});
+  assert.equal(ignoreRetiredNotice(event),undefined);
 });
