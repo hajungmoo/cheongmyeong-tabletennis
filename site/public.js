@@ -14,6 +14,10 @@ const shownPopups=new Set();
 const preview = new URLSearchParams(location.search).get('preview') === '1' && window.parent !== window;
 let settings = resolveSettings(), rawSettings = {}, previewDraft = null, failed = [], scheduleFilter = 'all', noticeLimit = 6, recordLimit = 3, submitting = false;
 const state = {players:[],notices:[],schedules:[],records:[]};
+const JECHEON_2026_PLAYER_RESULTS = new Map([
+  ['양하은', {division:'U8', result:'3위 🥉'}],
+  ['임수아', {division:'U7', result:'우승 🥇'}],
+]);
 const OFFICIAL_2026_SCHEDULES=[
   {sourceKey:'2026-national-individual-72',day:'2026.03.19 ~ 03.26 · 8일',startDate:'2026-03-19',endDate:'2026-03-26',title:'제72회 전국남녀종별탁구선수권대회',time:'',memo:'대전광역시 한밭체육관 · 대한탁구협회',order:319},
   {sourceKey:'2026-chairman-52',day:'2026.04.08 ~ 04.12 · 5일',startDate:'2026-04-08',endDate:'2026-04-12',title:'제52회 회장기 전국초등학교 탁구대회',time:'',memo:'경남 밀양 · 밀양배드민턴경기장 · 한국초등학교탁구연맹',order:408},
@@ -145,8 +149,21 @@ function openPlayerDialog(player,card,number){
   $('playerDialogAwardWrap').hidden=!String(player.award||'').trim();
   dialog.showModal();
 }
+// Add the published results to both the card and its detail view without changing saved profiles.
+function withPublishedPlayerResult(player, roster) {
+  const result=JECHEON_2026_PLAYER_RESULTS.get(portraitForPlayer(player,roster)?.name);
+  if(!result)return player;
+  const savedAward=String(player.award||'').trim();
+  const normalized=savedAward.replace(/[^\p{L}\p{N}]/gu,'');
+  // An administrator's saved entry for this event takes precedence, including later corrections.
+  const hasEvent=normalized.includes('2026제천')&&(normalized.includes('학생탁구최강전')||normalized.includes('유소년'));
+  if(hasEvent&&normalized.includes(result.division))return player;
+  const award=`2026 제천오픈 학생탁구최강전\n${result.division} 개인단식 ${result.result}`;
+  return {...player,award:[savedAward,award].filter(Boolean).join('\n\n')};
+}
 function renderPlayers() {
-  const players=orderPlayersForHomepage(sortedItems(state.players).filter(visible));
+  const roster=sortedItems(state.players).filter(visible);
+  const players=orderPlayersForHomepage(roster).map(player=>withPublishedPlayerResult(player,roster));
   text('heroPlayerCount',players.length); text('teamCount',players.length+'명의 선수');
   let fallbackNumber=PLAYER_PORTRAITS.length;
   $('playerList').innerHTML=players.map((p,index)=>{
