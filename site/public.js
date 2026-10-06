@@ -18,6 +18,10 @@ const JECHEON_2026_PLAYER_RESULTS = new Map([
   ['양하은', {division:'U8', result:'3위 🥉'}],
   ['임수아', {division:'U7', result:'우승 🥇'}],
 ]);
+const OFFICIAL_2026_RECORDS=[
+  {sourceKey:'2026-jecheon-open-u7',year:'2026.10',date:'2026.10.05',result:'U7 개인단식 우승 🥇',title:'2026 제천오픈 학생탁구최강전',memo:'임수아 · U7 개인단식 우승',medal:'gold',visible:true},
+  {sourceKey:'2026-jecheon-open-u8',year:'2026.10',date:'2026.10.05',result:'U8 개인단식 3위 🥉',title:'2026 제천오픈 학생탁구최강전',memo:'양하은 · U8 개인단식 3위',medal:'bronze',visible:true}
+];
 const OFFICIAL_2026_SCHEDULES=[
   {sourceKey:'2026-national-individual-72',day:'2026.03.19 ~ 03.26 · 8일',startDate:'2026-03-19',endDate:'2026-03-26',title:'제72회 전국남녀종별탁구선수권대회',time:'',memo:'대전광역시 한밭체육관 · 대한탁구협회',order:319},
   {sourceKey:'2026-chairman-52',day:'2026.04.08 ~ 04.12 · 5일',startDate:'2026-04-08',endDate:'2026-04-12',title:'제52회 회장기 전국초등학교 탁구대회',time:'',memo:'경남 밀양 · 밀양배드민턴경기장 · 한국초등학교탁구연맹',order:408},
@@ -46,6 +50,25 @@ function homepageSchedules(){
   const mergedDefaults=defaults.map(item=>firestoreByKey.has(item.sourceKey)?{...item,...firestoreByKey.get(item.sourceKey)}:item);
   const firestoreExtras=state.schedules.filter(item=>!item.sourceKey||!officialKeys.has(item.sourceKey));
   return withTeamHolidays([...mergedDefaults,...firestoreExtras]);
+}
+function homepageRecords(){
+  const normalize=value=>String(value||'').replace(/[^\p{L}\p{N}]/gu,'').toLowerCase();
+  const sameOfficial=(record,official)=>{
+    if(record.sourceKey===official.sourceKey)return true;
+    const text=normalize([record.title,record.event,record.result,record.memo,record.detail].filter(Boolean).join(' '));
+    const division=normalize(official.result).startsWith('u7')?'u7':'u8';
+    const placing=division==='u7'?'우승':'3위';
+    return text.includes('제천')&&text.includes(division)&&text.includes(normalize(placing));
+  };
+  const used=new Set();
+  const official=OFFICIAL_2026_RECORDS.map(item=>{
+    const index=state.records.findIndex((record,i)=>!used.has(i)&&sameOfficial(record,item));
+    if(index<0)return item;
+    used.add(index);
+    return {...item,...state.records[index],sourceKey:item.sourceKey,medal:item.medal};
+  });
+  const extras=state.records.filter((_,index)=>!used.has(index));
+  return [...official,...sortedItems(extras)];
 }
 const paragraphs = value => esc(value).replace(/\n/g,'<br>');
 const maskName = value => { const s=String(value||'').trim(); return !s?'청명 선수':s.includes('○')?s:s.length<3?s[0]+'○':s[0]+'○'+s.at(-1); };
@@ -265,8 +288,8 @@ function renderNotices() {
   $('moreNotices').hidden=filtered.length<=noticeLimit;
 }
 function renderRecords() {
-  const items=sortedItems(state.records).filter(visible);text('heroRecordCount',items.length);
-  $('recordList').innerHTML=items.slice(0,recordLimit).map(r=>`<article class="record" data-medal="${recordMedal(r.result)}">${trophyMarkup}<span class="recordDate">${esc(r.year||r.date||'대회 기록')}</span><div class="recordResult">${paragraphs(r.result)}</div><h3>${esc(r.title||r.event||'대회')}</h3><p>${paragraphs(r.memo||r.detail||'')}</p></article>`).join('')||'<p class="empty">새로운 도전의 기록을 준비하고 있습니다.</p>';
+  const items=homepageRecords().filter(visible);text('heroRecordCount',items.length);
+  $('recordList').innerHTML=items.slice(0,recordLimit).map(r=>`<article class="record" data-medal="${esc(r.medal||recordMedal(r.result))}">${trophyMarkup}<span class="recordDate">${esc(r.year||r.date||'대회 기록')}</span><div class="recordResult">${paragraphs(r.result)}</div><h3>${esc(r.title||r.event||'대회')}</h3><p>${paragraphs(r.memo||r.detail||'')}</p></article>`).join('')||'<p class="empty">새로운 도전의 기록을 준비하고 있습니다.</p>';
   $('moreRecords').hidden=items.length<=recordLimit;
 }
 async function load() {
