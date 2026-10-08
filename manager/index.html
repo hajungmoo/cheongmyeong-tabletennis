@@ -301,7 +301,7 @@ body.sideCollapsed .app{grid-template-columns:72px minmax(0,1fr)!important}body.
 </style>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script type="module">
-import { initParentSharing } from './parent-sharing.js?v=2.1.0';
+import { initParentSharing } from './parent-sharing.js?v=2.2.0';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp, getDocFromServer, runTransaction } from 'https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js';
@@ -1123,8 +1123,8 @@ function deleteLeague(){
 }
 function toggleLeagueForfeit(pid){
  const l=currentLeague();if(!l)return;l.forfeitedPlayers=l.forfeitedPlayers||[];const active=l.forfeitedPlayers.includes(pid);
- if(active){if(!confirm(`${player(pid).name} 선수의 자동 기권 처리를 취소할까?`))return;l.forfeitedPlayers=l.forfeitedPlayers.filter(x=>x!==pid);l.games.forEach(g=>{if(g.forfeitPid===pid){g.result='';g.forfeitPid=null}})}
- else{const fs=leagueFormat(l)==='3set'?'0:2':'0:3';if(!confirm(`${player(pid).name} 선수의 아직 입력되지 않은 남은 경기를 모두 ${fs} 기권패 처리할까?`))return;l.forfeitedPlayers.push(pid);l.games.forEach(g=>{if((g.p1===pid||g.p2===pid)&&!g.result){g.result='기권';g.forfeitPid=pid}})}
+ if(active){if(!confirm(`${player(pid).name} 선수의 자동 기권 처리를 취소할까?`))return;l.forfeitedPlayers=l.forfeitedPlayers.filter(x=>x!==pid);l.games.forEach(g=>{if(g.forfeitPid===pid){g.result='';g.forfeitPid=null;delete g.enteredAt}})}
+ else{const fs=leagueFormat(l)==='3set'?'0:2':'0:3';if(!confirm(`${player(pid).name} 선수의 아직 입력되지 않은 남은 경기를 모두 ${fs} 기권패 처리할까?`))return;l.forfeitedPlayers.push(pid);l.games.forEach(g=>{if((g.p1===pid||g.p2===pid)&&!g.result){g.result='기권';g.forfeitPid=pid;g.enteredAt=new Date().toISOString()}})}
  l.updatedAt=new Date().toISOString();save();renderLeagueViews()
 }
 function leagueGameScore(g,l=currentLeague()){const r=parseLeagueResult(g.result);if(r)return r;if(g.result==='기권'&&g.forfeitPid){const winSets=leagueFormat(l)==='3set'?2:3;return g.p1===g.forfeitPid?{a:0,b:winSets}:{a:winSets,b:0}}return null}
@@ -1166,7 +1166,7 @@ function leagueStandings(l){
  const arr=[];groups.forEach(g=>{if(g.items.length===1)arr.push(g.items[0]);else arr.push(...resolveLeagueTie(l,g.items))});
  arr.forEach((x,i)=>x.rank=i+1);return arr
 }
-function setLeagueResult(gameNo,val){const l=currentLeague(),g=l.games.find(x=>x.gameNo===gameNo);if(!g)return;g.result=val;if(val!=='기권')g.forfeitPid=null;l.updatedAt=new Date().toISOString();save();renderLeagueViews()}
+function setLeagueResult(gameNo,val){const l=currentLeague(),g=l.games.find(x=>x.gameNo===gameNo);if(!g)return;if(val&&!g.result)g.enteredAt=new Date().toISOString();if(!val)delete g.enteredAt;g.result=val;if(val!=='기권')g.forfeitPid=null;l.updatedAt=new Date().toISOString();save();renderLeagueViews()}
 function renderSlots(){
  const l=currentLeague(),el=document.getElementById('lv_slots');const fs=leagueFormat(l)==='3set'?'0:2':'0:3';el.innerHTML=`<div class="info"><b>${leagueFormatLabel(l)}</b>으로 진행합니다. 선수칸을 추가/삭제할 수 있고, 등록된 선수의 '기권'을 누르면 아직 결과가 없는 남은 경기를 자동 ${fs} 기권패 처리합니다.</div>${l.participants.map((pid,i)=>{const p=pid?player(pid):null,ff=pid&&(l.forfeitedPlayers||[]).includes(pid);return `<div class="slot"><div class="slotNo">${i+1}</div><div>${p?`<div class="slotSelected"><b>${genderBadge(p)} ${p.name}${ff?'<span class="forfeitTag">기권 처리</span>':''}</b><small>${school(p.schoolId).name} · ${p.grade} · ${rankLabel(p)}</small></div>`:`<div class="searchWrap"><input id="ls_${i}" placeholder="선수 이름/학교 검색" oninput="leagueSearch(${i})" onfocus="leagueSearch(${i})"><div class="searchResults" id="lr_${i}"></div></div>`}</div><div class="historyActions">${p?`<button class="btn ghost sm" onclick="toggleLeagueForfeit('${pid}')">${ff?'기권취소':'기권'}</button>`:''}<button class="btn red sm" onclick="removeSlotAt(${i})">삭제</button></div></div>`}).join('')||'<div class="empty">선수칸 +1 버튼으로 첫 칸을 만들어줘.</div>'}`
 }
@@ -1317,3 +1317,4 @@ const t=localToday();document.getElementById('dashDate').value=t;document.getEle
 <script src="./manager-v4.js?v=4.0.0"></script>
 <script src="./yuseungmin-roster-2026.js?v=20260929"></script>
 </body></html>
+

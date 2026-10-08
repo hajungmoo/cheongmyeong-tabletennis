@@ -8,7 +8,7 @@
   <meta name="referrer" content="no-referrer">
   <meta name="description" content="청명초 탁구부 학부모 경기 결과 조회">
   <title>우리 아이 경기 기록 | 청명초 탁구부</title>
-  <link rel="stylesheet" href="./parents.css?v=2.0.0">
+  <link rel="stylesheet" href="./parents.css?v=2.2.0">
 </head>
 <body>
 <a class="skip" href="#lookupForm">경기 조회로 이동</a>
@@ -27,15 +27,19 @@
   </section>
   <section id="report" class="report" aria-labelledby="athleteName" hidden>
     <div class="athleteHead"><div><div class="eyebrow">PLAYER RECORD</div><h2 id="athleteName" tabindex="-1"></h2><p id="athleteMeta"></p></div><div class="updated"><span id="updatedAt"></span><button id="refreshReport" class="button quiet" type="button">새로고침</button></div></div>
+    <div id="recordGroups" class="recordTabs" role="group" aria-label="경기 구분">
+      <button id="generalRecords" type="button" aria-pressed="true" aria-controls="matchList">일반 경기 <span id="generalCount">0</span></button>
+      <button id="competitionRecords" type="button" aria-pressed="false" aria-controls="matchList">대회 경기 <span id="competitionCount">0</span></button>
+    </div>
     <form id="recordFilters" class="filters" aria-label="경기 기록 필터">
-      <label>경기 구분<select id="sourceFilter"><option value="match">일반 경기</option><option value="one-set">한세트게임</option><option value="league">리그전</option><option value="competition">대회 기록</option><option value="all">전체 기록 모아 보기</option></select></label>
+      <label id="sourceFilterLabel">일반 경기 종류<select id="sourceFilter"><option value="all">전체 일반 경기</option><option value="match">연습·일반 경기</option><option value="one-set">한세트게임</option><option value="league">리그전</option></select></label>
       <label>시작일<input id="dateFrom" type="date"></label><label>종료일<input id="dateTo" type="date"></label>
       <label>결과<select id="resultFilter"><option value="all">전체 결과</option><option value="win">승리</option><option value="loss">패배</option></select></label>
       <button id="resetFilters" class="button quiet" type="button">필터 초기화</button>
     </form>
     <p id="filterStatus" class="status" role="status"></p>
     <div id="matchMetrics" class="metrics" aria-label="조회한 경기 요약"><div><span>조회한 경기</span><strong id="totalMatches">0</strong></div><div><span>승리</span><strong id="totalWins" class="win">0</strong></div><div><span>패배</span><strong id="totalLosses">0</strong></div><div><span>승률</span><strong id="winRate">—</strong></div></div>
-    <div class="recordHeading"><h3>경기별 기록</h3><span id="recordCount"></span></div>
+    <div class="recordHeading"><h3 id="recordTitle">일반 경기 기록</h3><div><span class="sortLabel">최근 입력순</span><span id="recordCount"></span></div></div>
     <p id="recordNote" class="recordNote">점수는 우리 아이 기준 세트 점수입니다.</p>
     <div id="matchList" class="matchList"></div>
     <button id="moreMatches" class="button more" type="button" hidden>경기 더 보기</button>
@@ -44,6 +48,7 @@
 </main>
 <footer class="footer"><span>CHEONGMYEONG TABLE TENNIS</span><p>기록 확인이나 수정이 필요하면 코치님께 말씀해 주세요.</p><a href="../">청명초 탁구부 홈페이지</a></footer>
 <noscript><p>경기 기록을 조회하려면 자바스크립트를 켜주세요.</p></noscript>
-<script type="module" src="./parents.js?v=2.1.0"></script>
+<script type="module" src="./parents.js?v=2.2.0"></script>
 </body>
 </html>
+

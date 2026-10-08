@@ -1,4 +1,5 @@
 // Explicit result-only projection. Never spread source records or modify the manager DB.
+import {recordEnteredAt,sortLatestEntries} from '../parents/record-order.js?v=1.0.0';
 const text=value=>String(value??'');
 const norm=value=>text(value).normalize('NFC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
 const score=value=>Number.isInteger(value)&&value>=0&&value<=99;
@@ -20,7 +21,7 @@ export function projectPlayer(db,pid,sourceRevision){
     const my=side===1?t1:t2,other=side===1?t2:t1,one=m.matchFormat==='1set';
     if(one&&(!score(m.points1)||!score(m.points2)||m.points1===m.points2||t1.length!==1||t2.length!==1))continue;
     const first=one?m.points1:m.score1,second=one?m.points2:m.score2,a=side===1?first:second,b=side===1?second:first;
-    const row={id:'match:'+text(m.id),source:one?'one-set':'match',date:text(m.date),title:one?'한세트게임':text(m.category)||'일반 경기',format:one?'한세트게임':my.length>1||other.length>1?'복식':'단식',partner:names(my.filter(id=>id!==pid)),opponents:names(other),opponentSchools:schoolNames(other,side===1?m.team2SchoolSnapshot:m.team1SchoolSnapshot),a,b,result:outcome(a,b),forfeit:false};
+    const row={id:'match:'+text(m.id),source:one?'one-set':text(m.category).trim()==='대회'?'competition':'match',enteredAt:recordEnteredAt(m),date:text(m.date),title:one?'한세트게임':text(m.category)||'일반 경기',format:one?'한세트게임':my.length>1||other.length>1?'복식':'단식',partner:names(my.filter(id=>id!==pid)),opponents:names(other),opponentSchools:schoolNames(other,side===1?m.team2SchoolSnapshot:m.team1SchoolSnapshot),a,b,result:outcome(a,b),forfeit:false};
     if(one){
       row.scoreUnit='points';
       if(Number.isInteger(m.tableNumber)&&Number.isInteger(m.tableCount)&&m.tableNumber>=1&&m.tableNumber<=m.tableCount&&m.tableCount<=99){
@@ -39,7 +40,7 @@ export function projectPlayer(db,pid,sourceRevision){
       if(parsed){const x=Number(parsed[1]),y=Number(parsed[2]);if(Math.max(x,y)!==target||Math.min(x,y)>=target)continue;a=side===1?x:y;b=side===1?y:x;result=outcome(a,b);}
       else if(forfeit&&[game.p1,game.p2].includes(game.forfeitPid)){a=game.forfeitPid===pid?0:target;b=game.forfeitPid===pid?target:0;result=outcome(a,b);}
       else if(!forfeit)continue;
-      rows.push({id:'league:'+text(league.id)+':'+text(game.gameNo),source:'league',date:text(league.date),title:text(league.title)||'리그전',format:target===2?'3세트제':'5세트제',round:game.round?text(game.round)+'라운드':'',partner:[],opponents:names([other]),opponentSchools:schoolNames([other]),a,b,result,forfeit});
+      rows.push({id:'league:'+text(league.id)+':'+text(game.gameNo),source:'league',enteredAt:recordEnteredAt(game)||recordEnteredAt(league),date:text(league.date),title:text(league.title)||'리그전',format:target===2?'3세트제':'5세트제',round:game.round?text(game.round)+'라운드':'',partner:[],opponents:names([other]),opponentSchools:schoolNames([other]),a,b,result,forfeit});
     }
   }
   // Imported competition records identify players by name, so ambiguous names are omitted.
@@ -52,9 +53,9 @@ export function projectPlayer(db,pid,sourceRevision){
       const a=score(rawA)?rawA:null,b=score(rawB)?rawB:null,rawResult=text(side===1?m.result1:m.result2);
       let result=/패/.test(rawResult)?'loss':/승/.test(rawResult)?'win':a!==null&&b!==null?outcome(a,b):'unscored';
       if(result==='unscored'&&!/기권/.test(rawResult))continue;
-      rows.push({id:'competition:'+text(c.id)+':'+index,source:'competition',date:text(m.date||c.startDate),dateEnd:m.date?'':text(c.endDate),dateLabel:m.date?'':'대회 기간',title:text(c.name),format:text(m.event),round:text(m.round),partner:[],opponents:[text(side===1?m.player2:m.player1)],opponentSchools:[text(side===1?m.school2:m.school1)].filter(Boolean),a,b,result,forfeit:/기권/.test(rawResult)});
+      rows.push({id:'competition:'+text(c.id)+':'+index,source:'competition',enteredAt:recordEnteredAt(m)||recordEnteredAt(c),date:text(m.date||c.startDate),dateEnd:m.date?'':text(c.endDate),dateLabel:m.date?'':'대회 기간',title:text(c.name),format:text(m.event),round:text(m.round),partner:[],opponents:[text(side===1?m.player2:m.player1)],opponentSchools:[text(side===1?m.school2:m.school1)].filter(Boolean),a,b,result,forfeit:/기권/.test(rawResult)});
     }
   }
-  rows.sort((a,b)=>b.date.localeCompare(a.date)||a.source.localeCompare(b.source)||a.id.localeCompare(b.id,undefined,{numeric:true}));
-  return {version:1,sourceRevision,player:{name:text(child.name),grade:text(child.grade),school:text(schools.get(child.schoolId)?.name)},matches:rows};
+  return {version:1,sourceRevision,player:{name:text(child.name),grade:text(child.grade),school:text(schools.get(child.schoolId)?.name)},matches:sortLatestEntries(rows)};
 }
+

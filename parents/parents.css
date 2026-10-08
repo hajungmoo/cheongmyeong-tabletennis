@@ -7,3 +7,15 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
 .playerChoices{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.recordTabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;padding:6px;border:1px solid var(--line);border-radius:12px;background:#101212}
+.recordTabs button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:12px;border:1px solid transparent;border-radius:8px;background:transparent;color:#bbb9af;font-weight:750}
+.recordTabs button:hover{background:#22231e}
+.recordTabs button[aria-pressed="true"]{background:#e9c573;color:#181309;border-color:#ebca83}
+.recordTabs span{font-size:.875rem;font-variant-numeric:tabular-nums;padding:1px 8px;border-radius:5px;background:#ffffff0a}
+.recordTabs button[aria-pressed="true"] span{background:#18130915}
+.filters.competitionFilters{grid-template-columns:1fr 1fr .8fr auto}
+.recordHeading>div{display:flex;align-items:center;gap:12px;font-size:.875rem;color:var(--muted)}
+.sortLabel{color:var(--gold)}
+@media(max-width:800px){.filters.competitionFilters{grid-template-columns:1fr 1fr}.filters.competitionFilters label{grid-column:auto}}
+@media(max-width:480px){.recordTabs button{gap:6px;padding:12px 6px}.recordHeading{gap:10px}.recordHeading>div{gap:8px;flex-wrap:wrap;justify-content:flex-end}.recordHeading h3{font-size:1.125rem}}
+
