@@ -49,31 +49,31 @@ body.championship{width:100%;max-width:100%;overflow-x:hidden!important;overscro
 .championship .staffSection::before{content:"COACHING TEAM";position:absolute;right:-22px;top:34px;font-size:clamp(64px,10vw,150px);font-weight:900;letter-spacing:-.06em;line-height:.8;color:#ffffff08;white-space:nowrap;pointer-events:none}
 .championship .staffSection::after{content:"";position:absolute;left:50%;top:0;width:min(720px,90vw);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#e5bd73,transparent);box-shadow:0 0 28px #d9a95480;pointer-events:none}
 .championship .staffSection>.container{position:relative;z-index:1}
-.championship .staffSection .sectionHead{max-width:940px;margin-inline:auto;margin-bottom:30px;align-items:end}
+.championship .staffSection .sectionHead{max-width:900px;margin-inline:auto;margin-bottom:26px;align-items:end}
 .championship .staffSection .sectionKicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #d3aa6266;border-radius:999px;background:#d0a35d12;color:#edc77f;letter-spacing:.16em;box-shadow:inset 0 0 18px #c18b2c0b}
 .championship .staffSection .sectionKicker::before{content:"";width:6px;height:6px;border-radius:50%;background:#efc873;box-shadow:0 0 12px #efc873}
 .championship .staffSection .sectionHead h2{font-size:clamp(34px,4.8vw,58px);line-height:1.08;letter-spacing:-.045em;color:#fff;margin-top:14px;text-shadow:0 8px 28px #0008}
 .championship .staffSection .sectionHead h2::after{content:"";display:block;width:74px;height:3px;margin-top:16px;background:linear-gradient(90deg,#f0c978,#9a7135);border-radius:99px;box-shadow:0 0 15px #d4a85666}
 .championship .staffSection .sectionHead>p{max-width:360px;color:#aebed0;font-size:14px;line-height:1.8}
-.championship .staffGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;max-width:940px;margin-inline:auto;min-width:0}
+.championship .staffGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;max-width:860px;margin-inline:auto;min-width:0}
 .championship .staffGrid .staffCard:first-child{display:none}
 .championship .staffCard{position:relative;min-width:0;max-width:100%;border:1px solid #c29a5473;border-top:2px solid #efc773;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#0b1c2d 0%,#06121f 100%);box-shadow:0 24px 54px #0008,0 0 0 1px #ffffff05;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
 .championship .staffCard::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,#ffffff10 0%,transparent 25%,transparent 72%,#d2a75a0c 100%)}
 .championship .staffCard:hover{transform:translateY(-7px);border-color:#e7bd70b8;box-shadow:0 30px 68px #000a,0 0 32px #c6943930}
-.championship .staffPhoto{position:relative;aspect-ratio:4/5;background:linear-gradient(145deg,#eef0f0,#d9dcdf);display:grid;place-items:center;overflow:hidden}
-.championship .staffPhoto::after{content:"";position:absolute;inset:auto 0 0;height:32%;background:linear-gradient(transparent,#071524cc);pointer-events:none}
-.championship .staffPhoto img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .45s ease}
+.championship .staffPhoto{position:relative;aspect-ratio:4/3;background:linear-gradient(145deg,#eef0f0,#d9dcdf);display:grid;place-items:center;overflow:hidden}
+.championship .staffPhoto::after{content:"";position:absolute;inset:auto 0 0;height:28%;background:linear-gradient(transparent,#071524cc);pointer-events:none}
+.championship .staffPhoto img{width:100%;height:100%;object-fit:cover;object-position:center 22%;transition:transform .45s ease}
 .championship .staffCard:hover .staffPhoto img{transform:scale(1.025)}
 .championship .staffPhotoEmpty{color:#5e6875;font-size:14px}
-.championship .staffCopy{position:relative;padding:26px 30px 30px;min-width:0}
-.championship .staffRole{display:inline-flex;align-items:center;min-height:28px;padding:4px 10px;border:1px solid #d1a85b55;border-radius:999px;background:#c99a4314;font-size:12px;font-weight:800;line-height:1.4;letter-spacing:.08em;color:#f0ca80;margin:0 0 10px}
-.championship .staffCopy h3{font-size:34px;font-weight:850;letter-spacing:-.04em;color:#fff;line-height:1.25;margin:0 0 17px}
-.championship .staffCareer{list-style:none;margin:0;padding:16px 0 0;border-top:1px solid #95a5b827;color:#c4d0de;font-size:14px;line-height:1.85;min-width:0}
-.championship .staffCareer::before{content:"CAREER · 경력사항";display:flex;align-items:center;gap:8px;width:max-content;max-width:100%;margin:0 0 13px;padding:5px 10px;border:1px solid #d1a85b45;border-radius:999px;background:#c99a430d;color:#e9c77f;font-size:11px;font-weight:800;line-height:1.2;letter-spacing:.09em}
-.championship .staffCareer li{position:relative;padding-left:16px;overflow-wrap:anywhere}
+.championship .staffCopy{position:relative;padding:22px 26px 25px;min-width:0}
+.championship .staffRole{display:inline-flex;align-items:center;min-height:28px;padding:4px 10px;border:1px solid #d1a85b55;border-radius:999px;background:#c99a4314;font-size:12px;font-weight:800;line-height:1.4;letter-spacing:.08em;color:#f0ca80;margin:0 0 8px}
+.championship .staffCopy h3{font-size:31px;font-weight:850;letter-spacing:-.04em;color:#fff;line-height:1.25;margin:0 0 14px}
+.championship .staffCareer{list-style:none;margin:0;padding:14px 0 0;border-top:1px solid #95a5b827;color:#c4d0de;font-size:13px;line-height:1.78;min-width:0}
+.championship .staffCareer::before{content:"CAREER · 경력사항";display:flex;align-items:center;gap:8px;width:max-content;max-width:100%;margin:0 0 11px;padding:5px 10px;border:1px solid #d1a85b45;border-radius:999px;background:#c99a430d;color:#e9c77f;font-size:10px;font-weight:800;line-height:1.2;letter-spacing:.08em}
+.championship .staffCareer li{position:relative;padding-left:15px;overflow-wrap:anywhere}
 .championship .staffCareer li::before{content:"";position:absolute;left:0;top:.8em;width:5px;height:5px;border-radius:50%;background:#cba153;box-shadow:0 0 8px #cba15366}
-.championship .staffCareer li+li{margin-top:5px}
-.championship .staffSection>.container>.textLink{display:flex;width:max-content;max-width:100%;justify-content:center;align-items:center;gap:8px;margin:28px auto 0;padding:11px 16px;border:1px solid #caa45f55;border-radius:999px;background:#08192a;color:#d8ba83;font-size:12px;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.championship .staffCareer li+li{margin-top:4px}
+.championship .staffSection>.container>.textLink{display:flex;width:max-content;max-width:100%;justify-content:center;align-items:center;gap:8px;margin:26px auto 0;padding:11px 16px;border:1px solid #caa45f55;border-radius:999px;background:#08192a;color:#d8ba83;font-size:12px;transition:background .2s ease,border-color .2s ease,transform .2s ease}
 .championship .staffSection>.container>.textLink:hover{background:#10253a;border-color:#ddb96f99;transform:translateY(-2px)}
 
 @media(max-width:1050px){
@@ -96,10 +96,11 @@ body.championship{width:100%;max-width:100%;overflow-x:hidden!important;overscro
   .championship .headCoachFeature h2{font-size:clamp(32px,7vw,44px)}
   .championship .headCoachFeature .coachDescription{font-size:13px}
   .championship .staffSection .sectionHead{align-items:flex-start}
-  .championship .staffGrid{gap:16px;width:100%;overflow:hidden}
-  .championship .staffCopy{padding:20px 20px 24px}
-  .championship .staffCopy h3{font-size:29px}
-  .championship .staffCareer{font-size:13px}
+  .championship .staffGrid{gap:14px;width:100%;max-width:720px;overflow:hidden}
+  .championship .staffPhoto{aspect-ratio:4/3}
+  .championship .staffCopy{padding:17px 18px 20px}
+  .championship .staffCopy h3{font-size:27px}
+  .championship .staffCareer{font-size:12px}
 }
 @media(max-width:600px){
   .championship .container{max-width:calc(100vw - 32px)}
@@ -120,12 +121,20 @@ body.championship{width:100%;max-width:100%;overflow-x:hidden!important;overscro
   .championship .headCoachFeature .value h3{font-size:14px}
   .championship .headCoachFeature .value p{font-size:10px}
   .championship .headCoachLetter::before{font-size:46px;right:-10px}
-  .championship .staffSection::before{font-size:72px;top:64px;right:-16px}
-  .championship .staffSection .sectionHead{margin-bottom:24px}
-  .championship .staffSection .sectionHead>p{font-size:13px}
-  .championship .staffGrid{grid-template-columns:1fr;max-width:390px;width:100%;gap:24px}
-  .championship .staffCard{border-radius:12px;width:100%}
-  .championship .staffCopy{padding:22px 24px 26px}
-  .championship .staffRole,.championship .staffCareer{font-size:14px}
-  .championship .staffCopy h3{font-size:32px}
+  .championship .staffSection::before{font-size:62px;top:72px;right:-18px}
+  .championship .staffSection .sectionHead{margin-bottom:18px}
+  .championship .staffSection .sectionHead>p{font-size:12px}
+  .championship .staffGrid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:100%;width:100%;gap:9px;align-items:stretch}
+  .championship .staffCard{border-radius:10px;width:100%;height:100%}
+  .championship .staffPhoto{aspect-ratio:1/1}
+  .championship .staffPhoto::after{height:22%}
+  .championship .staffPhoto img{object-position:center 20%}
+  .championship .staffCopy{padding:13px 11px 15px}
+  .championship .staffRole{min-height:22px;padding:3px 7px;font-size:9px;letter-spacing:.04em;margin-bottom:7px}
+  .championship .staffCopy h3{font-size:21px;line-height:1.2;margin-bottom:10px}
+  .championship .staffCareer{padding-top:10px;font-size:10px;line-height:1.55}
+  .championship .staffCareer::before{margin-bottom:8px;padding:4px 6px;font-size:8px;letter-spacing:.02em;white-space:nowrap}
+  .championship .staffCareer li{padding-left:10px}
+  .championship .staffCareer li::before{width:4px;height:4px;top:.65em}
+  .championship .staffCareer li+li{margin-top:3px}
 }
