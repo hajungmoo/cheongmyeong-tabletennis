@@ -1,4 +1,5 @@
 import './player-video-defaults.js?v=1.0.0';
+import './staff-photo-fix.js?v=1.0.0';
 
 // Homepage artwork and display order only. Player records stay in Firestore.
 export const PLAYER_PORTRAITS = Object.freeze([
