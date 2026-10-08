@@ -1,0 +1,40 @@
+/* Youth and coaching cards share the existing navy / gold design. */
+.championship .youthSection{background:radial-gradient(ellipse at 50% 0,#ae844d12,transparent 65%),#04101e}
+.championship .youthPlayers{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1040px;margin-inline:auto}
+.championship .youthPlayer{padding:14px 14px 20px;border-radius:8px}
+.championship .youthPlayer .playerMeta{font-size:10px}
+.championship .youthPlayer .playerPortraitFrame{width:calc(100% + 28px);margin:12px -14px 8px;aspect-ratio:3/4;background:#07101f}
+.championship .youthPlayer .playerPortrait{object-fit:contain}
+.championship .youthPlayer h3{font-size:24px;margin-top:10px}
+.championship .youthPlayer .playerGrade{font-size:12px;margin:4px 0 8px}
+.championship .youthPlayer>p{font-size:13px;color:#d9bb80}
+.championship .profileFootnote{font-size:11px;line-height:1.7;color:#93a6be;text-align:center;margin-top:16px}
+.championship .staffGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;max-width:1000px;margin-inline:auto}
+.championship .staffCard{min-width:0;border:1px solid #a5864f80;border-top:2px solid #e3b768;border-radius:8px;overflow:hidden;background:#071524;box-shadow:0 6px 20px #0004}
+.championship .staffPhoto{aspect-ratio:4/5;background:#f4f4f3;display:grid;place-items:center;overflow:hidden}
+.championship .staffPhoto img{width:100%;height:100%;object-fit:cover;object-position:center 25%}
+.championship .staffPhotoEmpty{color:#5e6875;font-size:14px}
+.championship .staffCopy{padding:22px 24px 26px}
+.championship .staffRole{font-size:13px;font-weight:700;line-height:1.6;color:#e5c181;margin:0 0 5px}
+.championship .staffCopy h3{font-size:26px;color:#f8f7f2;line-height:1.4;margin:0 0 14px}
+.championship .staffCareer{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid #7c8fa631;color:#bbc9da;font-size:13px;line-height:1.8}
+.championship .staffCareer li+li{margin-top:4px}
+.championship .staffSection>.container>.textLink{display:flex;justify-content:center;font-size:12px;margin-top:18px}
+@media(max-width:800px){
+  .championship .youthPlayers{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:600px}
+  .championship .staffGrid{gap:12px}
+  .championship .staffCopy{padding:16px 14px 20px}
+  .championship .staffCopy h3{font-size:23px}
+  .championship .staffCareer{font-size:12px}
+}
+@media(max-width:600px){
+  .championship .youthPlayer{padding:10px 10px 16px}
+  .championship .youthPlayer .playerPortraitFrame{width:calc(100% + 20px);margin:8px -10px 6px}
+  .championship .youthPlayer h3{font-size:22px}
+  .championship .youthPlayer>p{font-size:12px}
+  .championship .youthPlayer .playerMeta{font-size:9px}
+  .championship .staffGrid{grid-template-columns:1fr;max-width:360px;gap:22px}
+  .championship .staffCopy{padding:20px 22px 24px}
+  .championship .staffRole,.championship .staffCareer{font-size:14px}
+  .championship .staffCopy h3{font-size:27px}
+}

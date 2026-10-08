@@ -1,3 +1,5 @@
+import { YOUTH_DEFAULTS, STAFF_DEFAULTS } from './team-profiles.js?v=1.0.0';
+
 export const CONTENT_DEFAULTS = {
   "teamName": "청명초 탁구부",
   "englishName": "CHEONGMYEONG TABLE TENNIS",
@@ -8,6 +10,12 @@ export const CONTENT_DEFAULTS = {
   "secondaryLabel": "훈련 일정 보기",
   "teamTitle": "청명초 탁구부 선수단",
   "teamDescription": "청명초 선수들은 각자의 성장 속도와 목표를 가지고 같은 코트 위에서 함께 성장합니다. 선수 개인정보 보호를 위해 이름은 일부 가려 표시됩니다.",
+  "youthTitle": "유소년 예비 선수단 · 유치부",
+  "youthDescription": "작은 라켓으로 시작하는 첫 도전. 청명과 함께 자라날 유소년 꿈나무를 기다립니다.",
+  "youthPlayers": YOUTH_DEFAULTS,
+  "staffTitle": "함께하는 지도진",
+  "staffDescription": "아이들의 첫 시작부터 선수로 성장하는 과정까지 함께합니다.",
+  "staffMembers": STAFF_DEFAULTS,
   "overviewTitle": "지금, 청명.",
   "overviewDescription": "훈련 일정과 새로운 소식을 한눈에 확인하세요.",
   "activityTitle": "최근 소식과 활동",
@@ -21,8 +29,8 @@ export const CONTENT_DEFAULTS = {
   "coachImage": "site/assets/coach-profile.webp",
   "coachTitle": "아이들의 미래는 지금의 실력으로 결정되지 않습니다.",
   "coachDescription": "기본기와 기술뿐 아니라 경기 운영, 체력, 멘탈, 생활 습관, 팀워크까지. 매일의 작은 습관이 큰 경기에서도 흔들리지 않는 선수를 만든다는 기준으로 훈련합니다.",
-  "coachName": "하정무 코치",
-  "coachRole": "2025 ~ 현재 · 수원청명초등학교 탁구부 코치",
+  "coachName": "하정무",
+  "coachRole": "청명초 메인코치",
   "messageTitle": "시작은 같을 수 있어도, 성장의 모습은 모두 다릅니다.",
   "messageBody": "시작은 같을 수 있어도 선수마다 성장의 속도와 실력은 천차만별로 다를 수 있습니다. 하지만 아이들의 미래를 지금의 실력만으로 결정할 수는 없습니다. 우리 청명초 탁구부는 경기력 향상만을 목표로 하지 않습니다. 예의범절과 인성교육을 함께 중요하게 생각하며, 아이들이 억지로 운동하는 것이 아니라 탁구가 즐거워 스스로 코트에 서고 싶어 하는 팀을 만들기 위해 코치진이 함께 노력하고 있습니다. 믿고 아이들을 보내주시는 만큼 한 명 한 명을 세심하게 살피고 열심히 지도하겠습니다. 처음 라켓을 잡고 시작하는 순간부터 졸업하는 날까지, 아이들과 함께 웃고 고민하며 성장의 과정을 끝까지 함께하겠습니다.",
   "sponsorName": "핑퐁드림어스",
@@ -127,6 +135,8 @@ export const CONTENT_DEFAULTS = {
   "showMarquee": true,
   "showEffects": true,
   "showTeam": true,
+  "showYouth": true,
+  "showStaff": true,
   "showOverview": true,
   "showActivities": true,
   "showSchedules": true,
@@ -149,7 +159,7 @@ export function resolveSettings(raw = {}) {
   const out = {...LEGACY_DEFAULTS};
   for (const key of Object.keys(out)) if (Object.hasOwn(raw, key)) out[key] = raw[key];
   out.siteContent = {...structuredClone(CONTENT_DEFAULTS), ...(raw.siteContent || {})};
-  for (const key of ['activities','faqs','values']) if (!Array.isArray(out.siteContent[key])) out.siteContent[key] = structuredClone(CONTENT_DEFAULTS[key]);
+  for (const key of ['activities','faqs','values','youthPlayers','staffMembers']) if (!Array.isArray(out.siteContent[key])) out.siteContent[key] = structuredClone(CONTENT_DEFAULTS[key]);
   return out;
 }
 export function safeURL(value, fallback = '') {

@@ -2,9 +2,10 @@ import { withTeamHolidays } from './team-holidays.js?v=1.0.0';
 import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.1.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
+import { youthDisplayName, isYouthIllustration } from './team-profiles.js?v=1.0.0';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
-import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned, koreaToday } from './site-content.js?v=3.5.0';
+import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned, koreaToday } from './site-content.js?v=4.2.0';
 
 const app = initializeApp({apiKey:'AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI',authDomain:'cheongmyeong-tabletennis.firebaseapp.com',projectId:'cheongmyeong-tabletennis',storageBucket:'cheongmyeong-tabletennis.firebasestorage.app',messagingSenderId:'712801821489',appId:'1:712801821489:web:501d20626d8cd12dc98610'});
 const db = getFirestore(app), $ = id => document.getElementById(id);
@@ -106,7 +107,7 @@ function applySettings(raw) {
   text('mainTitle',settings.mainTitle); text('mainSubtitle',settings.mainSubtitle);
   image('heroImage',c.heroImage,c.heroAlt); image('navLogo',c.heroImage,c.teamName+' 로고'); image('sponsorImage',c.sponsorImage,c.sponsorName); image('coachImage',c.coachImage||'site/assets/coach-profile.webp',(c.coachName||'코치')+' 프로필'); image('coachDialogImage',c.coachImage||'site/assets/coach-profile.webp',(c.coachName||'코치')+' 프로필 크게 보기');
   text('primaryLabel',c.primaryLabel); text('secondaryLabel',c.secondaryLabel);
-  const sections={team:'showTeam',overview:'showOverview',activity:'showActivities',schedule:'showSchedules',records:'showRecords',notice:'showNotices',coach:'showCoach',message:'showMessage',faq:'showFaq',trial:'showTrial',map:'showMap',sponsor:'showCoach'};
+  const sections={team:'showTeam',youth:'showYouth',staff:'showStaff',overview:'showOverview',activity:'showActivities',schedule:'showSchedules',records:'showRecords',notice:'showNotices',coach:'showCoach',message:'showMessage',faq:'showFaq',trial:'showTrial',map:'showMap',sponsor:'showCoach'};
   Object.entries(sections).forEach(([id,key])=>{$(id).hidden=c[key]===false;});
   document.querySelectorAll('a[href^="#"]').forEach(a=>{const id=a.getAttribute('href').slice(1); if(sections[id])a.hidden=$(id).hidden;});
   $('musicBtn').hidden=c.showMusic===false;
@@ -116,6 +117,8 @@ function applySettings(raw) {
   const mapURL='https://maps.google.com/maps?q='+encodeURIComponent(c.mapQuery||c.contactAddress)+'&t=&z=15&ie=UTF8&iwloc=&output=embed';
   if($('mapFrame').getAttribute('src')!==mapURL)$('mapFrame').src=mapURL;
   $('coachValues').innerHTML=c.values.filter(visible).map((v,i)=>`<div class="value"><span>${String(i+1).padStart(2,'0')}</span><h3>${esc(v.title)}</h3><p>${esc(v.body)}</p></div>`).join('');
+  renderYouthPlayers(c.youthPlayers);
+  renderStaff(c);
   activityGallery.render(c.activities.filter(visible));
   $('faqList').innerHTML=c.faqs.filter(visible).map((f,i)=>`<details class="faqItem"><summary><span class="questionNo">${String(i+1).padStart(2,'0')}</span><span>${esc(f.question)}</span><span class="faqPlus" aria-hidden="true">+</span></summary><div class="faqAnswer">${paragraphs(f.answer)}</div></details>`).join('')||'<p class="empty">궁금한 점은 전화로 문의해주세요.</p>';
   if(settings.popupEnabled && settings.popupTitle && settings.popupContent){
@@ -146,12 +149,46 @@ function applySettings(raw) {
   visualFinish.apply(c);
 }
 let lastPlayerTrigger=null;
+function renderYouthPlayers(items) {
+  const players=items.filter(visible), root=$('youthPlayerList');
+  root.innerHTML=players.map((p,index)=>{
+    const number=String(index+1).padStart(2,'0'), name=youthDisplayName(p.name), src=safeURL(p.image);
+    const artwork=src?`<img class="playerPortrait" src="${esc(src)}" alt="${esc(name)} ${isYouthIllustration(src)?'AI 유치부 선수 일러스트':'유치부 선수 이미지'}" width="600" height="800" loading="lazy" decoding="async">`:jerseyMarkup(index);
+    return `<article class="player playerInteractive youthPlayer" data-youth-index="${index}" role="button" tabindex="0" aria-label="유치부 ${esc(name)} 카드 ${number} 크게 보기"><div class="playerMeta"><span>LITTLE ${number}</span><span>유치부</span></div><div class="playerPortraitFrame${src?'':' isFallback'}">${artwork}</div><h3>${esc(name)}</h3><div class="playerGrade">나이 · ${esc(p.age||'준비중')}</div><p>${paragraphs(p.intro||'')}</p></article>`;
+  }).join('')||'<p class="empty">유소년 선수 소개를 준비하고 있습니다.</p>';
+  $('youthIllustrationNote').hidden=!players.some(p=>isYouthIllustration(p.image));
+  root.querySelectorAll('.youthPlayer').forEach((card,index)=>{
+    const p=players[index], img=card.querySelector('img');
+    if(img){
+      const fallback=()=>{const frame=img.parentElement;if(frame){frame.classList.add('isFallback');frame.innerHTML=jerseyMarkup(index);}};
+      img.addEventListener('error',fallback,{once:true});
+      if(img.complete&&!img.naturalWidth)fallback();
+    }
+    const open=()=>openPlayerDialog({...p,youth:true,grade:'유치부 · 나이 '+(p.age||'준비중'),style:p.intro,award:''},card,String(index+1).padStart(2,'0'));
+    card.addEventListener('click',open);
+    card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
+  });
+}
+function renderStaff(content) {
+  const members=[{name:content.coachName,role:content.coachRole,image:content.coachImage,career:''},...content.staffMembers.filter(visible)];
+  const root=$('staffList');
+  root.innerHTML=members.map(member=>{
+    const src=safeURL(member.image), lines=String(member.career||'').split(/\n/).map(line=>line.trim()).filter(Boolean);
+    return `<article class="staffCard"><div class="staffPhoto">${src?`<img src="${esc(src)}" alt="${esc(member.name)} ${esc(member.role)} 프로필" width="600" height="750" loading="lazy" decoding="async">`:'<span class="staffPhotoEmpty">사진 준비중</span>'}</div><div class="staffCopy"><p class="staffRole">${esc(member.role)}</p><h3>${esc(member.name)}</h3>${lines.length?`<ul class="staffCareer">${lines.map(line=>`<li>${esc(line)}</li>`).join('')}</ul>`:''}</div></article>`;
+  }).join('');
+  root.querySelectorAll('img').forEach(img=>{
+    const fallback=()=>{if(img.parentElement)img.parentElement.innerHTML='<span class="staffPhotoEmpty">사진 준비중</span>';};
+    img.addEventListener('error',fallback,{once:true});
+    if(img.complete&&!img.naturalWidth)fallback();
+  });
+}
 function openPlayerDialog(player,card,number){
   const dialog=$('playerDialog');
   if(!dialog)return;
   lastPlayerTrigger=card;
   const visual=$('playerDialogVisual');
   visual.replaceChildren();
+  visual.classList.remove('isFallback');
   visual.classList.toggle('hasPhoto',!!card.querySelector('.playerPortraitFrame.hasPhoto'));
   const cardImage=card.querySelector('.playerPortrait');
   if(cardImage){
@@ -164,12 +201,13 @@ function openPlayerDialog(player,card,number){
     visual.innerHTML=jerseyMarkup(Math.max(0,Number(number)-1));
     visual.classList.add('isFallback');
   }
-  text('playerDialogNumber','PLAYER '+number);
-  text('playerDialogName',maskName(player.name));
+  text('playerDialogNumber',(player.youth?'LITTLE ':'PLAYER ')+number);
+  text('playerDialogName',player.youth?youthDisplayName(player.name):maskName(player.name));
   text('playerDialogGrade',player.grade||'');
   text('playerDialogStyle',player.style||'청명초 선수');
   text('playerDialogAward',player.award||'');
   $('playerDialogAwardWrap').hidden=!String(player.award||'').trim();
+  dialog.querySelector('.playerDialogHint').textContent=player.youth&&isYouthIllustration(player.image)?'선수 소개를 준비 중입니다. 현재 이미지는 AI 유치부 선수 일러스트입니다.':'선수 개인정보 보호를 위해 이름은 일부 가려 표시됩니다.';
   dialog.showModal();
 }
 // Add the published results to both the card and its detail view without changing saved profiles.

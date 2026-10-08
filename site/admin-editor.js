@@ -1,5 +1,5 @@
 import { photoUploadError } from './photo-upload.js?v=3.2.0';
-import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=3.4.0';
+import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=4.2.0';
 import { sameSettingsValue as equal } from './settings-compare.js?v=3.1.2';
 
 const field = (key,label,type='text',hint='') => ({key,label,type,hint});
@@ -10,18 +10,22 @@ const groups = [
   {id:'effects',title:'문구 · 효과',fields:[field('marqueeText','중간에 흐르는 문구','text','짧은 문구를 · 로 구분해서 입력하세요.'),field('showMarquee','흐르는 문구 표시','boolean'),field('showEffects','은은한 빛 · 마우스 효과','boolean')]},
   {id:'activities',title:'팀 이야기',fields:[],array:'activities'},
   {id:'faqs',title:'자주 묻는 질문',fields:[],array:'faqs'},
-  {id:'coach',title:'코치 · 후원',fields:[field('coachImage','코치 사진','image','사진을 바꾸면 코치 메시지 영역과 큰 화면에 함께 반영됩니다.'),field('coachTitle','지도 방향 제목'),field('coachDescription','지도 방향 설명','textarea'),field('coachName','지도자 이름'),field('coachRole','지도자 소개'),field('messageTitle','코치 인사말 제목'),field('messageBody','코치 인사말','textarea'),field('sponsorName','후원 이름'),field('sponsorDescription','후원 소개','textarea'),field('sponsorImage','후원 로고 주소','image','기존 로고: dreamers-logo.png')],array:'values'},
+  {id:'youth',title:'유소년 예비반',fields:[field('youthTitle','유치부 영역 제목'),field('youthDescription','유치부 소개','textarea'),field('showYouth','유치부 영역 공개','boolean')],array:'youthPlayers'},
+  {id:'staff',title:'지도진',fields:[field('staffTitle','지도진 영역 제목'),field('staffDescription','지도진 소개','textarea'),field('showStaff','지도진 영역 공개','boolean'),field('coachName','메인코치 이름'),field('coachRole','메인코치 직책'),field('coachImage','메인코치 사진','image','지도진 카드와 코치 메시지 사진에 함께 반영됩니다.')],array:'staffMembers'},
+  {id:'coach',title:'코치 인사말 · 후원',fields:[field('coachTitle','지도 방향 제목'),field('coachDescription','지도 방향 설명','textarea'),field('messageTitle','코치 인사말 제목'),field('messageBody','코치 인사말','textarea'),field('sponsorName','후원 이름'),field('sponsorDescription','후원 소개','textarea'),field('sponsorImage','후원 로고 주소','image','기존 로고: dreamers-logo.png')],array:'values'},
   {id:'contact',title:'연락처 · 위치',fields:[field('contactAddress','주소'),field('contactPhone','문의 전화번호','tel'),field('contactNote','방문 안내','textarea'),field('mapQuery','지도에서 찾을 장소','text','정확한 장소명 또는 주소를 입력하세요.'),field('mapUrl','네이버 지도 링크','url')]},
-  {id:'visibility',title:'공개 영역',fields:[...Object.keys(CONTENT_DEFAULTS).filter(k=>k.startsWith('show')&&!['showMarquee','showEffects'].includes(k)).map(key=>field(key,({showTeam:'선수단',showOverview:'요약 소식',showActivities:'팀 이야기',showSchedules:'훈련 일정',showRecords:'대회 기록',showNotices:'공지사항',showCoach:'코치 · 후원',showMessage:'코치 인사말',showFaq:'자주 묻는 질문',showTrial:'체험 신청',showMap:'찾아오시는 길',showMusic:'팀 노래'})[key],'boolean'))]},
+  {id:'visibility',title:'공개 영역',fields:[...Object.keys(CONTENT_DEFAULTS).filter(k=>k.startsWith('show')&&!['showMarquee','showEffects','showYouth','showStaff'].includes(k)).map(key=>field(key,({showTeam:'선수단',showOverview:'요약 소식',showActivities:'팀 이야기',showSchedules:'훈련 일정',showRecords:'대회 기록',showNotices:'공지사항',showCoach:'코치 · 후원',showMessage:'코치 인사말',showFaq:'자주 묻는 질문',showTrial:'체험 신청',showMap:'찾아오시는 길',showMusic:'팀 노래'})[key],'boolean'))]},
   {id:'popup',title:'팝업 공지',fields:[field('popupEnabled','팝업 사용','boolean'),field('popupImage','팝업 사진','image','사진이 없으면 기존처럼 글만 표시됩니다.'),field('popupTitle','팝업 제목'),field('popupContent','팝업 내용','textarea'),field('popupButtonLabel','바로가기 버튼 문구','text','선택 사항 · 예: 체험 신청 바로가기'),field('popupButtonUrl','바로가기 링크','url','선택 사항 · 예: #trial 또는 https://…')]}
 ];
 const legacy = new Set(['mainTitle','mainSubtitle','popupEnabled','popupImage','popupTitle','popupContent','popupButtonLabel','popupButtonUrl']);
 const arrayFields = {
+  youthPlayers:[field('name','이름','text','준비중 또는 선수 이름을 입력하세요. 실제 이름은 홈페이지에서 일부 가려집니다.'),field('age','나이 / 구분','text','예: 준비중, 6세'),field('intro','선수 소개','textarea'),field('image','선수 사진 / AI 그림','image','새 사진으로 바꾸면 해당 카드에 반영됩니다.'),field('visible','홈페이지에 표시','boolean')],
+  staffMembers:[field('name','지도진 이름'),field('role','직책','text','예: 코치, 트레이너'),field('career','학력 / 경력','textarea','한 줄에 한 항목씩 입력하세요.'),field('image','지도진 사진','image'),field('visible','홈페이지에 표시','boolean')],
   activities:[field('title','활동 제목'),field('tag','분류'),field('date','날짜'),field('body','내용','textarea'),field('image','대표 사진 · 선택','image','기존 이미지 주소도 사용할 수 있습니다. 선수의 얼굴이 드러나지 않는 사진을 사용하세요.'),field('photos','사진첩 · 최대 10장','photos','추가 사진 주소를 한 줄에 하나씩 입력하거나 아래에서 사진 파일을 선택하세요.'),field('url','관련 링크 · 선택','url'),field('visible','홈페이지에 표시','boolean')],
   faqs:[field('question','질문'),field('answer','답변','textarea'),field('visible','홈페이지에 표시','boolean')],
   values:[field('title','지도 키워드'),field('body','설명','textarea'),field('visible','홈페이지에 표시','boolean')]
 };
-const arrayNames = {activities:'활동',faqs:'질문',values:'지도 키워드'};
+const arrayNames = {activities:'활동',faqs:'질문',values:'지도 키워드',youthPlayers:'유치부 선수 카드',staffMembers:'지도진'};
 const pathFor = key => legacy.has(key)?key:'siteContent.'+key;
 const get = (obj,path) => path.split('.').reduce((o,k)=>o?.[k],obj);
 const set = (obj,path,value) => {const keys=path.split('.');let o=obj;for(const k of keys.slice(0,-1))o=o[k]??=( {} );o[keys.at(-1)]=value;};
@@ -41,14 +45,14 @@ function inputHTML(f,value,attributes,id) {
     `<input ${attr} type="${['url','image'].includes(type)?'text':type}" value="${esc(value)}" maxlength="${['url','image'].includes(type)?1500:500}" ${['url','image'].includes(type)?'placeholder="https://… 또는 기존 이미지 파일명"':''}>`;
   if(activityPhoto){
     const buttonText=type==='photos'?'사진 여러 장 추가':f.key==='coachImage'?'코치 사진 선택':f.key==='popupImage'?'팝업 사진 선택':'대표 사진 선택';
-    return `<div class="editorField activityPhotoField"><div class="photoFieldTitle">${esc(f.label)}</div><div class="photoUploadField"><button class="photoUploadButton" type="button" data-open-photo="${id}_upload">${buttonText}</button><input id="${id}_upload" type="file" hidden aria-label="${buttonText} 파일" accept="image/jpeg,image/png,image/webp" ${type==='photos'?'multiple':''} data-photo-target="${id}" data-photo-many="${type==='photos'}"><span class="photoUploadStatus" role="status">버튼을 눌러 휴대폰 또는 컴퓨터의 사진을 선택하세요.</span><div class="photoEditorPreview" data-photo-preview="${id}"></div><p class="photoUploadNote">① 사진 선택 → ② 업로드 완료 확인 → ③ 상단 ‘홈페이지에 저장’<br>JPG·PNG·WebP / 장당 15MB 이하 / 대표 사진 포함 최대 10장<br>공개 가능한 사진만 선택하세요.</p><details class="photoUrlDetails"><summary>사진 주소 직접 입력 · 선택 사항</summary><label for="${id}">${type==='photos'?'추가 사진 주소 · 한 줄에 하나씩':'대표 사진 주소'}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}</details></div></div>`;
+    return `<div class="editorField activityPhotoField"><div class="photoFieldTitle">${esc(f.label)}</div><div class="photoUploadField"><button class="photoUploadButton" type="button" data-open-photo="${id}_upload">${buttonText}</button><input id="${id}_upload" type="file" hidden aria-label="${buttonText} 파일" accept="image/jpeg,image/png,image/webp" ${type==='photos'?'multiple':''} data-photo-target="${id}" data-photo-many="${type==='photos'}"><span class="photoUploadStatus" role="status">버튼을 눌러 휴대폰 또는 컴퓨터의 사진을 선택하세요.</span><div class="photoEditorPreview" data-photo-preview="${id}"></div><p class="photoUploadNote">① 사진 선택 → ② 업로드 완료 확인 → ③ 상단 ‘홈페이지에 저장’<br>JPG·PNG·WebP / 장당 15MB 이하${type==='photos'?' / 대표 사진 포함 최대 10장':''}<br>공개 가능한 사진만 선택하세요.</p><details class="photoUrlDetails"><summary>사진 주소 직접 입력 · 선택 사항</summary><label for="${id}">${type==='photos'?'추가 사진 주소 · 한 줄에 하나씩':'대표 사진 주소'}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}</details></div></div>`;
   }
   return `<div class="editorField"><label for="${id}">${esc(f.label)}</label>${input}${f.hint?`<p class="fieldHint">${esc(f.hint)}</p>`:''}</div>`;
 }
 
 export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
   const $=id=>document.getElementById(id),root=$('siteEditor');
-  let raw={},baseline=normalized(),loaded=false,saving=false,active='main',previewTimer,uploading=false,uploadFailure='';
+  let raw={},baseline=normalized(),loaded=false,saving=false,active=location.hash==='#settings-youth'?'youth':location.hash==='#settings-staff'?'staff':'main',previewTimer,uploading=false,uploadFailure='';
   const status=message=>{$('editorStatus').textContent=message;};
   function changedPaths(draft=readDraft()) {
     const paths=groups.flatMap(g=>[...g.fields.map(f=>pathFor(f.key)),...(g.array?['siteContent.'+g.array]:[])]);
@@ -92,7 +96,7 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
     for(const g of groups){
       for(const f of g.fields.filter(f=>['url','image'].includes(f.type))){const v=get(draft,pathFor(f.key));if(v&&!safeURL(v))throw new Error(f.label+'에 올바른 주소를 입력해주세요.');}
       if(g.array)for(const item of draft.siteContent[g.array]){
-        const title=item.title??item.question;if(!title?.trim())throw new Error(arrayNames[g.array]+'의 제목 또는 질문을 입력해주세요.');
+        const title=item.name??item.title??item.question;if(!title?.trim())throw new Error(arrayNames[g.array]+(['youthPlayers','staffMembers'].includes(g.array)?'의 이름을 입력해주세요.':'의 제목 또는 질문을 입력해주세요.'));
         for(const k of ['url','image'])if(item[k]&&!safeURL(item[k]))throw new Error(arrayNames[g.array]+'의 이미지 또는 링크 주소를 확인해주세요.');
         if(item.photos?.some(url=>!safeURL(url)))throw new Error('사진첩에 올바른 사진 주소를 입력해주세요.');
         if(new Set([item.image,...(item.photos||[])].filter(Boolean)).size>10)throw new Error('대표 사진을 포함해 한 활동에 10장까지 등록할 수 있습니다.');
@@ -154,6 +158,13 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
     }catch(error){message.dataset.state='error';uploadFailure=(completed?`${completed}장은 업로드되었습니다. `:'사진 업로드 실패 · ')+photoUploadError(error)+(error?.code?' (오류 코드: '+error.code+')':'');message.textContent=uploadFailure;}
     finally{uploading=false;root.inert=!loaded;$('editorRefresh').disabled=false;updateStatus();}
   });
+  function selectTab(id){
+    if(!groups.some(group=>group.id===id))return;
+    active=id;
+    root.querySelectorAll('[data-editor-tab]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.editorTab===id)));
+    root.querySelectorAll('.editorPanel').forEach(panel=>panel.hidden=panel.id!=='editorPanel_'+id);
+  }
+  window.addEventListener('hashchange',()=>{const tab=location.hash.slice('#settings-'.length);if(location.hash.startsWith('#settings-'))selectTab(tab);});
   root.addEventListener('click',event=>{
     const pickerButton=event.target.closest('[data-open-photo]');
     if(pickerButton&&!saving&&!uploading){$(pickerButton.dataset.openPhoto)?.click();return;}
@@ -165,7 +176,7 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
   });
   root.addEventListener('click',event=>{
     const b=event.target.closest('button');if(!b||saving||uploading)return;
-    if(b.dataset.editorTab){active=b.dataset.editorTab;root.querySelectorAll('[data-editor-tab]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));root.querySelectorAll('.editorPanel').forEach(x=>x.hidden=x.id!=='editorPanel_'+active);}
+    if(b.dataset.editorTab)selectTab(b.dataset.editorTab);
     if(b.dataset.add){const key=b.dataset.add,items=readArray(key);items.push({id:crypto.randomUUID(),visible:true});renderArray(key,items);refreshPhotoPreviews();updateStatus();$('editorArray_'+key).lastElementChild.querySelector('input')?.focus();}
     const row=b.closest('[data-repeat-key]');if(!row)return;
     const key=row.dataset.repeatKey,items=readArray(key),index=items.findIndex(x=>x.id===row.dataset.repeatId);
@@ -184,6 +195,6 @@ export function initSiteEditor({read,write,isSignedIn,notify,uploadPhoto}) {
 
 export function initAdminNavigation() {
   const sections=[...document.querySelectorAll('main.wrap > section')],links=[...document.querySelectorAll('.nav a[href^="#"]')];
-  function navigate(){const id=location.hash.slice(1)||'dashboard',target=sections.some(s=>s.id===id)?id:'dashboard';sections.forEach(s=>s.hidden=s.id!==target);links.forEach(a=>{const active=a.getAttribute('href')==='#'+target;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});const title=document.querySelector('#'+target+' h2, #'+target+' h1');document.getElementById('currentPanelName').textContent=target==='dashboard'?'오늘의 청명':title?.textContent.trim()||'관리자';window.scrollTo(0,0);}
+  function navigate(){const id=location.hash.slice(1)||'dashboard',aliases={'settings-youth':'유소년 예비반 관리','settings-staff':'지도진 관리'},target=aliases[id]?'settings':sections.some(s=>s.id===id)?id:'dashboard';sections.forEach(s=>s.hidden=s.id!==target);links.forEach(a=>{const active=a.getAttribute('href')==='#'+(aliases[id]?id:target);a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});const title=document.querySelector('#'+target+' h2, #'+target+' h1');document.getElementById('currentPanelName').textContent=aliases[id]||(target==='dashboard'?'오늘의 청명':title?.textContent.trim()||'관리자');window.scrollTo(0,0);}
   window.addEventListener('hashchange',navigate);navigate();
 }

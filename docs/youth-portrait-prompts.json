@@ -1,0 +1,21 @@
+{
+  "generator": "Built-in image_gen",
+  "assets": [
+    {
+      "path": "site/assets/youth/player-1.webp",
+      "prompt": "Use case: stylized-concept. Asset type: portrait artwork for a kindergarten table tennis team player card on an existing navy and gold Korean sports website. Render ONE standalone character only as a polished adorable 3D miniature clay-toy illustration, visibly stylized rather than a real child photo. Full body, complete shoes, centered with generous safe margins, portrait 3:4 framing. Small child proportions, friendly eyes and rounded cheeks. Dark navy athletic short-sleeved polo with tasteful gold piping, modest matching navy shorts, white socks and clean sports shoes. Warm soft studio lighting, dark midnight navy gradient backdrop and a subtle gold rim light, small diffuse contact shadow. No letters, no names, no numerals, no logos, no watermark, no border, no pedestal. No other people. A cheerful fictional Korean kindergarten-age girl (about 5–6) with black hair in two short pigtails, holding a red table tennis paddle at her side, joyful confident smile."
+    },
+    {
+      "path": "site/assets/youth/player-2.webp",
+      "prompt": "Use case: stylized-concept. Asset type: portrait artwork for a kindergarten table tennis team player card on an existing navy and gold Korean sports website. Render ONE standalone character only as a polished adorable 3D miniature clay-toy illustration, visibly stylized rather than a real child photo. Full body, complete shoes, centered with generous safe margins, portrait 3:4 framing. Small child proportions, friendly eyes and rounded cheeks. Dark navy athletic short-sleeved polo with tasteful gold piping, modest matching navy shorts, white socks and clean sports shoes. Warm soft studio lighting, dark midnight navy gradient backdrop and a subtle gold rim light, small diffuse contact shadow. No letters, no names, no numerals, no logos, no watermark, no border, no pedestal. No other people. A cheerful fictional Korean kindergarten-age boy (about 5–6) with a short tidy black bowl haircut, holding a black table tennis paddle in front of his waist and a white ping pong ball in his other hand."
+    },
+    {
+      "path": "site/assets/youth/player-3.webp",
+      "prompt": "Use case: stylized-concept. Asset type: portrait artwork for a kindergarten table tennis team player card on an existing navy and gold Korean sports website. Render ONE standalone character only as a polished adorable 3D miniature clay-toy illustration, visibly stylized rather than a real child photo. Full body, complete shoes, centered with generous safe margins, portrait 3:4 framing. Small child proportions, friendly eyes and rounded cheeks. Dark navy athletic short-sleeved polo with tasteful gold piping, modest matching navy shorts, white socks and clean sports shoes. Warm soft studio lighting, dark midnight navy gradient backdrop and a subtle gold rim light, small diffuse contact shadow. No letters, no names, no numerals, no logos, no watermark, no border, no pedestal. No other people. A cheerful fictional Korean kindergarten-age girl (about 5–6) with a neat short black bob haircut and a small gold hair clip, posing in a gentle table tennis ready stance with a red paddle."
+    },
+    {
+      "path": "site/assets/youth/player-4.webp",
+      "prompt": "Use case: stylized-concept. Asset type: portrait artwork for a kindergarten table tennis team player card on an existing navy and gold Korean sports website. Render ONE standalone character only as a polished adorable 3D miniature clay-toy illustration, visibly stylized rather than a real child photo. Full body, complete shoes, centered with generous safe margins, portrait 3:4 framing. Small child proportions, friendly eyes and rounded cheeks. Dark navy athletic short-sleeved polo with tasteful gold piping, modest matching navy shorts, white socks and clean sports shoes. Warm soft studio lighting, dark midnight navy gradient backdrop and a subtle gold rim light, small diffuse contact shadow. No letters, no names, no numerals, no logos, no watermark, no border, no pedestal. No other people. A cheerful fictional Korean kindergarten-age boy (about 5–6) with short slightly wavy black hair, holding a red table tennis paddle beside his chest, giving a small friendly wave."
+    }
+  ]
+}
