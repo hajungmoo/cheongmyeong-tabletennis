@@ -30,3 +30,30 @@ export function youthDisplayName(value) {
 
 export const isYouthIllustration = value =>
   /^site\/assets\/youth\/player-[1-4]\.webp$/.test(String(value || ''));
+
+// Keep the head coach introduction and full coach message together above the assistant staff.
+function promoteHeadCoachSections() {
+  const coach = document.getElementById('coach');
+  const message = document.getElementById('message');
+  const staff = document.getElementById('staff');
+  if (!coach || !staff || coach.parentNode !== staff.parentNode) return;
+
+  const parent = staff.parentNode;
+  parent.insertBefore(coach, staff);
+  if (message && message.parentNode === parent) parent.insertBefore(message, staff);
+
+  coach.classList.add('headCoachFeature');
+  if (message) message.classList.add('headCoachLetter');
+
+  const kicker = coach.querySelector('.sectionKicker');
+  if (kicker) kicker.textContent = 'HEAD COACH · COACH MESSAGE';
+
+  // The staff section follows the head coach directly, so an upward link is no longer needed.
+  staff.querySelector('.textLink')?.remove();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', promoteHeadCoachSections, {once:true});
+} else {
+  promoteHeadCoachSections();
+}
