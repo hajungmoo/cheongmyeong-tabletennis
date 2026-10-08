@@ -49,6 +49,17 @@ test('duplicate school rows do not create a second copy of an existing player',(
   db.players.push({id:'existing-sarang',name:'권사랑',gender:'여',schoolId:'swd-duplicate',grade:'1학년'});
   applyRoster(db);assert.equal(db.players.filter(player=>player.name==='권사랑').length,1);
 });
+test('an existing middle school incorrectly labeled as an elementary school is corrected in place',()=>{
+  const db=database();db.schools.push({id:'gyeongsin',name:'광주경신중초등학교',aliases:['광주경신중']});
+  const existing={id:'yueun',name:'나유은',gender:'여',schoolId:'gyeongsin',grade:'2학년',current:true,memo:'Preserve existing information'};
+  db.players.push(existing);db.migrations.womensFinalBracket20261008V1={addedPlayers:30};
+  const before=structuredClone(existing);applyRoster(db);
+  assert.equal(db.schools.find(school=>school.id==='gyeongsin').name,'광주경신중학교');
+  assert.ok(db.schools.find(school=>school.id==='gyeongsin').aliases.includes('광주경신중초등학교'));
+  assert.deepEqual(db.players.find(player=>player.id==='yueun'),before);
+  assert.equal(db.players.filter(player=>player.name==='나유은'&&player.schoolId==='gyeongsin').length,1);
+  assert.deepEqual(db.migrations.womensFinalBracket20261008V1,{addedPlayers:30});
+});
 test('new records retain division evidence without inventing grades or renaming clubs as schools',()=>{
   const db=database();applyRoster(db);
   const newPlayers=db.players.filter(player=>player.source===MIGRATION);

@@ -1,6 +1,6 @@
 // Name and school catalog extracted from all five pages of the supplied final bracket.
 // Division participation does not establish a student's exact grade.
-export const MIGRATION='womensFinalBracket20261008V1';
+export const MIGRATION='womensFinalBracket20261008V2';
 export const SOURCE='여자부 최종 대진표 · 2026-10-08';
 export const SCHOOL_SPECS=[{"name":"수원청명초등학교","aliases":["청명초"]},{"name":"부산탁구스포츠클럽","aliases":["부산탁구"]},{"name":"서대전초등학교","aliases":["서대전초"]},{"name":"영천포은초등학교","aliases":["포은초"]},{"name":"음성용천초등학교","aliases":["용천초"]},{"name":"서울미성초등학교","aliases":["미성초"]},{"name":"청양정산초등학교","aliases":["정산초"]},{"name":"대구봉덕초등학교","aliases":["봉덕초"]},{"name":"화성도시공사","aliases":["화성도시공사"]},{"name":"거제장평초등학교","aliases":["장평초"]},{"name":"아산남성초등학교","aliases":["아산남성초"]},{"name":"세아아카데미","aliases":["세아아카데미"]},{"name":"울산화정초등학교","aliases":["화정초"]},{"name":"광주태봉초등학교","aliases":["광주태봉초"]},{"name":"울산남목초등학교","aliases":["남목초"]},{"name":"춘천초등학교","aliases":["춘천초"]},{"name":"울산문현초등학교","aliases":["문현초"]},{"name":"용산월드스포츠클럽","aliases":["용산월드"]},{"name":"서울영남초등학교","aliases":["영남초"]},{"name":"인천조동초등학교","aliases":["조동초"]},{"name":"원주치악초등학교","aliases":["치악초"]},{"name":"대불스포츠클럽","aliases":["대불스포츠클럽"]},{"name":"횡성성북초등학교","aliases":["횡성성북초","성북","성북초"]},{"name":"청대초등학교","aliases":["청대초","청대"]},{"name":"인천부평동초등학교","aliases":["인천부평동초"]},{"name":"의왕G스포츠","aliases":["의왕G스포츠"]},{"name":"블랙핑퐁","aliases":["블랙핑퐁"]},{"name":"부산체육중학교","aliases":["부산체중"]},{"name":"호수돈여자중학교","aliases":["호수돈여중"]},{"name":"상서중학교","aliases":["상서중"]},{"name":"청명중학교","aliases":["청명중"]},{"name":"완주스포츠","aliases":["완주스포츠"]},{"name":"광주경신중학교","aliases":["광주경신중"]},{"name":"인천성리중학교","aliases":["인천성리중"]}];
 export const ROSTER=[
@@ -151,7 +151,8 @@ export function applyRoster(db){
     const candidates=matchingSchools(db,spec);
     let target=candidates.find(school=>normalizedSchool(school.name)===normalizedSchool(spec.name))||candidates[0];
     if(!target){target={id:stableId('s_bracket_',spec.name,db.schools),name:spec.name,ours:false,aliases:[]};db.schools.push(target);candidates.push(target);report.addedSchools++;}
-    if(/(?:초등학교|중학교)$/.test(spec.name)&&!/(?:초등학교|중학교)$/.test(target.name)){target.aliases=unique([target.name,...(target.aliases||[])]);target.name=spec.name;report.updatedSchoolNames++;}
+    const schoolSuffix=spec.name.endsWith('중학교')?'중학교':spec.name.endsWith('초등학교')?'초등학교':null;
+    if(schoolSuffix&&!target.name.endsWith(schoolSuffix)){target.aliases=unique([target.name,...(target.aliases||[])]);target.name=spec.name;report.updatedSchoolNames++;}
     target.aliases=unique([...(target.aliases||[]),...schoolNames(spec)]);
     schools.set(spec.name,{target,ids:new Set(candidates.map(school=>school.id))});
   }
