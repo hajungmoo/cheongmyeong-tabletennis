@@ -1,7 +1,12 @@
 /* Youth and coaching cards share the existing navy / gold design. */
+html,body{max-width:100%;overflow-x:hidden}
+body.championship{width:100%;max-width:100%;overflow-x:hidden!important;overscroll-behavior-x:none}
+.championship #main{width:100%;max-width:100%;overflow-x:hidden}
+.championship .section,.championship .container,.championship .headCoachFeature,.championship .headCoachLetter,.championship .staffSection{max-width:100%;min-width:0}
+.championship .headCoachLetter{overflow:hidden}
 .championship .youthSection{background:radial-gradient(ellipse at 50% 0,#ae844d12,transparent 65%),#04101e}
-.championship .youthPlayers{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1040px;margin-inline:auto}
-.championship .youthPlayer{padding:14px 14px 20px;border-radius:8px}
+.championship .youthPlayers{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1040px;margin-inline:auto;min-width:0}
+.championship .youthPlayer{padding:14px 14px 20px;border-radius:8px;min-width:0;max-width:100%}
 .championship .youthPlayer .playerMeta{font-size:10px}
 .championship .youthPlayer .playerPortraitFrame{width:calc(100% + 28px);margin:12px -14px 8px;aspect-ratio:3/4;background:#07101f}
 .championship .youthPlayer .playerPortrait{object-fit:contain}
@@ -14,7 +19,8 @@
 .championship .headCoachFeature{position:relative;isolation:isolate;overflow:hidden;padding:62px 0;background:radial-gradient(circle at 18% 26%,#d9ab552b 0,transparent 31%),radial-gradient(circle at 80% 72%,#31577e24 0,transparent 35%),linear-gradient(125deg,#020812 0%,#071827 50%,#111007 100%);border-top:1px solid #d1a95b66;border-bottom:1px solid #b88f4a52;box-shadow:inset 0 1px #fff1bd0a,inset 0 -1px #0008}
 .championship .headCoachFeature::before{content:"HEAD COACH";position:absolute;right:-10px;top:18px;z-index:-1;font-size:clamp(76px,12vw,178px);font-weight:950;line-height:.84;letter-spacing:-.075em;color:#ffffff07;white-space:nowrap;pointer-events:none}
 .championship .headCoachFeature::after{content:"";position:absolute;left:50%;top:0;width:min(920px,92vw);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#f0c879,#fff0b0,#c8943d,transparent);box-shadow:0 0 34px #dfab4770;pointer-events:none}
-.championship .headCoachFeature .coachGrid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(260px,.84fr) minmax(0,1.35fr) minmax(230px,.8fr);gap:38px;align-items:center;max-width:1180px}
+.championship .headCoachFeature .coachGrid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(260px,.84fr) minmax(0,1.35fr) minmax(230px,.8fr);gap:38px;align-items:center;max-width:1180px;min-width:0}
+.championship .headCoachFeature .coachGrid>*{min-width:0;max-width:100%}
 .championship .headCoachFeature .coachArt{display:flex;min-height:390px;padding:0;align-items:stretch;border:1px solid #d1aa616b;border-top:2px solid #efc874;border-radius:18px;background:#07111c;box-shadow:0 28px 58px #0009,0 0 0 1px #ffffff05;overflow:hidden}
 .championship .headCoachFeature .coachArt::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,#03101dde 100%),url('./assets/arena-gold.webp') center/cover;opacity:.26;filter:grayscale(.55);z-index:0}
 .championship .headCoachFeature .coachPortraitButton{position:relative;z-index:1;display:block;width:100%;min-height:390px;padding:0;border:0;background:transparent;overflow:hidden;color:inherit}
@@ -29,8 +35,8 @@
 .championship .headCoachFeature .coachName{position:relative;display:inline-block;padding-top:28px;font-size:34px;font-weight:900;line-height:1.15;letter-spacing:-.05em;color:#fff}
 .championship .headCoachFeature .coachName::before{content:"HEAD COACH";position:absolute;left:0;top:0;font-size:10px;font-weight:850;letter-spacing:.18em;color:#d9b466}
 .championship .headCoachFeature .coachRole{display:inline-flex;align-items:center;width:max-content;max-width:100%;margin:8px 0 0;padding:6px 11px;border:1px solid #d3aa6057;border-radius:999px;background:#d0a34910;color:#edca87;font-size:11px;font-weight:800;letter-spacing:.04em}
-.championship .headCoachFeature .values{display:grid;grid-template-columns:1fr;gap:14px;padding:0 0 0 24px;border-left:1px solid #c29d5650}
-.championship .headCoachFeature .value{position:relative;display:grid;grid-template-columns:38px 1fr;grid-template-rows:auto auto;gap:3px 11px;padding:13px 0;border-bottom:1px solid #9caec021;background:none}
+.championship .headCoachFeature .values{display:grid;grid-template-columns:1fr;gap:14px;padding:0 0 0 24px;border-left:1px solid #c29d5650;min-width:0}
+.championship .headCoachFeature .value{position:relative;display:grid;grid-template-columns:38px 1fr;grid-template-rows:auto auto;gap:3px 11px;padding:13px 0;border-bottom:1px solid #9caec021;background:none;min-width:0}
 .championship .headCoachFeature .value:last-child{border-bottom:0}
 .championship .headCoachFeature .value>span{grid-row:1/3;display:grid;place-items:center;width:34px;height:34px;border:1px solid #d2aa6064;border-radius:50%;background:#cc9d4210;color:#ebc679;font-size:11px;font-weight:900;box-shadow:inset 0 0 18px #c99a4309}
 .championship .headCoachFeature .value h3{font-size:16px;line-height:1.35;letter-spacing:-.025em;color:#f5efe2;margin:0}
@@ -49,9 +55,9 @@
 .championship .staffSection .sectionHead h2{font-size:clamp(34px,4.8vw,58px);line-height:1.08;letter-spacing:-.045em;color:#fff;margin-top:14px;text-shadow:0 8px 28px #0008}
 .championship .staffSection .sectionHead h2::after{content:"";display:block;width:74px;height:3px;margin-top:16px;background:linear-gradient(90deg,#f0c978,#9a7135);border-radius:99px;box-shadow:0 0 15px #d4a85666}
 .championship .staffSection .sectionHead>p{max-width:360px;color:#aebed0;font-size:14px;line-height:1.8}
-.championship .staffGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;max-width:940px;margin-inline:auto}
+.championship .staffGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;max-width:940px;margin-inline:auto;min-width:0}
 .championship .staffGrid .staffCard:first-child{display:none}
-.championship .staffCard{position:relative;min-width:0;border:1px solid #c29a5473;border-top:2px solid #efc773;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#0b1c2d 0%,#06121f 100%);box-shadow:0 24px 54px #0008,0 0 0 1px #ffffff05;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.championship .staffCard{position:relative;min-width:0;max-width:100%;border:1px solid #c29a5473;border-top:2px solid #efc773;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#0b1c2d 0%,#06121f 100%);box-shadow:0 24px 54px #0008,0 0 0 1px #ffffff05;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
 .championship .staffCard::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,#ffffff10 0%,transparent 25%,transparent 72%,#d2a75a0c 100%)}
 .championship .staffCard:hover{transform:translateY(-7px);border-color:#e7bd70b8;box-shadow:0 30px 68px #000a,0 0 32px #c6943930}
 .championship .staffPhoto{position:relative;aspect-ratio:4/5;background:linear-gradient(145deg,#eef0f0,#d9dcdf);display:grid;place-items:center;overflow:hidden}
@@ -59,12 +65,12 @@
 .championship .staffPhoto img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .45s ease}
 .championship .staffCard:hover .staffPhoto img{transform:scale(1.025)}
 .championship .staffPhotoEmpty{color:#5e6875;font-size:14px}
-.championship .staffCopy{position:relative;padding:26px 30px 30px}
+.championship .staffCopy{position:relative;padding:26px 30px 30px;min-width:0}
 .championship .staffRole{display:inline-flex;align-items:center;min-height:28px;padding:4px 10px;border:1px solid #d1a85b55;border-radius:999px;background:#c99a4314;font-size:12px;font-weight:800;line-height:1.4;letter-spacing:.08em;color:#f0ca80;margin:0 0 10px}
 .championship .staffCopy h3{font-size:34px;font-weight:850;letter-spacing:-.04em;color:#fff;line-height:1.25;margin:0 0 17px}
-.championship .staffCareer{list-style:none;margin:0;padding:16px 0 0;border-top:1px solid #95a5b827;color:#c4d0de;font-size:14px;line-height:1.85}
-.championship .staffCareer::before{content:"CAREER · 경력사항";display:flex;align-items:center;gap:8px;width:max-content;margin:0 0 13px;padding:5px 10px;border:1px solid #d1a85b45;border-radius:999px;background:#c99a430d;color:#e9c77f;font-size:11px;font-weight:800;line-height:1.2;letter-spacing:.09em}
-.championship .staffCareer li{position:relative;padding-left:16px}
+.championship .staffCareer{list-style:none;margin:0;padding:16px 0 0;border-top:1px solid #95a5b827;color:#c4d0de;font-size:14px;line-height:1.85;min-width:0}
+.championship .staffCareer::before{content:"CAREER · 경력사항";display:flex;align-items:center;gap:8px;width:max-content;max-width:100%;margin:0 0 13px;padding:5px 10px;border:1px solid #d1a85b45;border-radius:999px;background:#c99a430d;color:#e9c77f;font-size:11px;font-weight:800;line-height:1.2;letter-spacing:.09em}
+.championship .staffCareer li{position:relative;padding-left:16px;overflow-wrap:anywhere}
 .championship .staffCareer li::before{content:"";position:absolute;left:0;top:.8em;width:5px;height:5px;border-radius:50%;background:#cba153;box-shadow:0 0 8px #cba15366}
 .championship .staffCareer li+li{margin-top:5px}
 .championship .staffSection>.container>.textLink{display:flex;width:max-content;max-width:100%;justify-content:center;align-items:center;gap:8px;margin:28px auto 0;padding:11px 16px;border:1px solid #caa45f55;border-radius:999px;background:#08192a;color:#d8ba83;font-size:12px;transition:background .2s ease,border-color .2s ease,transform .2s ease}
@@ -79,25 +85,27 @@
   .championship .headCoachFeature .value>span{margin-bottom:9px}
 }
 @media(max-width:800px){
-  .championship .youthPlayers{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:600px}
-  .championship .headCoachFeature{padding:42px 0}
-  .championship .headCoachFeature .coachGrid{grid-template-columns:1fr;max-width:620px}
+  body.championship{touch-action:pan-y pinch-zoom}
+  .championship .youthPlayers{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:600px;width:100%}
+  .championship .headCoachFeature{padding:42px 0;width:100%}
+  .championship .headCoachFeature .coachGrid{grid-template-columns:1fr;max-width:620px;width:100%;overflow:hidden}
   .championship .headCoachFeature .coachArt{min-height:0;max-width:430px;width:100%;margin-inline:auto}
   .championship .headCoachFeature .coachPortraitButton,.championship .headCoachFeature .coachPortrait{min-height:0}
   .championship .headCoachFeature .coachPortrait{aspect-ratio:4/4.7}
-  .championship .headCoachFeature .values{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .championship .headCoachFeature .values{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
   .championship .headCoachFeature h2{font-size:clamp(32px,7vw,44px)}
   .championship .headCoachFeature .coachDescription{font-size:13px}
   .championship .staffSection .sectionHead{align-items:flex-start}
-  .championship .staffGrid{gap:16px}
+  .championship .staffGrid{gap:16px;width:100%;overflow:hidden}
   .championship .staffCopy{padding:20px 20px 24px}
   .championship .staffCopy h3{font-size:29px}
   .championship .staffCareer{font-size:13px}
 }
 @media(max-width:600px){
+  .championship .container{max-width:calc(100vw - 32px)}
   .championship .youthPlayer{padding:10px 10px 16px}
   .championship .youthPlayer .playerPortraitFrame{width:calc(100% + 20px);margin:8px -10px 6px}
-  .championship .youthPlayer h3{font-size:22px}
+  .championship .youthPlayer h3{font-size:22px;margin-top:10px}
   .championship .youthPlayer>p{font-size:12px}
   .championship .youthPlayer .playerMeta{font-size:9px}
   .championship .headCoachFeature::before{font-size:72px;top:40px;right:-14px}
@@ -115,8 +123,8 @@
   .championship .staffSection::before{font-size:72px;top:64px;right:-16px}
   .championship .staffSection .sectionHead{margin-bottom:24px}
   .championship .staffSection .sectionHead>p{font-size:13px}
-  .championship .staffGrid{grid-template-columns:1fr;max-width:390px;gap:24px}
-  .championship .staffCard{border-radius:12px}
+  .championship .staffGrid{grid-template-columns:1fr;max-width:390px;width:100%;gap:24px}
+  .championship .staffCard{border-radius:12px;width:100%}
   .championship .staffCopy{padding:22px 24px 26px}
   .championship .staffRole,.championship .staffCareer{font-size:14px}
   .championship .staffCopy h3{font-size:32px}
