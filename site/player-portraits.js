@@ -1,3 +1,5 @@
+import './player-video-defaults.js?v=1.0.0';
+
 // Homepage artwork and display order only. Player records stay in Firestore.
 export const PLAYER_PORTRAITS = Object.freeze([
   { name: '강다윤', number: '01' },
