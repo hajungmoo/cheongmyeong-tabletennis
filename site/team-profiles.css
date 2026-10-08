@@ -10,7 +10,35 @@
 .championship .youthPlayer>p{font-size:13px;color:#d9bb80}
 .championship .profileFootnote{font-size:11px;line-height:1.7;color:#93a6be;text-align:center;margin-top:16px}
 
-/* Coaching staff: the main coach has a dedicated section below, so this area focuses on assistant staff. */
+/* Head coach feature: visually leads the coaching hierarchy. */
+.championship .headCoachFeature{position:relative;isolation:isolate;overflow:hidden;padding:62px 0;background:radial-gradient(circle at 18% 26%,#d9ab552b 0,transparent 31%),radial-gradient(circle at 80% 72%,#31577e24 0,transparent 35%),linear-gradient(125deg,#020812 0%,#071827 50%,#111007 100%);border-top:1px solid #d1a95b66;border-bottom:1px solid #b88f4a52;box-shadow:inset 0 1px #fff1bd0a,inset 0 -1px #0008}
+.championship .headCoachFeature::before{content:"HEAD COACH";position:absolute;right:-10px;top:18px;z-index:-1;font-size:clamp(76px,12vw,178px);font-weight:950;line-height:.84;letter-spacing:-.075em;color:#ffffff07;white-space:nowrap;pointer-events:none}
+.championship .headCoachFeature::after{content:"";position:absolute;left:50%;top:0;width:min(920px,92vw);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#f0c879,#fff0b0,#c8943d,transparent);box-shadow:0 0 34px #dfab4770;pointer-events:none}
+.championship .headCoachFeature .coachGrid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(260px,.84fr) minmax(0,1.35fr) minmax(230px,.8fr);gap:38px;align-items:center;max-width:1180px}
+.championship .headCoachFeature .coachArt{display:flex;min-height:390px;padding:0;align-items:stretch;border:1px solid #d1aa616b;border-top:2px solid #efc874;border-radius:18px;background:#07111c;box-shadow:0 28px 58px #0009,0 0 0 1px #ffffff05;overflow:hidden}
+.championship .headCoachFeature .coachArt::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,#03101dde 100%),url('./assets/arena-gold.webp') center/cover;opacity:.26;filter:grayscale(.55);z-index:0}
+.championship .headCoachFeature .coachPortraitButton{position:relative;z-index:1;display:block;width:100%;min-height:390px;padding:0;border:0;background:transparent;overflow:hidden;color:inherit}
+.championship .headCoachFeature .coachPortrait{width:100%;height:100%;min-height:390px;aspect-ratio:4/5;object-fit:cover;object-position:center 18%;transition:transform .45s ease,filter .45s ease;filter:contrast(1.02) saturate(.96)}
+.championship .headCoachFeature .coachPortraitButton:hover .coachPortrait{transform:scale(1.025);filter:contrast(1.06) saturate(1)}
+.championship .headCoachFeature .coachZoomHint{position:absolute;left:18px;right:18px;bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 13px;border:1px solid #e2be7661;border-radius:999px;background:#06121fc7;backdrop-filter:blur(10px);color:#efd08f;font-size:11px;font-weight:800;letter-spacing:.03em;box-shadow:0 8px 28px #0008}
+.championship .headCoachFeature .coachZoomHint b{font-size:14px;color:#fff1c5}
+.championship .headCoachFeature .sectionKicker{display:inline-flex;align-items:center;gap:8px;width:max-content;max-width:100%;padding:8px 12px;margin:0 0 15px;border:1px solid #d5ae636e;border-radius:999px;background:#c9973e12;color:#f0ca7d;font-size:10px;letter-spacing:.17em;box-shadow:inset 0 0 20px #d3a14a0a}
+.championship .headCoachFeature .sectionKicker::before{content:"";display:block;width:7px;height:7px;border-radius:50%;background:#f2cb75;box-shadow:0 0 14px #f2cb75}
+.championship .headCoachFeature h2{font-size:clamp(34px,4.3vw,54px);line-height:1.18;letter-spacing:-.052em;margin:0 0 18px;color:#fff3cf;text-shadow:0 9px 30px #0009;background:none;-webkit-text-fill-color:currentColor}
+.championship .headCoachFeature .coachDescription{max-width:650px;margin:0 0 26px;color:#b9c9da;font-size:14px;line-height:1.95}
+.championship .headCoachFeature .coachName{position:relative;display:inline-block;padding-top:28px;font-size:34px;font-weight:900;line-height:1.15;letter-spacing:-.05em;color:#fff}
+.championship .headCoachFeature .coachName::before{content:"HEAD COACH";position:absolute;left:0;top:0;font-size:10px;font-weight:850;letter-spacing:.18em;color:#d9b466}
+.championship .headCoachFeature .coachRole{display:inline-flex;align-items:center;width:max-content;max-width:100%;margin:8px 0 0;padding:6px 11px;border:1px solid #d3aa6057;border-radius:999px;background:#d0a34910;color:#edca87;font-size:11px;font-weight:800;letter-spacing:.04em}
+.championship .headCoachFeature .values{display:grid;grid-template-columns:1fr;gap:14px;padding:0 0 0 24px;border-left:1px solid #c29d5650}
+.championship .headCoachFeature .value{position:relative;display:grid;grid-template-columns:38px 1fr;grid-template-rows:auto auto;gap:3px 11px;padding:13px 0;border-bottom:1px solid #9caec021;background:none}
+.championship .headCoachFeature .value:last-child{border-bottom:0}
+.championship .headCoachFeature .value>span{grid-row:1/3;display:grid;place-items:center;width:34px;height:34px;border:1px solid #d2aa6064;border-radius:50%;background:#cc9d4210;color:#ebc679;font-size:11px;font-weight:900;box-shadow:inset 0 0 18px #c99a4309}
+.championship .headCoachFeature .value h3{font-size:16px;line-height:1.35;letter-spacing:-.025em;color:#f5efe2;margin:0}
+.championship .headCoachFeature .value p{font-size:11px;line-height:1.65;color:#93a6bb;margin:0}
+.championship .headCoachLetter{position:relative;padding:24px 0 34px;background:linear-gradient(180deg,#071522 0%,#06111d 100%);border-bottom:1px solid #ad88453b}
+.championship .headCoachLetter::before{content:"FROM THE HEAD COACH";position:absolute;right:4%;top:10px;font-size:clamp(42px,7vw,96px);font-weight:950;letter-spacing:-.065em;color:#ffffff04;pointer-events:none;white-space:nowrap}
+
+/* Coaching staff: the head coach has a dedicated feature directly above this area. */
 .championship .staffSection{position:relative;overflow:hidden;background:radial-gradient(circle at 16% 18%,#d7aa5f24 0,transparent 30%),radial-gradient(circle at 88% 78%,#416d9820 0,transparent 34%),linear-gradient(145deg,#020a14 0%,#07192a 48%,#03101d 100%);border-top:1px solid #bd96534d;border-bottom:1px solid #bd96533d}
 .championship .staffSection::before{content:"COACHING TEAM";position:absolute;right:-22px;top:34px;font-size:clamp(64px,10vw,150px);font-weight:900;letter-spacing:-.06em;line-height:.8;color:#ffffff08;white-space:nowrap;pointer-events:none}
 .championship .staffSection::after{content:"";position:absolute;left:50%;top:0;width:min(720px,90vw);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#e5bd73,transparent);box-shadow:0 0 28px #d9a95480;pointer-events:none}
@@ -42,8 +70,24 @@
 .championship .staffSection>.container>.textLink{display:flex;width:max-content;max-width:100%;justify-content:center;align-items:center;gap:8px;margin:28px auto 0;padding:11px 16px;border:1px solid #caa45f55;border-radius:999px;background:#08192a;color:#d8ba83;font-size:12px;transition:background .2s ease,border-color .2s ease,transform .2s ease}
 .championship .staffSection>.container>.textLink:hover{background:#10253a;border-color:#ddb96f99;transform:translateY(-2px)}
 
+@media(max-width:1050px){
+  .championship .headCoachFeature .coachGrid{grid-template-columns:minmax(250px,.82fr) minmax(0,1.18fr);gap:28px}
+  .championship .headCoachFeature .coachArt{display:flex;min-height:350px}
+  .championship .headCoachFeature .coachPortraitButton,.championship .headCoachFeature .coachPortrait{min-height:350px}
+  .championship .headCoachFeature .values{grid-column:1/-1;grid-template-columns:repeat(4,minmax(0,1fr));border-left:0;border-top:1px solid #c29d5642;padding:22px 0 0;gap:12px}
+  .championship .headCoachFeature .value{display:block;padding:12px;border:1px solid #9daec021;border-radius:10px;background:#ffffff03}
+  .championship .headCoachFeature .value>span{margin-bottom:9px}
+}
 @media(max-width:800px){
   .championship .youthPlayers{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:600px}
+  .championship .headCoachFeature{padding:42px 0}
+  .championship .headCoachFeature .coachGrid{grid-template-columns:1fr;max-width:620px}
+  .championship .headCoachFeature .coachArt{min-height:0;max-width:430px;width:100%;margin-inline:auto}
+  .championship .headCoachFeature .coachPortraitButton,.championship .headCoachFeature .coachPortrait{min-height:0}
+  .championship .headCoachFeature .coachPortrait{aspect-ratio:4/4.7}
+  .championship .headCoachFeature .values{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .championship .headCoachFeature h2{font-size:clamp(32px,7vw,44px)}
+  .championship .headCoachFeature .coachDescription{font-size:13px}
   .championship .staffSection .sectionHead{align-items:flex-start}
   .championship .staffGrid{gap:16px}
   .championship .staffCopy{padding:20px 20px 24px}
@@ -56,6 +100,18 @@
   .championship .youthPlayer h3{font-size:22px}
   .championship .youthPlayer>p{font-size:12px}
   .championship .youthPlayer .playerMeta{font-size:9px}
+  .championship .headCoachFeature::before{font-size:72px;top:40px;right:-14px}
+  .championship .headCoachFeature .coachGrid{gap:24px}
+  .championship .headCoachFeature .coachArt{border-radius:14px;max-width:360px}
+  .championship .headCoachFeature .coachZoomHint{left:12px;right:12px;bottom:12px;font-size:10px}
+  .championship .headCoachFeature .sectionKicker{font-size:9px;letter-spacing:.11em}
+  .championship .headCoachFeature h2{font-size:31px;line-height:1.25}
+  .championship .headCoachFeature .coachName{font-size:30px}
+  .championship .headCoachFeature .values{grid-template-columns:1fr 1fr;gap:9px;padding-top:16px}
+  .championship .headCoachFeature .value{padding:10px}
+  .championship .headCoachFeature .value h3{font-size:14px}
+  .championship .headCoachFeature .value p{font-size:10px}
+  .championship .headCoachLetter::before{font-size:46px;right:-10px}
   .championship .staffSection::before{font-size:72px;top:64px;right:-16px}
   .championship .staffSection .sectionHead{margin-bottom:24px}
   .championship .staffSection .sectionHead>p{font-size:13px}
