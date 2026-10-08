@@ -35,6 +35,7 @@
 .championship .staffRole{display:inline-flex;align-items:center;min-height:28px;padding:4px 10px;border:1px solid #d1a85b55;border-radius:999px;background:#c99a4314;font-size:12px;font-weight:800;line-height:1.4;letter-spacing:.08em;color:#f0ca80;margin:0 0 10px}
 .championship .staffCopy h3{font-size:34px;font-weight:850;letter-spacing:-.04em;color:#fff;line-height:1.25;margin:0 0 17px}
 .championship .staffCareer{list-style:none;margin:0;padding:16px 0 0;border-top:1px solid #95a5b827;color:#c4d0de;font-size:14px;line-height:1.85}
+.championship .staffCareer::before{content:"CAREER · 경력사항";display:flex;align-items:center;gap:8px;width:max-content;margin:0 0 13px;padding:5px 10px;border:1px solid #d1a85b45;border-radius:999px;background:#c99a430d;color:#e9c77f;font-size:11px;font-weight:800;line-height:1.2;letter-spacing:.09em}
 .championship .staffCareer li{position:relative;padding-left:16px}
 .championship .staffCareer li::before{content:"";position:absolute;left:0;top:.8em;width:5px;height:5px;border-radius:50%;background:#cba153;box-shadow:0 0 8px #cba15366}
 .championship .staffCareer li+li{margin-top:5px}
