@@ -1,4 +1,5 @@
 import { escapeHTML as esc, safeURL } from './site-content.js?v=3.1.0';
+import { newestFirst, activityKind } from './homepage-view.js?v=1.0.0';
 
 // Backwards-compatible: existing image URLs remain the cover; photos is optional.
 export function activityPhotos(activity = {}) {
@@ -18,7 +19,25 @@ export function activityCards(items) {
 
 export function initActivityGallery() {
   const $=id=>document.getElementById(id), list=$('activityList'), dialog=$('activityDialog');
-  let activities=[], photos=[], current=0, lastTrigger=null;
+  let allActivities=[], activities=[], photos=[], current=0, lastTrigger=null, filter='all', limit=4;
+  function renderView() {
+    activities=allActivities.filter(item=>filter==='all'||activityKind(item)===filter);
+    list.innerHTML=activityCards(activities.slice(0,limit));
+    if($('moreActivities'))$('moreActivities').hidden=activities.length<=limit;
+    const photoCount=new Set(activities.flatMap(activityPhotos)).size;
+    if($('activitySummary'))$('activitySummary').textContent=`${activities.length}개의 이야기 · ${photoCount}장의 사진`;
+    const highlights=[], seen=new Set();
+    // Give each album a place before adding more photos from the same album.
+    for(let photoIndex=0;photoIndex<10&&highlights.length<6;photoIndex++){
+      activities.forEach((activity,index)=>{
+        const url=activityPhotos(activity)[photoIndex];
+        if(!url||seen.has(url)||highlights.length>=6)return;
+        seen.add(url);highlights.push({activity,index,photoIndex,url});
+      });
+    }
+    if($('activityPhotoWrap'))$('activityPhotoWrap').hidden=!highlights.length;
+    if($('activityPhotoList'))$('activityPhotoList').innerHTML=highlights.map(({activity,index,photoIndex,url})=>`<button type="button" class="activityPhotoTile" data-activity="${index}" data-photo-index="${photoIndex}" aria-label="${esc(activity.title)} 사진 ${photoIndex+1} 크게 보기"><img src="${esc(url)}" alt="${esc(activity.title)} 활동 사진" loading="lazy" decoding="async"><span>${esc(activity.title)}</span></button>`).join('');
+  }
   function showPhoto(index) {
     if(!photos.length)return;
     current=(index+photos.length)%photos.length;
@@ -30,7 +49,7 @@ export function initActivityGallery() {
     $('galleryImage').hidden=false;
     [...$('galleryThumbs').children].forEach((button,i)=>button.setAttribute('aria-current',String(i===current)));
   }
-  function open(index,trigger) {
+  function open(index,trigger,photoIndex=0) {
     const a=activities[index]; if(!a)return;
     photos=activityPhotos(a);lastTrigger=trigger;
     $('activityDialogTitle').textContent=a.title||'청명 소식';
@@ -40,11 +59,24 @@ export function initActivityGallery() {
     $('galleryStage').hidden=photos.length===0;
     $('galleryThumbs').hidden=photos.length<2;
     $('galleryThumbs').innerHTML=photos.map((url,i)=>`<button type="button" data-photo="${i}" aria-label="사진 ${i+1} 보기" aria-current="false"><img src="${esc(url)}" alt="" loading="lazy"></button>`).join('');
-    if(photos.length)showPhoto(0);
+    if(photos.length)showPhoto(photoIndex);
     if(!dialog.open)dialog.showModal();
     dialog.scrollTop=0;
   }
-  list.addEventListener('click',event=>{const b=event.target.closest('[data-activity]');if(b)open(Number(b.dataset.activity),b);});
+  const openFromClick=event=>{const b=event.target.closest('[data-activity]');if(b)open(Number(b.dataset.activity),b,Number(b.dataset.photoIndex||0));};
+  list.addEventListener('click',openFromClick);
+  $('activityPhotoList')?.addEventListener('click',openFromClick);
+  $('activityPhotoList')?.addEventListener('error',event=>{
+    if(!event.target.matches?.('img'))return;
+    event.target.hidden=true;
+    event.target.closest('button')?.classList.add('photoUnavailable');
+  },true);
+  document.querySelectorAll('[data-activity-filter]').forEach(button=>button.addEventListener('click',()=>{
+    filter=button.dataset.activityFilter;limit=4;
+    document.querySelectorAll('[data-activity-filter]').forEach(other=>other.setAttribute('aria-pressed',String(other===button)));
+    renderView();
+  }));
+  $('moreActivities')?.addEventListener('click',()=>{limit+=4;renderView();});
   list.addEventListener('error',event=>{
     const img=event.target;if(!img.matches?.('.storyImage'))return;
     const parent=img.parentElement;img.remove();
@@ -62,7 +94,7 @@ export function initActivityGallery() {
     $('galleryImage').hidden=true;
     if(!$('galleryStage').querySelector('.galleryImageError'))$('galleryStage').insertAdjacentHTML('afterbegin','<p class="galleryImageError" role="status">사진을 불러오지 못했습니다. 다음 사진을 보거나 잠시 후 다시 열어주세요.</p>');
   });
-  return { render(items){activities=items;list.innerHTML=activityCards(items);} };
+  return { render(items){allActivities=newestFirst(items);renderView();} };
 }
 
 export function jerseyMarkup(index) {

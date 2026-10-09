@@ -1,5 +1,6 @@
 import { withTeamHolidays } from './team-holidays.js?v=1.0.0';
-import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.1.0';
+import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.2.0';
+import { newestFirst, scheduleDisplayOrder, mergePublishedRecords } from './homepage-view.js?v=1.0.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
 import { youthDisplayName, isYouthIllustration } from './team-profiles.js?v=1.0.0';
@@ -13,7 +14,7 @@ const visualFinish=initVisualFinish();
 const activityGallery=initActivityGallery();
 const shownPopups=new Set();
 const preview = new URLSearchParams(location.search).get('preview') === '1' && window.parent !== window;
-let settings = resolveSettings(), rawSettings = {}, previewDraft = null, failed = [], scheduleFilter = 'all', noticeLimit = 6, recordLimit = 3, submitting = false;
+let settings = resolveSettings(), rawSettings = {}, previewDraft = null, failed = [], scheduleFilter = 'upcoming', scheduleLimit = 5, noticeLimit = 4, recordLimit = 3, submitting = false;
 const state = {players:[],notices:[],schedules:[],records:[]};
 const JECHEON_2026_PLAYER_RESULTS = new Map([
   ['양하은', {division:'U8', result:'3위 🥉'}],
@@ -53,23 +54,7 @@ function homepageSchedules(){
   return withTeamHolidays([...mergedDefaults,...firestoreExtras]);
 }
 function homepageRecords(){
-  const normalize=value=>String(value||'').replace(/[^\p{L}\p{N}]/gu,'').toLowerCase();
-  const sameOfficial=(record,official)=>{
-    if(record.sourceKey===official.sourceKey)return true;
-    const text=normalize([record.title,record.event,record.result,record.memo,record.detail].filter(Boolean).join(' '));
-    const division=normalize(official.result).startsWith('u7')?'u7':'u8';
-    const placing=division==='u7'?'우승':'3위';
-    return text.includes('제천')&&text.includes(division)&&text.includes(normalize(placing));
-  };
-  const used=new Set();
-  const official=OFFICIAL_2026_RECORDS.map(item=>{
-    const index=state.records.findIndex((record,i)=>!used.has(i)&&sameOfficial(record,item));
-    if(index<0)return item;
-    used.add(index);
-    return {...item,...state.records[index],sourceKey:item.sourceKey,medal:item.medal};
-  });
-  const extras=state.records.filter((_,index)=>!used.has(index));
-  return [...official,...sortedItems(extras)];
+  return mergePublishedRecords(sortedItems(state.records),OFFICIAL_2026_RECORDS);
 }
 const paragraphs = value => esc(value).replace(/\n/g,'<br>');
 const maskName = value => { const s=String(value||'').trim(); return !s?'청명 선수':s.includes('○')?s:s.length<3?s[0]+'○':s[0]+'○'+s.at(-1); };
@@ -282,8 +267,8 @@ function eventDateFromSchedule(item){
   return `${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
 }
 function renderSchedules() {
-  const items=sortedItems(homepageSchedules()).filter(visible);
   const today=koreaToday();
+  const items=scheduleDisplayOrder(homepageSchedules().filter(visible),today);
   const dated=items.filter(s=>['upcoming','ongoing'].includes(scheduleState(s))).sort((a,b)=>(scheduleDate(a)||a.periodStartMonth+'-01').localeCompare(scheduleDate(b)||b.periodStartMonth+'-01'));
   const eventCandidates=items
     .map(s=>({item:s,date:eventDateFromSchedule(s)}))
@@ -309,15 +294,16 @@ function renderSchedules() {
   }else{ text('nextLabel','다음 일정');text('nextScheduleTitle','새 일정을 준비하고 있습니다.');text('nextScheduleDate','등록된 일정은 아래에서 확인하세요.');text('nextSchedulePlace',''); }
   const q=$('scheduleSearch').value.trim().toLowerCase();
   const filtered=items.filter(s=>(scheduleFilter==='all'||(scheduleFilter==='upcoming'?['upcoming','ongoing'].includes(scheduleState(s)):scheduleState(s)===scheduleFilter))&&(!q||[s.title,s.day,s.memo,s.place].join(' ').toLowerCase().includes(q)));
-  text('scheduleResults',`${filtered.length}개 일정`);
-  $('scheduleList').innerHTML=filtered.map(s=>{
+  text('scheduleResults',`${filtered.length}개 일정${filtered.length>scheduleLimit?' · '+Math.min(scheduleLimit,filtered.length)+'개 표시':''}`);
+  $('moreSchedules').hidden=filtered.length<=scheduleLimit;
+  $('scheduleList').innerHTML=filtered.slice(0,scheduleLimit).map(s=>{
     const status=scheduleState(s),label=s.isHoliday?'휴가':s.recurring?'정기 훈련':{past:'지난 일정',upcoming:'예정',ongoing:'진행 중',other:'정기 · 기타'}[status];
     const scheduleTime=s.isHoliday?'휴가 · 훈련 없음':s.time||(s.recurring?'평일 정기 훈련':'시간 추후 안내');
     return `<article class="scheduleRow"><div class="scheduleDay"><span class="stateTag ${status}">${label}</span><time>${esc(s.day||scheduleDate(s)||'일정')}</time></div><div><h3>${esc(s.title)}</h3><p>${paragraphs(s.place||s.memo||'')}</p></div><div class="scheduleTime">${esc(scheduleTime)}</div></article>`;
   }).join('')||'<p class="empty">조건에 맞는 일정이 없습니다.</p>';
 }
 function renderNotices() {
-  const items=sortedItems(state.notices).filter(visible).sort((a,b)=>Number(isPinned(b))-Number(isPinned(a)));
+  const items=newestFirst(state.notices.filter(visible)).sort((a,b)=>Number(isPinned(b))-Number(isPinned(a)));
   text('heroNoticeCount',items.length);
   const latest=items[0];
   text('noticeFeatureDate',latest?.date||'');text('noticeFeatureTitle',latest?.title||'새로운 소식을 준비하고 있습니다.');text('noticeFeatureText',latest?.content||'공지사항이 등록되면 이곳에서 확인할 수 있습니다.');
@@ -357,9 +343,10 @@ $('trialForm').addEventListener('submit',async event=>{
 $('menuToggle').addEventListener('click',()=>{const open=$('siteNavLinks').classList.toggle('open');$('menuToggle').setAttribute('aria-expanded',String(open));});
 document.querySelectorAll('.navlinks a').forEach(a=>a.addEventListener('click',()=>{$('siteNavLinks').classList.remove('open');$('menuToggle').setAttribute('aria-expanded','false');}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('siteNavLinks').classList.remove('open');$('menuToggle').setAttribute('aria-expanded','false');}});
-document.querySelectorAll('[data-schedule-filter]').forEach(b=>b.addEventListener('click',()=>{scheduleFilter=b.dataset.scheduleFilter;document.querySelectorAll('[data-schedule-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderSchedules();}));
-$('scheduleSearch').addEventListener('input',renderSchedules);$('noticeSearch').addEventListener('input',()=>{noticeLimit=6;renderNotices();});
-$('moreNotices').addEventListener('click',()=>{noticeLimit+=6;renderNotices();});$('moreRecords').addEventListener('click',()=>{recordLimit+=6;renderRecords();});
+document.querySelectorAll('[data-schedule-filter]').forEach(b=>b.addEventListener('click',()=>{scheduleFilter=b.dataset.scheduleFilter;scheduleLimit=5;document.querySelectorAll('[data-schedule-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderSchedules();}));
+$('scheduleSearch').addEventListener('input',()=>{scheduleLimit=5;renderSchedules();});$('noticeSearch').addEventListener('input',()=>{noticeLimit=4;renderNotices();});
+$('moreSchedules').addEventListener('click',()=>{scheduleLimit+=5;renderSchedules();});
+$('moreNotices').addEventListener('click',()=>{noticeLimit+=4;renderNotices();});$('moreRecords').addEventListener('click',()=>{recordLimit+=6;renderRecords();});
 $('retryLoad').addEventListener('click',load);$('closePopup').addEventListener('click',()=>$('popupDialog').close());
 $('popupTodayHide').addEventListener('click',()=>{
   const signature=$('popupDialog').dataset.signature||'';

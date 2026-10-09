@@ -1,0 +1,351 @@
+/* A quieter, readable layout over the existing navy and gold identity. */
+.championship.homepageRefresh {
+  --muted: #a9b9cb;
+  --line: #8da2ba30;
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-size: 14px;
+}
+.homepageRefresh .container { width: calc(100% - 80px); max-width: 1280px; }
+.homepageRefresh .section { padding: 42px 0; }
+.homepageRefresh .sectionHead { align-items: flex-end; margin-bottom: 24px; }
+.homepageRefresh .sectionHead h2 { font-size: clamp(25px, 2.4vw, 32px); line-height: 1.35; }
+.homepageRefresh .sectionHead > p { max-width: 430px; font-size: 13px; line-height: 1.8; border: 0; padding: 0; }
+.homepageRefresh .sectionKicker { font-size: 10px; letter-spacing: .16em; }
+.homepageRefresh .btn { border-radius: 8px; min-height: 44px; }
+.homepageRefresh .textLink { font-size: 13px; }
+.homepageRefresh .nav { min-height: 76px; gap: 22px; }
+.homepageRefresh .navlinks { gap: 19px; font-size: 12px; }
+.homepageRefresh .navlinks .navAdmin { color: #8d9fb2; font-weight: 500; }
+.homepageRefresh .navParent { border-radius: 7px; }
+.homepageRefresh .topbar::after { background: #b8934b55; }
+.homepageRefresh .logo img { width: 56px; height: 56px; }
+.homepageRefresh .logo strong { font-size: 20px; }
+
+.homepageRefresh .heroGrid { min-height: 420px; grid-template-columns: 1.1fr .9fr; padding: 30px 0; position: relative; }
+.homepageRefresh .heroCopy { max-width: 600px; }
+.homepageRefresh .hero .heroSlogan { margin-bottom: 18px; filter: none; }
+.homepageRefresh .heroSlogan span { font-size: clamp(28px, 3.4vw, 44px); }
+.homepageRefresh .heroSlogan strong { font-size: clamp(70px, 8.4vw, 108px); }
+.homepageRefresh .heroTeamName { font-size: 28px; margin-bottom: 7px; }
+.homepageRefresh .heroTagline { font-size: 20px; }
+.homepageRefresh .heroDescription { font-size: 13px; max-width: 470px; line-height: 1.85; }
+.homepageRefresh .heroVisual { max-width: 415px; justify-self: center; }
+.homepageRefresh .heroVisual img { max-height: 400px; }
+.homepageRefresh .heroHandwriting { display: none; }
+.homepageRefresh .heroBottom { padding: 16px 0; }
+.homepageRefresh .heroStat b { font-size: 21px; }
+.homepageRefresh .heroStat span { font-size: 12px; }
+.homepageRefresh .heroStats { gap: 32px; }
+.homepageRefresh .nextEventBadge { max-width: 100%; }
+.homepageRefresh .nextEventBadge span { font-size: 9px; }
+.homepageRefresh .nextEventBadge strong { font-size: 11px; }
+
+.homepageRefresh .homeShortcuts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-block: 24px 4px; }
+.homepageRefresh .homeShortcut { display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 82px; padding: 15px 18px; border: 1px solid var(--line); border-radius: 10px; background: #0b1b2c; transition: border-color .2s, background .2s; }
+.homepageRefresh .homeShortcut:hover { border-color: #d4b06c88; background: #102337; }
+.homepageRefresh .shortcutIcon { display: grid; place-items: center; flex: 0 0 34px; height: 34px; color: #dabb7a; }
+.homepageRefresh .shortcutIcon svg { width: 27px; height: 27px; }
+.homepageRefresh .homeShortcut > span:nth-child(2) { min-width: 0; }
+.homepageRefresh .homeShortcut strong { display: block; font-size: 14px; font-weight: 700; line-height: 1.6; }
+.homepageRefresh .homeShortcut small { display: block; margin-top: 2px; font-size: 11px; line-height: 1.5; color: #9caec4; }
+.homepageRefresh .homeShortcut > b { margin-left: auto; color: #9caec4; font-size: 16px; font-weight: 400; }
+.homepageRefresh #overview { padding: 28px 0 36px; }
+.homepageRefresh #overview .sectionHead { display: flex; margin-bottom: 16px; }
+.homepageRefresh #overview .sectionHead h2 { font-size: 23px; }
+.homepageRefresh #overview .sectionHead > p { font-size: 12px; }
+.homepageRefresh .overviewGrid { gap: 16px; }
+.homepageRefresh .nextCard, .homepageRefresh .noticeFeature { padding: 22px 24px; border-radius: 10px; background: #081726; border: 1px solid var(--line); display: flex; flex-direction: column; align-items: flex-start; }
+.homepageRefresh .nextCard { border-left: 3px solid #dabb7a; }
+.homepageRefresh .nextCard h3, .homepageRefresh .noticeFeature h3 { font-size: 18px; line-height: 1.65; margin: 9px 0; }
+.homepageRefresh .nextCard p, .homepageRefresh .noticeFeature p { font-size: 13px; line-height: 1.8; }
+.homepageRefresh .nextCard .textLink, .homepageRefresh .noticeFeature .textLink { font-size: 12px; margin-top: 12px; padding-top: 4px; }
+.homepageRefresh .noticeFeature .storyMeta { width: 100%; font-size: 11px; }
+.homepageRefresh .noticeFeature .storyMeta > span { font-size: 10px; }
+
+.homepageRefresh #team { padding: 34px 0 42px; border-top: 1px solid #8da2ba20; }
+.homepageRefresh #team .sectionHead { margin-bottom: 16px; }
+.homepageRefresh #teamCount { margin: 0 0 14px; font-size: 12px; text-align: left; }
+.homepageRefresh .players { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.homepageRefresh .player { padding: 14px 16px 18px; border: 1px solid #9a815e66; border-top: 2px solid #d9b76f; border-radius: 10px; background: #081727; box-shadow: none; }
+.homepageRefresh .player:hover { transform: translateY(-3px); box-shadow: 0 12px 22px #0003; }
+.homepageRefresh .playerMeta { font-size: 10px; }
+.homepageRefresh .playerPortraitFrame { width: calc(100% + 32px); aspect-ratio: 4/3; margin: 12px -16px 14px; background: #030e1a; }
+.homepageRefresh .playerPortraitFrame.hasPhoto .playerPortrait, .homepageRefresh .playerPortrait { object-fit: contain; object-position: center; }
+.homepageRefresh .player h3 { font-size: 22px; margin: 0 0 5px; }
+.homepageRefresh .playerGrade { font-size: 12px; margin-bottom: 8px; }
+.homepageRefresh .player > p { font-size: 12px; line-height: 1.6; margin-bottom: 14px; }
+.homepageRefresh .playerAward { font-size: 12px; line-height: 1.7; min-height: 51px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; padding-top: 10px; margin: 0 0 14px; }
+.homepageRefresh .playerInteractive::after { content: none; }
+.championship.homepageRefresh .playerTrainingVideoBtn, .championship.homepageRefresh .playerVideoPending { min-height: 40px; font-size: 12px; margin-top: auto; border-radius: 7px; }
+.championship.homepageRefresh .playerVideoPending { display: grid; place-items: center; }
+.homepageRefresh #youth { padding: 36px 0 42px; background: #071421; border-block: 1px solid #8da2ba20; }
+.homepageRefresh .youthPlayers { max-width: 100%; }
+.homepageRefresh .youthPlayer .playerPortraitFrame { aspect-ratio: 1; width: calc(100% + 32px); margin: 12px -16px 14px; }
+.homepageRefresh .youthPlayer h3 { font-size: 21px; }
+.homepageRefresh .youthPlayer > p { font-size: 12px; min-height: 20px; }
+.homepageRefresh .profileFootnote { text-align: left; margin-top: 14px; font-size: 11px; }
+
+.homepageRefresh .activityTools { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.homepageRefresh .segments { background: #0b1b2c; border-color: var(--line); border-radius: 8px; padding: 4px; }
+.homepageRefresh .segments button { font-size: 12px; min-height: 36px; padding: 7px 12px; border-radius: 5px; }
+.homepageRefresh .contentSummary { font-size: 12px; color: #9daec2; }
+.homepageRefresh .stories { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.homepageRefresh .story { display: flex; flex-direction: column; border-color: var(--line); border-radius: 10px; box-shadow: none; }
+.homepageRefresh .storyImageButton { height: auto; aspect-ratio: 4/3; }
+.homepageRefresh .storyBody { display: flex; flex: 1; flex-direction: column; padding: 19px; }
+.homepageRefresh .storyMeta { font-size: 11px; min-height: 20px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
+.homepageRefresh .storyMeta > span { font-size: 9px; max-width: 100%; overflow-wrap: anywhere; letter-spacing: .05em; }
+.homepageRefresh .story h3 { font-size: 17px; line-height: 1.65; margin-bottom: 10px; }
+.homepageRefresh .story p { font-size: 12px; line-height: 1.85; -webkit-line-clamp: 3; }
+.homepageRefresh .storyOpen { align-self: flex-start; min-height: 36px; margin-top: auto; padding: 7px 12px; border-radius: 6px; font-size: 12px; }
+.homepageRefresh .storyBody p + .storyOpen { margin-top: 16px; }
+.homepageRefresh .activityFootnote { text-align: left; font-size: 12px; margin-top: 16px; }
+.homepageRefresh .activityPhotoWrap { margin-top: 26px; padding-top: 24px; border-top: 1px solid var(--line); }
+.homepageRefresh .photoStripHead { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.homepageRefresh .photoStripHead h3 { font-size: 17px; letter-spacing: -.02em; }
+.homepageRefresh .photoStripHead > span { font-size: 11px; color: #9daec2; }
+.homepageRefresh .activityPhotoList { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+.homepageRefresh .activityPhotoTile { display: block; padding: 0; min-width: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; text-align: left; background: #0b1b2c; color: #c8d4e2; }
+.homepageRefresh .activityPhotoTile img { width: 100%; aspect-ratio: 4/3; object-fit: cover; transition: opacity .2s; }
+.homepageRefresh .activityPhotoTile:hover img { opacity: .8; }
+.homepageRefresh .activityPhotoTile > span { display: block; font-size: 10px; padding: 8px 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.homepageRefresh .photoUnavailable::before { content: '사진을 불러올 수 없어요'; display: grid; place-items: center; aspect-ratio: 4/3; padding: 10px; font-size: 11px; }
+.homepageRefresh .teamMarquee { padding: 10px 0; }
+.homepageRefresh .marqueeWords { font-size: 12px; }
+
+.homepageRefresh .competitionDesk { grid-template-columns: 1.15fr 1fr; gap: 32px; }
+.homepageRefresh .competitionDesk > .section { padding: 40px 0; }
+.homepageRefresh .competitionDesk .sectionHead { margin-bottom: 20px; }
+.homepageRefresh .filterBar { flex-wrap: wrap; gap: 10px; }
+.homepageRefresh .filterBar .segments { width: 100%; }
+.homepageRefresh .filterBar .segments button { flex: 1; min-height: 36px; font-size: 11px; padding: 7px; }
+.homepageRefresh .filterBar > label { max-width: none; width: 100%; }
+.homepageRefresh .searchInput { height: 42px; font-size: 13px; padding: 9px 12px; border-radius: 7px; border-color: var(--line); }
+.homepageRefresh .scheduleSummary { font-size: 12px; margin-bottom: 12px; }
+.homepageRefresh .scheduleList { max-height: none; overflow: visible; background: #081726; border-color: var(--line); border-radius: 10px; }
+.homepageRefresh .scheduleRow { grid-template-columns: 135px 1fr; padding: 18px; gap: 14px; }
+.homepageRefresh .scheduleDay time { font-size: 12px; line-height: 1.65; }
+.homepageRefresh .stateTag { font-size: 10px; padding: 4px 7px; }
+.homepageRefresh .scheduleRow h3 { font-size: 14px; line-height: 1.65; }
+.homepageRefresh .scheduleRow p { font-size: 12px; line-height: 1.75; }
+.homepageRefresh .scheduleTime { font-size: 11px; }
+.homepageRefresh .results { gap: 12px; }
+.homepageRefresh .record { border-radius: 10px; padding: 22px 14px; box-shadow: none; }
+.homepageRefresh .recordIcon { width: 42px; height: 42px; }
+.homepageRefresh .recordDate { font-size: 11px; }
+.homepageRefresh .recordResult { font-size: 17px; line-height: 1.6; }
+.homepageRefresh .record h3 { font-size: 12px; }
+.homepageRefresh .record p { font-size: 11px; }
+.homepageRefresh .moreRow { margin-top: 18px; }
+.homepageRefresh .moreRow .btn { min-height: 40px; font-size: 12px; padding: 8px 17px; }
+
+.homepageRefresh .headCoachFeature { padding: 42px 0; background: #081726; border-color: var(--line); box-shadow: none; }
+.homepageRefresh .headCoachFeature::before, .homepageRefresh .headCoachFeature::after,
+.homepageRefresh .headCoachLetter::before, .homepageRefresh .staffSection::before, .homepageRefresh .staffSection::after { content: none; }
+.homepageRefresh .headCoachFeature .coachGrid { grid-template-columns: 250px minmax(0, 1fr) 220px; max-width: 1180px; gap: 30px; }
+.homepageRefresh .headCoachFeature .coachArt, .homepageRefresh .headCoachFeature .coachPortraitButton,
+.homepageRefresh .headCoachFeature .coachPortrait { min-height: 0; }
+.homepageRefresh .headCoachFeature .coachPortrait { aspect-ratio: 4/5; }
+.homepageRefresh .headCoachFeature .coachArt { border-radius: 12px; box-shadow: none; }
+.homepageRefresh .headCoachFeature h2 { font-size: clamp(26px, 2.9vw, 36px); line-height: 1.5; text-shadow: none; margin-bottom: 15px; }
+.homepageRefresh .headCoachFeature .sectionKicker { padding: 0; border: 0; border-radius: 0; box-shadow: none; background: none; }
+.homepageRefresh .headCoachFeature .sectionKicker::before { display: none; }
+.homepageRefresh .headCoachFeature .coachDescription { font-size: 13px; line-height: 1.9; margin-bottom: 18px; }
+.homepageRefresh .headCoachFeature .coachName { font-size: 27px; }
+.homepageRefresh .headCoachFeature .coachRole { font-size: 12px; }
+.homepageRefresh .headCoachFeature .value h3 { font-size: 15px; }
+.homepageRefresh .headCoachFeature .value p { font-size: 12px; }
+.homepageRefresh #message { padding: 22px 0; background: #081726; }
+.homepageRefresh #message .message { padding: 20px 24px; max-width: 1180px; border-radius: 10px; border-color: var(--line); background: #0b1b2c; grid-template-columns: 1fr 1fr; }
+.homepageRefresh #message .message h2 { font-size: 23px; line-height: 1.6; }
+.homepageRefresh #message .sectionKicker { font-size: 10px; margin-bottom: 8px; }
+.homepageRefresh .coachLetter summary { min-height: 44px; font-size: 13px; }
+.homepageRefresh #message .messageBody { font-size: 13px; line-height: 1.9; padding-top: 18px; }
+.homepageRefresh #message .messageBody p:first-child { font-size: 14px; }
+.homepageRefresh .staffSection { padding: 32px 0 42px; background: #081726; border-top: 0; border-bottom: 1px solid var(--line); }
+.homepageRefresh .staffSection .sectionHead { max-width: 1180px; }
+.homepageRefresh .staffSection .sectionKicker { padding: 0; border: 0; background: none; box-shadow: none; }
+.homepageRefresh .staffSection .sectionKicker::before { display: none; }
+.homepageRefresh .staffSection .sectionHead h2 { font-size: 28px; margin-top: 6px; text-shadow: none; }
+.homepageRefresh .staffSection .sectionHead h2::after { content: none; }
+.homepageRefresh .staffGrid { max-width: 900px; gap: 20px; }
+.homepageRefresh .staffCard { border-radius: 10px; box-shadow: none; border-color: var(--line); }
+.homepageRefresh .staffCard:hover { transform: translateY(-3px); box-shadow: none; }
+.homepageRefresh .staffCard::after { content: none; }
+.homepageRefresh .staffCopy { padding: 20px 24px; }
+.homepageRefresh .staffCopy h3 { font-size: 26px; }
+.homepageRefresh .staffRole { font-size: 11px; }
+.homepageRefresh .staffCareer { font-size: 13px; }
+.homepageRefresh .staffCareer::before { content: none; }
+
+.homepageRefresh #notice { padding: 40px 0; }
+.homepageRefresh #notice .container { grid-template-columns: 1fr 2fr; gap: 15px 32px; }
+.homepageRefresh #notice .sectionHead p { font-size: 13px; }
+.homepageRefresh .noticeItem summary { padding: 18px 4px; }
+.homepageRefresh .noticeItem h3 { font-size: 15px; line-height: 1.7; }
+.homepageRefresh .noticeDate { font-size: 11px; }
+.homepageRefresh .noticeBody { font-size: 13px; line-height: 1.9; }
+.homepageRefresh #faq { padding: 36px 0; background: #071421; border-block: 1px solid #8da2ba20; }
+.homepageRefresh .faqItem summary { min-height: 52px; padding: 15px 0; font-size: 14px; }
+.homepageRefresh .faqAnswer { font-size: 13px; padding-bottom: 18px; }
+.homepageRefresh #trial { padding: 40px 0; }
+.homepageRefresh .trialIntro h2 { font-size: 29px; }
+.homepageRefresh .trialIntro > p { font-size: 13px; }
+.homepageRefresh .step b { font-size: 12px; }
+.homepageRefresh .stepNo { font-size: 10px; width: 25px; height: 25px; }
+.homepageRefresh .trialForm label { font-size: 13px; }
+.homepageRefresh .formHint { font-size: 12px; }
+.homepageRefresh #map { padding: 36px 0; }
+.homepageRefresh .location p { font-size: 13px; }
+.homepageRefresh .location iframe { border-radius: 10px; height: 230px; }
+.homepageRefresh .sponsorSection { padding: 22px 0; border-top: 1px solid var(--line); }
+.homepageRefresh .sponsor { grid-template-columns: 100px 1fr; max-width: 600px; gap: 24px; }
+.homepageRefresh .sponsorVisual { width: 100px; }
+.homepageRefresh .sponsor strong { font-size: 27px; }
+.homepageRefresh .sponsor p { font-size: 12px; margin-top: 5px; }
+.homepageRefresh .footerLinks { flex-wrap: wrap; gap: 12px 18px; }
+.homepageRefresh .footerLinks a, .homepageRefresh .footerLinks button { font-size: 12px; }
+.homepageRefresh .pointerLight { display: none !important; }
+html.gold-finish .homepageRefresh .pointer-lit::after { content: none; }
+html.gold-finish .homepageRefresh .gold-heading { animation: none; }
+html.gold-finish .homepageRefresh :is(.sectionKicker, .coachName, .player h3, .story h3, .footerTop strong) { text-shadow: none; }
+
+@media (max-width: 1100px) {
+  .homepageRefresh .container { width: calc(100% - 48px); }
+  .homepageRefresh .menuToggle { display: block; }
+  .homepageRefresh .navlinks { display: none; }
+  .homepageRefresh .navlinks.open { display: grid; grid-template-columns: 1fr 1fr; position: absolute; top: 100%; left: 24px; right: 24px; width: auto; max-height: 75dvh; overflow-y: auto; padding: 18px; gap: 8px; border: 1px solid var(--line); border-radius: 0 0 12px 12px; background: #061321; box-shadow: 0 18px 30px #0005; }
+  .homepageRefresh .navlinks.open a { min-height: 44px; padding: 10px 12px; border-radius: 6px; }
+  .homepageRefresh .navlinks a[aria-current=location]::after { display: none; }
+  .homepageRefresh .homeShortcut { padding: 15px 12px; gap: 8px; }
+  .homepageRefresh .homeShortcut strong { font-size: 12px; }
+  .homepageRefresh .homeShortcut small { font-size: 10px; }
+  .homepageRefresh .homeShortcut > b { display: none; }
+  .homepageRefresh .stories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .homepageRefresh .storyImageButton { aspect-ratio: 16/9; }
+  .homepageRefresh .competitionDesk { grid-template-columns: 1fr; gap: 0; }
+  .homepageRefresh .competitionDesk > .section { padding: 32px 0; }
+  .homepageRefresh .filterBar .segments { width: auto; }
+  .homepageRefresh .filterBar > label { width: auto; flex: 1; min-width: 160px; }
+  .homepageRefresh .headCoachFeature .coachGrid { grid-template-columns: 240px 1fr; gap: 28px; }
+  .homepageRefresh .headCoachFeature .values { grid-column: 1/-1; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 20px 0 0; border-left: 0; }
+}
+@media (max-width: 760px) {
+  .homepageRefresh .container { width: calc(100% - 32px); max-width: calc(100% - 32px); }
+  .homepageRefresh .section { padding: 30px 0; }
+  .homepageRefresh .sectionHead { display: block; margin-bottom: 18px; }
+  .homepageRefresh .sectionHead h2 { font-size: 25px; }
+  .homepageRefresh .sectionHead > p { font-size: 12px; margin-top: 10px; }
+  .homepageRefresh .nav { min-height: 66px; }
+  .homepageRefresh .logo { min-width: 0; gap: 9px; }
+  .homepageRefresh .logo img { width: 44px; height: 44px; }
+  .homepageRefresh .logo strong { font-size: 17px; }
+  .homepageRefresh .logo small { font-size: 7px; max-width: 150px; }
+  .homepageRefresh .navlinks.open { left: 16px; right: 16px; }
+  .homepageRefresh .heroGrid { grid-template-columns: 1fr; min-height: 0; padding: 30px 0 25px; }
+  .homepageRefresh .heroCopy { width: 100%; text-align: left; }
+  .homepageRefresh .eyebrow { max-width: 190px; font-size: 8px; letter-spacing: .12em; margin-bottom: 18px; }
+  .homepageRefresh .hero .heroSlogan { max-width: 210px; margin-bottom: 20px; }
+  .homepageRefresh .heroSlogan span { font-size: 23px; margin-bottom: 6px; }
+  .homepageRefresh .heroSlogan strong { font-size: 60px; }
+  .homepageRefresh .heroVisual { position: absolute; top: 30px; right: 0; width: 130px; max-width: 37%; margin: 0; }
+  .homepageRefresh .heroVisual img { max-height: 140px; }
+  .homepageRefresh .visualCaption { display: none; }
+  .homepageRefresh .heroTeamName { font-size: 24px; }
+  .homepageRefresh .heroTagline { font-size: 17px; margin-top: 6px; }
+  .homepageRefresh .heroDescription { font-size: 12px; line-height: 1.9; margin-top: 7px; }
+  .homepageRefresh .hero .actions { flex-wrap: nowrap; gap: 10px; margin-top: 18px; }
+  .homepageRefresh .hero .actions .btn { flex: 1; padding: 10px; font-size: 12px; gap: 8px; }
+  .homepageRefresh .nextEventBadge { display: flex; padding: 8px; margin-top: 14px; }
+  .homepageRefresh .nextEventBadge span { font-size: 8px; }
+  .homepageRefresh .nextEventBadge strong { font-size: 10px; max-width: none; }
+  .homepageRefresh .heroBottom { padding: 15px 0; }
+  .homepageRefresh .heroStats { width: 100%; justify-content: space-between; gap: 10px; }
+  .homepageRefresh .heroStat { gap: 6px; }
+  .homepageRefresh .heroStat b { font-size: 18px; }
+  .homepageRefresh .heroStat span { font-size: 10px; }
+  .homepageRefresh .heroNote { display: none; }
+  .homepageRefresh .homeShortcuts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-block: 18px 0; }
+  .homepageRefresh .homeShortcut { min-height: 80px; padding: 12px 10px; gap: 6px; }
+  .homepageRefresh .shortcutIcon { flex-basis: 27px; }
+  .homepageRefresh .shortcutIcon svg { width: 23px; height: 23px; }
+  .homepageRefresh .homeShortcut strong { font-size: 12px; }
+  .homepageRefresh .homeShortcut small { font-size: 10px; }
+  .homepageRefresh #overview { padding: 26px 0 30px; }
+  .homepageRefresh #overview .sectionHead { display: block; }
+  .homepageRefresh #overview .sectionHead > p { margin-top: 6px; }
+  .homepageRefresh .overviewGrid { grid-template-columns: 1fr; gap: 12px; }
+  .homepageRefresh .nextCard, .homepageRefresh .noticeFeature { padding: 18px; }
+  .homepageRefresh .nextCard h3, .homepageRefresh .noticeFeature h3 { font-size: 16px; }
+  .homepageRefresh .nextCard p, .homepageRefresh .noticeFeature p { font-size: 12px; }
+  .homepageRefresh #team, .homepageRefresh #youth { padding: 30px 0; }
+  .homepageRefresh .players { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .homepageRefresh .player { padding: 10px 10px 14px; }
+  .homepageRefresh .playerPortraitFrame, .homepageRefresh .youthPlayer .playerPortraitFrame { width: calc(100% + 20px); margin: 10px -10px 12px; aspect-ratio: 3/4; }
+  .homepageRefresh .playerMeta { font-size: 9px; }
+  .homepageRefresh .player h3, .homepageRefresh .youthPlayer h3 { font-size: 21px; }
+  .homepageRefresh .playerGrade { font-size: 12px; }
+  .homepageRefresh .player > p, .homepageRefresh .youthPlayer > p { font-size: 11px; min-height: 36px; }
+  .homepageRefresh .playerAward { font-size: 11px; min-height: 56px; margin-top: 10px; -webkit-line-clamp: 3; }
+  .championship.homepageRefresh .playerTrainingVideoBtn, .championship.homepageRefresh .playerVideoPending { font-size: 11px; min-height: 40px; margin-top: auto; padding: 8px 5px; }
+  .homepageRefresh .youthPlayer .playerPortraitFrame { aspect-ratio: 1; }
+  .homepageRefresh .activityTools { margin-bottom: 16px; gap: 10px; }
+  .homepageRefresh .stories { grid-template-columns: 1fr; gap: 16px; }
+  .homepageRefresh .storyImageButton { aspect-ratio: 16/9; }
+  .homepageRefresh .storyBody { padding: 18px; }
+  .homepageRefresh .story h3 { font-size: 18px; }
+  .homepageRefresh .story p { font-size: 13px; -webkit-line-clamp: 2; }
+  .homepageRefresh .storyPhotoCount { font-size: 11px; padding: 5px 8px; }
+  .homepageRefresh .activityPhotoList { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .homepageRefresh .activityPhotoTile > span { font-size: 10px; padding: 7px; }
+  .homepageRefresh .photoStripHead h3 { font-size: 17px; }
+  .homepageRefresh .competitionDesk { width: calc(100% - 32px); }
+  .homepageRefresh .competitionDesk .container { width: 100%; max-width: 100%; }
+  .homepageRefresh .competitionDesk > .section { padding: 28px 0; }
+  .homepageRefresh .filterBar .segments { width: 100%; }
+  .homepageRefresh .filterBar > label { width: 100%; }
+  .homepageRefresh .filterBar .segments button { font-size: 11px; padding-inline: 6px; }
+  .homepageRefresh .scheduleRow { grid-template-columns: 1fr; gap: 8px; padding: 16px; }
+  .homepageRefresh .scheduleDay { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .homepageRefresh .scheduleDay time { margin-top: 0; }
+  .homepageRefresh .scheduleTime { grid-column: 1; }
+  .homepageRefresh .results { grid-template-columns: 1fr; gap: 12px; }
+  .homepageRefresh .record { display: grid; grid-template-columns: 46px 1fr; text-align: left; padding: 18px; gap: 0 14px; align-items: start; }
+  .homepageRefresh .recordIcon { grid-column: 1; grid-row: 1/5; margin: 4px 0; }
+  .homepageRefresh .recordDate, .homepageRefresh .recordResult, .homepageRefresh .record h3, .homepageRefresh .record p { grid-column: 2; }
+  .homepageRefresh .recordResult { font-size: 17px; margin: 5px 0; }
+  .homepageRefresh .record h3 { margin: 5px 0; padding-top: 8px; }
+  .homepageRefresh .headCoachFeature .coachGrid { grid-template-columns: 1fr; gap: 24px; }
+  .homepageRefresh .headCoachFeature .coachArt { max-width: 270px; margin-inline: auto; }
+  .homepageRefresh .headCoachFeature h2 { font-size: 28px; line-height: 1.5; }
+  .homepageRefresh .headCoachFeature .values { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .homepageRefresh #message .message { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
+  .homepageRefresh #message .message h2 { font-size: 23px; }
+  .homepageRefresh .staffSection .sectionHead h2 { font-size: 25px; }
+  .homepageRefresh .staffGrid { gap: 12px; }
+  .homepageRefresh .staffCopy { padding: 16px 12px; }
+  .homepageRefresh .staffCopy h3 { font-size: 22px; }
+  .homepageRefresh .staffCareer { font-size: 11px; }
+  .homepageRefresh #notice .container { display: block; }
+  .homepageRefresh .noticeTools { margin: 14px 0 12px; }
+  .homepageRefresh .noticeTools label { width: 100%; }
+  .homepageRefresh .noticeItem h3 { font-size: 14px; }
+  .homepageRefresh .trial { grid-template-columns: 1fr; gap: 22px; }
+  .homepageRefresh .trialIntro h2 { font-size: 27px; }
+  .homepageRefresh .trialApplication { max-width: none; }
+  .homepageRefresh .trialApplication > summary { width: 100%; max-width: none; }
+  .homepageRefresh .location { grid-template-columns: 1fr; gap: 22px; }
+  .homepageRefresh .sponsor { grid-template-columns: 75px 1fr; gap: 15px; }
+  .homepageRefresh .sponsorVisual { width: 75px; }
+  .homepageRefresh .sponsor strong { font-size: 23px; }
+  .homepageRefresh .sponsor p { font-size: 11px; }
+  .homepageRefresh .footerLinks { justify-content: flex-start; }
+}
+@media (max-width: 360px) {
+  .homepageRefresh .heroSlogan span { font-size: 21px; }
+  .homepageRefresh .heroSlogan strong { font-size: 55px; }
+  .homepageRefresh .heroVisual { width: 105px; top: 36px; }
+  .homepageRefresh .shortcutIcon { display: none; }
+  .homepageRefresh .homeShortcut { padding: 12px; }
+  .homepageRefresh .filterBar .segments button { font-size: 10px; padding-inline: 4px; }
+}
