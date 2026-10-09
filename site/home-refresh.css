@@ -96,9 +96,8 @@
 .homepageRefresh .storyMeta { font-size: 11px; min-height: 20px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
 .homepageRefresh .storyMeta > span { font-size: 9px; max-width: 100%; overflow-wrap: anywhere; letter-spacing: .05em; }
 .homepageRefresh .story h3 { font-size: 17px; line-height: 1.65; margin-bottom: 10px; }
-.homepageRefresh .story p { font-size: 12px; line-height: 1.85; -webkit-line-clamp: 3; }
+.homepageRefresh .story p { font-size: 12px; line-height: 1.85; -webkit-line-clamp: 3; margin-bottom: 16px; }
 .homepageRefresh .storyOpen { align-self: flex-start; min-height: 36px; margin-top: auto; padding: 7px 12px; border-radius: 6px; font-size: 12px; }
-.homepageRefresh .storyBody p + .storyOpen { margin-top: 16px; }
 .homepageRefresh .activityFootnote { text-align: left; font-size: 12px; margin-top: 16px; }
 .homepageRefresh .activityPhotoWrap { margin-top: 26px; padding-top: 24px; border-top: 1px solid var(--line); }
 .homepageRefresh .photoStripHead { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
@@ -242,20 +241,20 @@ html.gold-finish .homepageRefresh :is(.sectionKicker, .coachName, .player h3, .s
   .homepageRefresh .logo strong { font-size: 17px; }
   .homepageRefresh .logo small { font-size: 7px; max-width: 150px; }
   .homepageRefresh .navlinks.open { left: 16px; right: 16px; }
-  .homepageRefresh .heroGrid { grid-template-columns: 1fr; min-height: 0; padding: 30px 0 25px; }
-  .homepageRefresh .heroCopy { width: 100%; text-align: left; }
+  .homepageRefresh .heroGrid { grid-template-columns: minmax(0, 1fr); min-height: 0; padding: 30px 0 25px; }
+  .homepageRefresh .heroCopy { width: 100%; min-width: 0; max-width: 100%; text-align: left; }
   .homepageRefresh .eyebrow { max-width: 190px; font-size: 8px; letter-spacing: .12em; margin-bottom: 18px; }
   .homepageRefresh .hero .heroSlogan { max-width: 210px; margin-bottom: 20px; }
   .homepageRefresh .heroSlogan span { font-size: 23px; margin-bottom: 6px; }
   .homepageRefresh .heroSlogan strong { font-size: 60px; }
-  .homepageRefresh .heroVisual { position: absolute; top: 30px; right: 0; width: 130px; max-width: 37%; margin: 0; }
+  .homepageRefresh .heroVisual { position: absolute; grid-area: auto; top: 30px; right: 0; width: 120px; max-width: 34%; margin: 0; }
   .homepageRefresh .heroVisual img { max-height: 140px; }
   .homepageRefresh .visualCaption { display: none; }
   .homepageRefresh .heroTeamName { font-size: 24px; }
   .homepageRefresh .heroTagline { font-size: 17px; margin-top: 6px; }
   .homepageRefresh .heroDescription { font-size: 12px; line-height: 1.9; margin-top: 7px; }
   .homepageRefresh .hero .actions { flex-wrap: nowrap; gap: 10px; margin-top: 18px; }
-  .homepageRefresh .hero .actions .btn { flex: 1; padding: 10px; font-size: 12px; gap: 8px; }
+  .homepageRefresh .hero .actions .btn { flex: 1; min-width: 0; padding: 10px; font-size: 12px; gap: 8px; }
   .homepageRefresh .nextEventBadge { display: flex; padding: 8px; margin-top: 14px; }
   .homepageRefresh .nextEventBadge span { font-size: 8px; }
   .homepageRefresh .nextEventBadge strong { font-size: 10px; max-width: none; }
@@ -344,7 +343,7 @@ html.gold-finish .homepageRefresh :is(.sectionKicker, .coachName, .player h3, .s
 @media (max-width: 360px) {
   .homepageRefresh .heroSlogan span { font-size: 21px; }
   .homepageRefresh .heroSlogan strong { font-size: 55px; }
-  .homepageRefresh .heroVisual { width: 105px; top: 36px; }
+  .homepageRefresh .heroVisual { width: 100px; top: 36px; }
   .homepageRefresh .shortcutIcon { display: none; }
   .homepageRefresh .homeShortcut { padding: 12px; }
   .homepageRefresh .filterBar .segments button { font-size: 10px; padding-inline: 4px; }
