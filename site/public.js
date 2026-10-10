@@ -3,10 +3,10 @@ import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './
 import { newestFirst, scheduleDisplayOrder, mergePublishedRecords } from './homepage-view.js?v=1.0.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
 import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
-import { youthDisplayName, isYouthIllustration, HEAD_COACH_PORTRAIT } from './team-profiles.js?v=1.1.0';
+import { youthDisplayName, isYouthIllustration, HEAD_COACH_MAIN_PORTRAIT } from './team-profiles.js?v=1.2.0';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
-import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned, koreaToday } from './site-content.js?v=4.3.0';
+import { resolveSettings, escapeHTML as esc, safeURL, scheduleDate, scheduleState, sortedItems, isPinned, koreaToday } from './site-content.js?v=4.4.0';
 
 const app = initializeApp({apiKey:'AIzaSyCbZ9CUf_hJRAKs2T7MYK7Z4YBNjn7p9pI',authDomain:'cheongmyeong-tabletennis.firebaseapp.com',projectId:'cheongmyeong-tabletennis',storageBucket:'cheongmyeong-tabletennis.firebasestorage.app',messagingSenderId:'712801821489',appId:'1:712801821489:web:501d20626d8cd12dc98610'});
 const db = getFirestore(app), $ = id => document.getElementById(id);
@@ -90,7 +90,7 @@ function applySettings(raw) {
   settings=resolveSettings(raw); const c=settings.siteContent;
   document.querySelectorAll('[data-content]').forEach(el=>{if(el.dataset.content==='messageBody')renderCoachMessage(el,c.messageBody);else el.textContent=c[el.dataset.content]??'';});
   text('mainTitle',settings.mainTitle); text('mainSubtitle',settings.mainSubtitle);
-  image('heroImage',c.heroImage,c.heroAlt); image('navLogo',c.heroImage,c.teamName+' 로고'); image('sponsorImage',c.sponsorImage,c.sponsorName); image('coachImage',c.coachImage||HEAD_COACH_PORTRAIT,(c.coachName||'코치')+' 프로필'); image('coachDialogImage',c.coachImage||HEAD_COACH_PORTRAIT,(c.coachName||'코치')+' 프로필 크게 보기');
+  image('heroImage',c.heroImage,c.heroAlt); image('navLogo',c.heroImage,c.teamName+' 로고'); image('sponsorImage',c.sponsorImage,c.sponsorName); image('coachImage',c.coachImage||HEAD_COACH_MAIN_PORTRAIT,(c.coachName||'코치')+' 프로필'); image('coachDialogImage',c.coachImage||HEAD_COACH_MAIN_PORTRAIT,(c.coachName||'코치')+' 프로필 크게 보기');
   text('primaryLabel',c.primaryLabel); text('secondaryLabel',c.secondaryLabel);
   const sections={team:'showTeam',youth:'showYouth',staff:'showStaff',overview:'showOverview',activity:'showActivities',schedule:'showSchedules',records:'showRecords',notice:'showNotices',coach:'showCoach',message:'showMessage',faq:'showFaq',trial:'showTrial',map:'showMap',sponsor:'showCoach'};
   Object.entries(sections).forEach(([id,key])=>{$(id).hidden=c[key]===false;});
@@ -155,7 +155,7 @@ function renderYouthPlayers(items) {
   });
 }
 function renderStaff(content) {
-  const members=[{name:content.coachName,role:content.coachRole,image:content.coachImage,career:content.coachCareer,tenure:content.coachTenure,intro:content.coachIntro},...content.staffMembers.filter(visible)];
+  const members=[{name:content.coachName,role:content.coachRole,image:content.coachCardImage,career:content.coachCareer,tenure:content.coachTenure,intro:content.coachIntro},...content.staffMembers.filter(visible)];
   const root=$('staffList');
   root.innerHTML=members.map(member=>{
     const src=safeURL(member.image), lines=String(member.career||'').split(/\n/).map(line=>line.trim()).filter(Boolean);

@@ -1,4 +1,4 @@
-import { YOUTH_DEFAULTS, STAFF_DEFAULTS, HEAD_COACH_PORTRAIT, withStaffIntroductions, currentHeadCoachPortrait } from './team-profiles.js?v=1.1.0';
+import { YOUTH_DEFAULTS, STAFF_DEFAULTS, HEAD_COACH_MAIN_PORTRAIT, HEAD_COACH_CARD_PORTRAIT, withStaffIntroductions } from './team-profiles.js?v=1.2.0';
 
 export const CONTENT_DEFAULTS = {
   "teamName": "청명초 탁구부",
@@ -26,7 +26,8 @@ export const CONTENT_DEFAULTS = {
   "recordsDescription": "매 경기의 경험과 매 대회의 결과가 선수 성장의 기록이 됩니다.",
   "noticesTitle": "탁구부 공지",
   "noticesDescription": "훈련, 대회, 전지훈련 및 탁구부 주요 소식을 확인하세요.",
-  "coachImage": HEAD_COACH_PORTRAIT,
+  "coachImage": HEAD_COACH_MAIN_PORTRAIT,
+  "coachCardImage": HEAD_COACH_CARD_PORTRAIT,
   "coachTitle": "아이들의 미래는 지금의 실력으로 결정되지 않습니다.",
   "coachDescription": "기본기와 기술뿐 아니라 경기 운영, 체력, 멘탈, 생활 습관, 팀워크까지. 매일의 작은 습관이 큰 경기에서도 흔들리지 않는 선수를 만든다는 기준으로 훈련합니다.",
   "coachName": "하정무",
@@ -164,7 +165,6 @@ export function resolveSettings(raw = {}) {
   out.siteContent = {...structuredClone(CONTENT_DEFAULTS), ...(raw.siteContent || {})};
   for (const key of ['activities','faqs','values','youthPlayers','staffMembers']) if (!Array.isArray(out.siteContent[key])) out.siteContent[key] = structuredClone(CONTENT_DEFAULTS[key]);
   out.siteContent.staffMembers = withStaffIntroductions(out.siteContent.staffMembers);
-  out.siteContent.coachImage = currentHeadCoachPortrait(out.siteContent.coachImage);
   return out;
 }
 export function safeURL(value, fallback = '') {

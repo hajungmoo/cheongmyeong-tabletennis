@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {resolveSettings} from '../site/site-content.js';
-import {youthDisplayName, HEAD_COACH_PORTRAIT, currentHeadCoachPortrait} from '../site/team-profiles.js';
+import {youthDisplayName, HEAD_COACH_MAIN_PORTRAIT, HEAD_COACH_CARD_PORTRAIT} from '../site/team-profiles.js';
 import {assertSettingsUnchanged} from '../site/settings-compare.js';
 
 test('existing homepage settings gain four editable youth placeholders without a roster change', () => {
@@ -55,13 +55,26 @@ test('new staff introductions preserve saved photos, careers, order and intentio
   assert.deepEqual(resolveSettings({siteContent:{staffMembers:members}}).siteContent.staffMembers,members);
 });
 
-test('head-coach portrait update replaces only the previous published image', () => {
+test('head-coach introduction and staff card keep independent photos across reloads', () => {
   const previous='https://firebasestorage.googleapis.com/v0/b/cheongmyeong-tabletennis.firebasestorage.app/o/homepage%2Factivities%2F3cd86594-8d9a-4fb8-87e7-571f4f9cba58.jpg?alt=media';
-  assert.equal(resolveSettings({siteContent:{coachImage:previous}}).siteContent.coachImage,HEAD_COACH_PORTRAIT);
-  assert.equal(currentHeadCoachPortrait('site/assets/coach-profile.webp'),HEAD_COACH_PORTRAIT);
-  for(const value of ['new-upload.jpg',previous.replace('3cd86594','new-image'),previous.replace('firebasestorage.googleapis.com','example.com'),'']){
-    assert.equal(currentHeadCoachPortrait(value),value);
+  const defaults=resolveSettings().siteContent;
+  assert.equal(defaults.coachImage,HEAD_COACH_MAIN_PORTRAIT);
+  assert.equal(defaults.coachCardImage,HEAD_COACH_CARD_PORTRAIT);
+  assert.notEqual(defaults.coachImage,defaults.coachCardImage);
+  const original={siteContent:{coachImage:previous}};
+  const restored=resolveSettings(original);
+  assert.equal(restored.siteContent.coachImage,previous);
+  assert.equal(restored.siteContent.coachCardImage,HEAD_COACH_CARD_PORTRAIT);
+  assert.deepEqual(original,{siteContent:{coachImage:previous}});
+  for(const cardImage of ['new-card-upload.jpg','']){
+    restored.siteContent.coachCardImage=cardImage;
+    const reloaded=resolveSettings(restored);
+    assert.equal(reloaded.siteContent.coachImage,previous);
+    assert.equal(reloaded.siteContent.coachCardImage,cardImage);
   }
+  restored.siteContent.coachImage='new-main-upload.jpg';
+  assert.equal(resolveSettings(restored).siteContent.coachImage,'new-main-upload.jpg');
+  assert.equal(resolveSettings(restored).siteContent.coachCardImage,'');
 });
 
 test('a stale youth draft cannot overwrite another admin, while unrelated settings remain saveable', () => {

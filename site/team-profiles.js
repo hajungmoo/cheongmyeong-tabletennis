@@ -34,18 +34,9 @@ export function withStaffIntroductions(members) {
   });
 }
 
-export const HEAD_COACH_PORTRAIT = 'site/assets/staff/ha-jeongmu.webp';
-export function currentHeadCoachPortrait(value) {
-  if (value === 'site/assets/coach-profile.webp') return HEAD_COACH_PORTRAIT;
-  // Replace only the previous published head-coach photo. New admin uploads
-  // continue to take precedence over the bundled portrait.
-  try {
-    const url = new URL(value);
-    const oldPath = '/v0/b/cheongmyeong-tabletennis.firebasestorage.app/o/homepage/activities/3cd86594-8d9a-4fb8-87e7-571f4f9cba58.jpg';
-    if (url.hostname === 'firebasestorage.googleapis.com' && decodeURIComponent(url.pathname) === oldPath) return HEAD_COACH_PORTRAIT;
-  } catch {}
-  return value;
-}
+// Keep the original introduction photo separate from the matching staff card.
+export const HEAD_COACH_MAIN_PORTRAIT = 'site/assets/staff/ha-jeongmu-main-original.jpg';
+export const HEAD_COACH_CARD_PORTRAIT = 'site/assets/staff/ha-jeongmu-team.webp';
 
 export function youthDisplayName(value) {
   const name = String(value ?? '').trim();
