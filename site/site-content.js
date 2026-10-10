@@ -1,4 +1,4 @@
-import { YOUTH_DEFAULTS, STAFF_DEFAULTS, HEAD_COACH_MAIN_PORTRAIT, HEAD_COACH_CARD_PORTRAIT, withStaffIntroductions } from './team-profiles.js?v=1.2.0';
+import { YOUTH_DEFAULTS, STAFF_DEFAULTS, HEAD_COACH_MAIN_PORTRAIT, HEAD_COACH_CARD_PORTRAIT, HEAD_COACH_CAREER, withStaffIntroductions } from './team-profiles.js?v=1.3.0';
 
 export const CONTENT_DEFAULTS = {
   "teamName": "청명초 탁구부",
@@ -33,7 +33,7 @@ export const CONTENT_DEFAULTS = {
   "coachName": "하정무",
   "coachRole": "메인코치",
   "coachTenure": "2025년 3월 ~ 현재",
-  "coachCareer": "청명초등학교 탁구부 메인코치",
+  "coachCareer": HEAD_COACH_CAREER,
   "coachIntro": "처음 라켓을 쥐는 순간부터 졸업하는 날까지, 아이들의 모든 성장을 함께하겠습니다.\n탁구의 즐거움 속에서 실력을 키우고, 코트 안팎에서 예의를 갖춘 선수로 자라도록 따뜻하고 책임 있게 지도하겠습니다.",
   "messageTitle": "시작은 같을 수 있어도, 성장의 모습은 모두 다릅니다.",
   "messageBody": "시작은 같을 수 있어도 선수마다 성장의 속도와 실력은 천차만별로 다를 수 있습니다. 하지만 아이들의 미래를 지금의 실력만으로 결정할 수는 없습니다. 우리 청명초 탁구부는 경기력 향상만을 목표로 하지 않습니다. 예의범절과 인성교육을 함께 중요하게 생각하며, 아이들이 억지로 운동하는 것이 아니라 탁구가 즐거워 스스로 코트에 서고 싶어 하는 팀을 만들기 위해 코치진이 함께 노력하고 있습니다. 믿고 아이들을 보내주시는 만큼 한 명 한 명을 세심하게 살피고 열심히 지도하겠습니다. 처음 라켓을 잡고 시작하는 순간부터 졸업하는 날까지, 아이들과 함께 웃고 고민하며 성장의 과정을 끝까지 함께하겠습니다.",
@@ -165,6 +165,10 @@ export function resolveSettings(raw = {}) {
   out.siteContent = {...structuredClone(CONTENT_DEFAULTS), ...(raw.siteContent || {})};
   for (const key of ['activities','faqs','values','youthPlayers','staffMembers']) if (!Array.isArray(out.siteContent[key])) out.siteContent[key] = structuredClone(CONTENT_DEFAULTS[key]);
   out.siteContent.staffMembers = withStaffIntroductions(out.siteContent.staffMembers);
+  if (out.siteContent.coachName === '하정무') {
+    if (out.siteContent.coachCareer === '청명초등학교 탁구부 메인코치') out.siteContent.coachCareer = HEAD_COACH_CAREER;
+    if (out.siteContent.coachCardImage === 'site/assets/staff/ha-jeongmu-team.webp') out.siteContent.coachCardImage = HEAD_COACH_CARD_PORTRAIT;
+  }
   return out;
 }
 export function safeURL(value, fallback = '') {

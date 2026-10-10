@@ -13,30 +13,39 @@ export const STAFF_DEFAULTS = [
     id: 'coach-lee-yuna', name: '이유나', role: '코치',
     tenure: '2026년 2월 ~ 현재',
     intro: '여자팀 아이들의 마음과 작은 변화까지 세심하게 살피겠습니다.\n실력과 바른 인성이 함께 자라도록 돕고, 언제나 웃으며 코트에 서고 싶은 즐거운 훈련을 만들겠습니다.',
-    career: '음성용천초 트레이너\n군산대야초 코치',
+    career: '음성용천초등학교 트레이너로 지도 시작\n군산대야초등학교 탁구부 코치\n10년 이상 엘리트 탁구부 선수 지도\n선수 지도 성적 다수',
     image: 'site/assets/staff/lee-yuna.jpg', visible: true,
   },
   {
     id: 'trainer-cho-hyeonseo', name: '조현서', role: '트레이너',
     tenure: '2026년 10월 ~ 현재',
     intro: '유치부의 설레는 첫 도전부터 초등부의 힘찬 성장까지 함께하겠습니다.\n코치진과 한마음으로 아이들의 눈높이에서 소통하며, 신나는 움직임 속에 자신감과 실력을 차곡차곡 키워가겠습니다.',
-    career: '천안성환초\n수원곡선중\n광영고 졸업\n챔피언탁구아카데미 유소년반 코치',
+    career: '천안성환초등학교\n수원곡선중학교\n광영고등학교 2026년 졸업\n선수 성적 다수\n유치부 전담 및 초등부 엘리트 선수 지도 중',
     image: 'site/assets/staff/cho-hyeonseo.jpg', visible: true,
   },
 ];
 
-// Add the published introductions to existing cards without replacing saved
-// photos, careers, order, visibility, or later edits (including empty text).
+const PREVIOUS_STAFF_CAREERS = {
+  'coach-lee-yuna': '음성용천초 트레이너\n군산대야초 코치',
+  'trainer-cho-hyeonseo': '천안성환초\n수원곡선중\n광영고 졸업\n챔피언탁구아카데미 유소년반 코치',
+};
+
+// Refresh the previously published career copy while preserving saved photos,
+// order, visibility, and subsequent custom edits (including empty text).
 export function withStaffIntroductions(members) {
   return members.map(member => {
     const published = STAFF_DEFAULTS.find(profile => profile.name === member.name && (!member.id || profile.id === member.id));
-    return published ? {...published, ...member} : {...member};
+    if (!published) return {...member};
+    const profile = {...published, ...member};
+    if (profile.career === PREVIOUS_STAFF_CAREERS[published.id]) profile.career = published.career;
+    return profile;
   });
 }
 
 // Keep the original introduction photo separate from the matching staff card.
 export const HEAD_COACH_MAIN_PORTRAIT = 'site/assets/staff/ha-jeongmu-main-original.jpg';
-export const HEAD_COACH_CARD_PORTRAIT = 'site/assets/staff/ha-jeongmu-team.webp';
+export const HEAD_COACH_CARD_PORTRAIT = 'site/assets/staff/ha-jeongmu-team-v2.webp';
+export const HEAD_COACH_CAREER = '2014년 구미진평초등학교 탁구부 코치 시작\n2017년 이일여자중학교 탁구부 코치\n2018년 천안중학교 탁구부 코치\n2022년 천안성환초등학교 탁구부 코치\n2023년 수원신곡초등학교 탁구부 코치\n2024년 안양만안초등학교 탁구부 코치\n2025년 수원청명초등학교 탁구부 메인코치 (현)\n10년 이상 엘리트 코치 경력\n엘리트 선수 지도 성적 다수\n국가대표·실업·대학 등 현역 선수 제자 다수';
 
 export function youthDisplayName(value) {
   const name = String(value ?? '').trim();

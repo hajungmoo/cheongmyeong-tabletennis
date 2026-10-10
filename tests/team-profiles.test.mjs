@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {resolveSettings} from '../site/site-content.js';
-import {youthDisplayName, HEAD_COACH_MAIN_PORTRAIT, HEAD_COACH_CARD_PORTRAIT} from '../site/team-profiles.js';
+import {youthDisplayName, HEAD_COACH_MAIN_PORTRAIT, HEAD_COACH_CARD_PORTRAIT, HEAD_COACH_CAREER} from '../site/team-profiles.js';
 import {assertSettingsUnchanged} from '../site/settings-compare.js';
 
 test('existing homepage settings gain four editable youth placeholders without a roster change', () => {
@@ -75,6 +75,32 @@ test('head-coach introduction and staff card keep independent photos across relo
   restored.siteContent.coachImage='new-main-upload.jpg';
   assert.equal(resolveSettings(restored).siteContent.coachImage,'new-main-upload.jpg');
   assert.equal(resolveSettings(restored).siteContent.coachCardImage,'');
+});
+
+test('published career updates replace the former copy without losing photos or future corrections', () => {
+  const saved={siteContent:{
+    coachName:'하정무',coachCareer:'청명초등학교 탁구부 메인코치',
+    coachImage:'original-main.jpg',coachCardImage:'site/assets/staff/ha-jeongmu-team.webp',
+    staffMembers:[
+      {id:'coach-lee-yuna',name:'이유나',career:'음성용천초 트레이너\n군산대야초 코치',image:'yuna-photo.jpg'},
+      {id:'trainer-cho-hyeonseo',name:'조현서',career:'천안성환초\n수원곡선중\n광영고 졸업\n챔피언탁구아카데미 유소년반 코치',image:'hyeonseo-photo.jpg'},
+    ],
+  }};
+  const before=structuredClone(saved);
+  const updated=resolveSettings(saved);
+  assert.equal(updated.siteContent.coachCareer,HEAD_COACH_CAREER);
+  assert.equal(updated.siteContent.coachImage,'original-main.jpg');
+  assert.equal(updated.siteContent.coachCardImage,HEAD_COACH_CARD_PORTRAIT);
+  assert.match(updated.siteContent.staffMembers[0].career,/10년 이상/);
+  assert.match(updated.siteContent.staffMembers[1].career,/2026년 졸업/);
+  assert.deepEqual(updated.siteContent.staffMembers.map(p=>p.image),['yuna-photo.jpg','hyeonseo-photo.jpg']);
+  assert.deepEqual(saved,before);
+  assert.deepEqual(resolveSettings(updated),updated);
+  updated.siteContent.coachCareer='수정된 코치 경력';
+  updated.siteContent.coachCardImage='new-card.jpg';
+  updated.siteContent.staffMembers[0].career='';
+  updated.siteContent.staffMembers[1].career='관리자가 수정한 경력';
+  assert.deepEqual(resolveSettings(updated),updated);
 });
 
 test('a stale youth draft cannot overwrite another admin, while unrelated settings remain saveable', () => {
