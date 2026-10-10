@@ -1,13 +1,13 @@
 /* Compact staff introductions; the native disclosure also supports keyboard use. */
 .homepageRefresh .staffGrid { align-items: start; }
-.homepageRefresh .staffCard { height: auto; align-self: start; min-width:0; }
-.homepageRefresh .staffSummary { display: block; list-style: none; cursor: pointer; min-width:0; }
+.homepageRefresh .staffCard { height: auto; align-self: start; }
+.homepageRefresh .staffSummary { display: block; list-style: none; cursor: pointer; }
 .homepageRefresh .staffSummary::-webkit-details-marker { display: none; }
 .homepageRefresh .staffSummary::marker { content: ""; }
 .homepageRefresh .staffSummary:focus-visible { outline: 2px solid #efc773; outline-offset: -3px; border-radius: 10px; }
 .homepageRefresh .staffPhoto { aspect-ratio: 4 / 5; background: #081726; }
 .homepageRefresh .staffPhoto img { display: block; object-position: center; }
-.homepageRefresh .staffCopy { padding: 18px 22px 10px; min-width:0; }
+.homepageRefresh .staffCopy { padding: 18px 22px 10px; }
 .homepageRefresh .staffCopy h3 { margin: 0 0 8px; }
 .homepageRefresh .staffTenure { margin: 0; font-size: 11px; line-height: 1.6; }
 .homepageRefresh .staffToggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-top: 5px; color: #e7c47f; font-size: 12px; font-weight: 650; }
@@ -27,113 +27,18 @@
 .homepageRefresh .staffDetailsBody .staffCareer li::before { width: 4px; height: 4px; top: .8em; }
 .homepageRefresh .staffNoDetails { margin: 0; color: #bdccdd; font-size: 13px; }
 
-/* Phone layout: force one full-width card. This also covers wide Galaxy phones
-   whose browser viewport can fall between tablet and older phone breakpoints. */
-@media (max-width: 900px) {
-  .homepageRefresh .staffSection .container { width:100%; max-width:100%; min-width:0; }
-  .homepageRefresh .staffGrid {
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) !important;
-    width:100% !important;
-    max-width:560px !important;
-    min-width:0 !important;
-    margin-inline:auto !important;
-    gap:14px !important;
-    overflow:visible !important;
-  }
-  .homepageRefresh .staffCard {
-    display:block !important;
-    width:100% !important;
-    max-width:100% !important;
-    min-width:0 !important;
-    height:auto !important;
-    overflow:hidden !important;
-  }
-  .homepageRefresh .staffDetails { display:block; width:100%; min-width:0; }
-  .homepageRefresh .staffSummary {
-    display:grid !important;
-    grid-template-columns:clamp(112px,34vw,150px) minmax(0,1fr) !important;
-    width:100% !important;
-    min-width:0 !important;
-    align-items:stretch !important;
-  }
-  .homepageRefresh .staffPhoto {
-    width:100% !important;
-    height:auto !important;
-    min-height:168px;
-    aspect-ratio:4/5 !important;
-    align-self:stretch;
-  }
-  .homepageRefresh .staffPhoto img { width:100%; height:100%; object-fit:cover; object-position:center; }
-  .homepageRefresh .staffPhoto::after { height:16%; }
-  .homepageRefresh .staffCopy {
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    width:auto !important;
-    min-width:0 !important;
-    padding:14px 16px 8px !important;
-    overflow:hidden;
-  }
-  .homepageRefresh .staffCopy h3 {
-    font-size:clamp(23px,7vw,30px) !important;
-    line-height:1.15 !important;
-    margin:0 0 8px !important;
-    white-space:normal !important;
-    word-break:keep-all !important;
-    overflow-wrap:normal !important;
-    writing-mode:horizontal-tb !important;
-  }
-  .homepageRefresh .staffRole {
-    align-self:flex-start;
-    min-height:24px !important;
-    padding:3px 8px !important;
-    margin:0 0 7px !important;
-    font-size:10px !important;
-    line-height:1.35 !important;
-    letter-spacing:.02em !important;
-    white-space:nowrap;
-    writing-mode:horizontal-tb !important;
-  }
-  .homepageRefresh .staffTenure {
-    display:block !important;
-    width:100%;
-    margin:0 !important;
-    font-size:10px !important;
-    line-height:1.55 !important;
-    white-space:normal !important;
-    word-break:keep-all !important;
-    overflow-wrap:normal !important;
-    writing-mode:horizontal-tb !important;
-  }
-  .homepageRefresh .staffTenure span { display:inline; }
-  .homepageRefresh .staffToggle {
-    width:100%;
-    min-height:38px;
-    margin-top:5px;
-    font-size:11px;
-    white-space:nowrap;
-    writing-mode:horizontal-tb !important;
-  }
-  .homepageRefresh .staffDetailsBody { padding:20px 18px; }
-  .homepageRefresh .staffCard:hover { transform:none; }
-  .homepageRefresh .staffCard:hover .staffPhoto img { transform:none; }
-}
-
-@media (max-width: 430px) {
-  .homepageRefresh .staffGrid { max-width:100% !important; gap:12px !important; }
-  .homepageRefresh .staffSummary { grid-template-columns:118px minmax(0,1fr) !important; }
-  .homepageRefresh .staffPhoto { min-height:154px; }
-  .homepageRefresh .staffCopy { padding:12px 13px 6px !important; }
-  .homepageRefresh .staffCopy h3 { font-size:24px !important; }
-  .homepageRefresh .staffTenure { font-size:9.5px !important; }
-  .homepageRefresh .staffToggle { font-size:10.5px; }
-  .homepageRefresh .staffDetailsBody { padding:18px 16px; }
-}
-
-@media (max-width: 360px) {
-  .homepageRefresh .staffSummary { grid-template-columns:104px minmax(0,1fr) !important; }
-  .homepageRefresh .staffPhoto { min-height:142px; }
-  .homepageRefresh .staffCopy { padding-inline:11px !important; }
-  .homepageRefresh .staffCopy h3 { font-size:22px !important; }
+@media (max-width: 800px) {
+  .homepageRefresh .staffGrid { grid-template-columns: 1fr; max-width: 560px; gap: 12px; overflow: visible; }
+  .homepageRefresh .staffSummary { display: grid; grid-template-columns: min(36vw, 132px) minmax(0, 1fr); align-items: center; }
+  .homepageRefresh .staffPhoto { width: 100%; height: 100%; min-height: 165px; aspect-ratio: auto; align-self: stretch; }
+  .homepageRefresh .staffPhoto img { object-fit: cover; object-position: center; }
+  .homepageRefresh .staffPhoto::after { height: 16%; }
+  .homepageRefresh .staffCopy { padding: 14px 16px 6px; }
+  .homepageRefresh .staffCopy h3 { font-size: 24px; margin-bottom: 7px; }
+  .homepageRefresh .staffRole { min-height: 24px; padding: 3px 8px; margin-bottom: 7px; font-size: 10px; letter-spacing: .02em; }
+  .homepageRefresh .staffTenure { gap: 3px 5px; font-size: 10px; }
+  .homepageRefresh .staffToggle { margin-top: 2px; font-size: 11px; }
+  .homepageRefresh .staffDetailsBody { padding: 20px 18px; }
+  .homepageRefresh .staffCard:hover { transform: none; }
+  .homepageRefresh .staffCard:hover .staffPhoto img { transform: none; }
 }
