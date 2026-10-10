@@ -11,15 +11,41 @@ export const YOUTH_DEFAULTS = Array.from({length: 4}, (_, index) => ({
 export const STAFF_DEFAULTS = [
   {
     id: 'coach-lee-yuna', name: '이유나', role: '코치',
+    tenure: '2026년 2월 ~ 현재',
+    intro: '여자팀 아이들의 마음과 작은 변화까지 세심하게 살피겠습니다.\n실력과 바른 인성이 함께 자라도록 돕고, 언제나 웃으며 코트에 서고 싶은 즐거운 훈련을 만들겠습니다.',
     career: '음성용천초 트레이너\n군산대야초 코치',
     image: 'site/assets/staff/lee-yuna.jpg', visible: true,
   },
   {
     id: 'trainer-cho-hyeonseo', name: '조현서', role: '트레이너',
+    tenure: '2026년 10월 ~ 현재',
+    intro: '유치부의 설레는 첫 도전부터 초등부의 힘찬 성장까지 함께하겠습니다.\n코치진과 한마음으로 아이들의 눈높이에서 소통하며, 신나는 움직임 속에 자신감과 실력을 차곡차곡 키워가겠습니다.',
     career: '천안성환초\n수원곡선중\n광영고 졸업\n챔피언탁구아카데미 유소년반 코치',
     image: 'site/assets/staff/cho-hyeonseo.jpg', visible: true,
   },
 ];
+
+// Add the published introductions to existing cards without replacing saved
+// photos, careers, order, visibility, or later edits (including empty text).
+export function withStaffIntroductions(members) {
+  return members.map(member => {
+    const published = STAFF_DEFAULTS.find(profile => profile.name === member.name && (!member.id || profile.id === member.id));
+    return published ? {...published, ...member} : {...member};
+  });
+}
+
+export const HEAD_COACH_PORTRAIT = 'site/assets/staff/ha-jeongmu.webp';
+export function currentHeadCoachPortrait(value) {
+  if (value === 'site/assets/coach-profile.webp') return HEAD_COACH_PORTRAIT;
+  // Replace only the previous published head-coach photo. New admin uploads
+  // continue to take precedence over the bundled portrait.
+  try {
+    const url = new URL(value);
+    const oldPath = '/v0/b/cheongmyeong-tabletennis.firebasestorage.app/o/homepage/activities/3cd86594-8d9a-4fb8-87e7-571f4f9cba58.jpg';
+    if (url.hostname === 'firebasestorage.googleapis.com' && decodeURIComponent(url.pathname) === oldPath) return HEAD_COACH_PORTRAIT;
+  } catch {}
+  return value;
+}
 
 export function youthDisplayName(value) {
   const name = String(value ?? '').trim();

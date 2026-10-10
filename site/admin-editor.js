@@ -1,5 +1,5 @@
 import { photoUploadError } from './photo-upload.js?v=3.2.0';
-import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=4.2.0';
+import { resolveSettings, CONTENT_DEFAULTS, escapeHTML as esc, safeURL } from './site-content.js?v=4.3.0';
 import { sameSettingsValue as equal } from './settings-compare.js?v=3.1.2';
 
 const field = (key,label,type='text',hint='') => ({key,label,type,hint});
@@ -11,7 +11,7 @@ const groups = [
   {id:'activities',title:'팀 이야기',fields:[],array:'activities'},
   {id:'faqs',title:'자주 묻는 질문',fields:[],array:'faqs'},
   {id:'youth',title:'유소년 예비반',fields:[field('youthTitle','유치부 영역 제목'),field('youthDescription','유치부 소개','textarea'),field('showYouth','유치부 영역 공개','boolean')],array:'youthPlayers'},
-  {id:'staff',title:'지도진',fields:[field('staffTitle','지도진 영역 제목'),field('staffDescription','지도진 소개','textarea'),field('showStaff','지도진 영역 공개','boolean'),field('coachName','메인코치 이름'),field('coachRole','메인코치 직책'),field('coachImage','메인코치 사진','image','지도진 카드와 코치 메시지 사진에 함께 반영됩니다.')],array:'staffMembers'},
+  {id:'staff',title:'지도진',fields:[field('staffTitle','지도진 영역 제목'),field('staffDescription','지도진 소개','textarea'),field('showStaff','지도진 영역 공개','boolean'),field('coachName','메인코치 이름'),field('coachRole','메인코치 직책'),field('coachTenure','메인코치 재직 기간','text','예: 2025년 3월 ~ 현재'),field('coachCareer','메인코치 소속 / 경력','textarea'),field('coachIntro','메인코치 지도 철학','textarea'),field('coachImage','메인코치 사진','image','지도진 카드와 코치 메시지 사진에 함께 반영됩니다.')],array:'staffMembers'},
   {id:'coach',title:'코치 인사말 · 후원',fields:[field('coachTitle','지도 방향 제목'),field('coachDescription','지도 방향 설명','textarea'),field('messageTitle','코치 인사말 제목'),field('messageBody','코치 인사말','textarea'),field('sponsorName','후원 이름'),field('sponsorDescription','후원 소개','textarea'),field('sponsorImage','후원 로고 주소','image','기존 로고: dreamers-logo.png')],array:'values'},
   {id:'contact',title:'연락처 · 위치',fields:[field('contactAddress','주소'),field('contactPhone','문의 전화번호','tel'),field('contactNote','방문 안내','textarea'),field('mapQuery','지도에서 찾을 장소','text','정확한 장소명 또는 주소를 입력하세요.'),field('mapUrl','네이버 지도 링크','url')]},
   {id:'visibility',title:'공개 영역',fields:[...Object.keys(CONTENT_DEFAULTS).filter(k=>k.startsWith('show')&&!['showMarquee','showEffects','showYouth','showStaff'].includes(k)).map(key=>field(key,({showTeam:'선수단',showOverview:'요약 소식',showActivities:'팀 이야기',showSchedules:'훈련 일정',showRecords:'대회 기록',showNotices:'공지사항',showCoach:'코치 · 후원',showMessage:'코치 인사말',showFaq:'자주 묻는 질문',showTrial:'체험 신청',showMap:'찾아오시는 길',showMusic:'팀 노래'})[key],'boolean'))]},
@@ -20,7 +20,7 @@ const groups = [
 const legacy = new Set(['mainTitle','mainSubtitle','popupEnabled','popupImage','popupTitle','popupContent','popupButtonLabel','popupButtonUrl']);
 const arrayFields = {
   youthPlayers:[field('name','이름','text','준비중 또는 선수 이름을 입력하세요. 실제 이름은 홈페이지에서 일부 가려집니다.'),field('age','나이 / 구분','text','예: 준비중, 6세'),field('intro','선수 소개','textarea'),field('image','선수 사진 / AI 그림','image','새 사진으로 바꾸면 해당 카드에 반영됩니다.'),field('visible','홈페이지에 표시','boolean')],
-  staffMembers:[field('name','지도진 이름'),field('role','직책','text','예: 코치, 트레이너'),field('career','학력 / 경력','textarea','한 줄에 한 항목씩 입력하세요.'),field('image','지도진 사진','image'),field('visible','홈페이지에 표시','boolean')],
+  staffMembers:[field('name','지도진 이름'),field('role','직책','text','예: 코치, 트레이너'),field('tenure','재직 기간','text','예: 2026년 2월 ~ 현재'),field('intro','지도 철학 / 인사말','textarea'),field('career','학력 / 경력','textarea','한 줄에 한 항목씩 입력하세요.'),field('image','지도진 사진','image'),field('visible','홈페이지에 표시','boolean')],
   activities:[field('title','활동 제목'),field('tag','분류'),field('date','날짜'),field('body','내용','textarea'),field('image','대표 사진 · 선택','image','기존 이미지 주소도 사용할 수 있습니다. 선수의 얼굴이 드러나지 않는 사진을 사용하세요.'),field('photos','사진첩 · 최대 10장','photos','추가 사진 주소를 한 줄에 하나씩 입력하거나 아래에서 사진 파일을 선택하세요.'),field('url','관련 링크 · 선택','url'),field('visible','홈페이지에 표시','boolean')],
   faqs:[field('question','질문'),field('answer','답변','textarea'),field('visible','홈페이지에 표시','boolean')],
   values:[field('title','지도 키워드'),field('body','설명','textarea'),field('visible','홈페이지에 표시','boolean')]

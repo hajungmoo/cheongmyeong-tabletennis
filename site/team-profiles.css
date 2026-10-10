@@ -44,7 +44,7 @@ body.championship{width:100%;max-width:100%;overflow-x:hidden!important;overscro
 .championship .headCoachLetter{position:relative;padding:24px 0 34px;background:linear-gradient(180deg,#071522 0%,#06111d 100%);border-bottom:1px solid #ad88453b}
 .championship .headCoachLetter::before{content:"FROM THE HEAD COACH";position:absolute;right:4%;top:10px;font-size:clamp(42px,7vw,96px);font-weight:950;letter-spacing:-.065em;color:#ffffff04;pointer-events:none;white-space:nowrap}
 
-/* Coaching staff: the head coach has a dedicated feature directly above this area. */
+/* All three coaches share one profile-card grid. */
 .championship .staffSection{position:relative;overflow:hidden;background:radial-gradient(circle at 16% 18%,#d7aa5f24 0,transparent 30%),radial-gradient(circle at 88% 78%,#416d9820 0,transparent 34%),linear-gradient(145deg,#020a14 0%,#07192a 48%,#03101d 100%);border-top:1px solid #bd96534d;border-bottom:1px solid #bd96533d}
 .championship .staffSection::before{content:"COACHING TEAM";position:absolute;right:-22px;top:34px;font-size:clamp(64px,10vw,150px);font-weight:900;letter-spacing:-.06em;line-height:.8;color:#ffffff08;white-space:nowrap;pointer-events:none}
 .championship .staffSection::after{content:"";position:absolute;left:50%;top:0;width:min(720px,90vw);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#e5bd73,transparent);box-shadow:0 0 28px #d9a95480;pointer-events:none}
@@ -55,19 +55,23 @@ body.championship{width:100%;max-width:100%;overflow-x:hidden!important;overscro
 .championship .staffSection .sectionHead h2{font-size:clamp(34px,4.8vw,58px);line-height:1.08;letter-spacing:-.045em;color:#fff;margin-top:14px;text-shadow:0 8px 28px #0008}
 .championship .staffSection .sectionHead h2::after{content:"";display:block;width:74px;height:3px;margin-top:16px;background:linear-gradient(90deg,#f0c978,#9a7135);border-radius:99px;box-shadow:0 0 15px #d4a85666}
 .championship .staffSection .sectionHead>p{max-width:360px;color:#aebed0;font-size:14px;line-height:1.8}
-.championship .staffGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;max-width:860px;margin-inline:auto;min-width:0}
-.championship .staffGrid .staffCard:first-child{display:none}
+.championship .staffGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;max-width:1180px;margin-inline:auto;min-width:0}
 .championship .staffCard{position:relative;min-width:0;max-width:100%;border:1px solid #c29a5473;border-top:2px solid #efc773;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#0b1c2d 0%,#06121f 100%);box-shadow:0 24px 54px #0008,0 0 0 1px #ffffff05;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
 .championship .staffCard::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,#ffffff10 0%,transparent 25%,transparent 72%,#d2a75a0c 100%)}
 .championship .staffCard:hover{transform:translateY(-7px);border-color:#e7bd70b8;box-shadow:0 30px 68px #000a,0 0 32px #c6943930}
-.championship .staffPhoto{position:relative;aspect-ratio:4/3;background:linear-gradient(145deg,#eef0f0,#d9dcdf);display:grid;place-items:center;overflow:hidden}
+.championship .staffPhoto{position:relative;aspect-ratio:1/1;background:linear-gradient(145deg,#eef0f0,#d9dcdf);display:grid;place-items:center;overflow:hidden}
 .championship .staffPhoto::after{content:"";position:absolute;inset:auto 0 0;height:28%;background:linear-gradient(transparent,#071524cc);pointer-events:none}
-.championship .staffPhoto img{width:100%;height:100%;object-fit:cover;object-position:center 22%;transition:transform .45s ease}
+.championship .staffPhoto img{width:100%;height:100%;object-fit:cover;object-position:center 12%;transition:transform .45s ease}
 .championship .staffCard:hover .staffPhoto img{transform:scale(1.025)}
 .championship .staffPhotoEmpty{color:#5e6875;font-size:14px}
 .championship .staffCopy{position:relative;padding:22px 26px 25px;min-width:0}
 .championship .staffRole{display:inline-flex;align-items:center;min-height:28px;padding:4px 10px;border:1px solid #d1a85b55;border-radius:999px;background:#c99a4314;font-size:12px;font-weight:800;line-height:1.4;letter-spacing:.08em;color:#f0ca80;margin:0 0 8px}
 .championship .staffCopy h3{font-size:31px;font-weight:850;letter-spacing:-.04em;color:#fff;line-height:1.25;margin:0 0 14px}
+.championship .staffTenure{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;font-size:12px;line-height:1.6;color:#bdccdd}
+.championship .staffTenure span{color:#e3c17f;font-weight:700}
+.championship .staffStatement{margin:0 0 24px;padding:0 0 0 14px;border-left:2px solid #d9b76f;color:#dce5ef;font-size:13px;line-height:1.95;word-break:keep-all;overflow-wrap:anywhere}
+.championship .staffStatement p{margin:0;font-size:inherit;line-height:inherit;color:inherit}
+.championship .staffStatement p+p{margin-top:10px}
 .championship .staffCareer{list-style:none;margin:0;padding:14px 0 0;border-top:1px solid #95a5b827;color:#c4d0de;font-size:13px;line-height:1.78;min-width:0}
 .championship .staffCareer::before{content:"CAREER · 경력사항";display:flex;align-items:center;gap:8px;width:max-content;max-width:100%;margin:0 0 11px;padding:5px 10px;border:1px solid #d1a85b45;border-radius:999px;background:#c99a430d;color:#e9c77f;font-size:10px;font-weight:800;line-height:1.2;letter-spacing:.08em}
 .championship .staffCareer li{position:relative;padding-left:15px;overflow-wrap:anywhere}
@@ -96,8 +100,8 @@ body.championship{width:100%;max-width:100%;overflow-x:hidden!important;overscro
   .championship .headCoachFeature h2{font-size:clamp(32px,7vw,44px)}
   .championship .headCoachFeature .coachDescription{font-size:13px}
   .championship .staffSection .sectionHead{align-items:flex-start}
-  .championship .staffGrid{gap:14px;width:100%;max-width:720px;overflow:hidden}
-  .championship .staffPhoto{aspect-ratio:4/3}
+  .championship .staffGrid{grid-template-columns:1fr;gap:22px;width:100%;max-width:520px;overflow:hidden}
+  .championship .staffPhoto{aspect-ratio:1/1}
   .championship .staffCopy{padding:17px 18px 20px}
   .championship .staffCopy h3{font-size:27px}
   .championship .staffCareer{font-size:12px}
@@ -124,13 +128,13 @@ body.championship{width:100%;max-width:100%;overflow-x:hidden!important;overscro
   .championship .staffSection::before{font-size:62px;top:72px;right:-18px}
   .championship .staffSection .sectionHead{margin-bottom:18px}
   .championship .staffSection .sectionHead>p{font-size:12px}
-  .championship .staffGrid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:100%;width:100%;gap:9px;align-items:stretch}
+  .championship .staffGrid{grid-template-columns:1fr;max-width:100%;width:100%;gap:20px;align-items:stretch}
   .championship .staffCard{border-radius:10px;width:100%;height:100%}
   .championship .staffPhoto{aspect-ratio:1/1}
   .championship .staffPhoto::after{height:22%}
-  .championship .staffPhoto img{object-position:center 20%}
+  .championship .staffPhoto img{object-position:center 12%}
   .championship .staffCopy{padding:13px 11px 15px}
-  .championship .staffRole{min-height:22px;padding:3px 7px;font-size:9px;letter-spacing:.04em;margin-bottom:7px}
+  .championship .staffRole{min-height:26px;padding:4px 9px;font-size:11px;letter-spacing:.04em;margin-bottom:7px}
   .championship .staffCopy h3{font-size:21px;line-height:1.2;margin-bottom:10px}
   .championship .staffCareer{padding-top:10px;font-size:10px;line-height:1.55}
   .championship .staffCareer::before{margin-bottom:8px;padding:4px 6px;font-size:8px;letter-spacing:.02em;white-space:nowrap}

@@ -167,7 +167,7 @@
 .homepageRefresh .staffSection .sectionKicker::before { display: none; }
 .homepageRefresh .staffSection .sectionHead h2 { font-size: 28px; margin-top: 6px; text-shadow: none; }
 .homepageRefresh .staffSection .sectionHead h2::after { content: none; }
-.homepageRefresh .staffGrid { max-width: 900px; gap: 20px; }
+.homepageRefresh .staffGrid { max-width: 1180px; gap: 20px; }
 .homepageRefresh .staffCard { border-radius: 10px; box-shadow: none; border-color: var(--line); }
 .homepageRefresh .staffCard:hover { transform: translateY(-3px); box-shadow: none; }
 .homepageRefresh .staffCard::after { content: none; }
@@ -321,10 +321,10 @@ html.gold-finish .homepageRefresh :is(.sectionKicker, .coachName, .player h3, .s
   .homepageRefresh #message .message { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
   .homepageRefresh #message .message h2 { font-size: 23px; }
   .homepageRefresh .staffSection .sectionHead h2 { font-size: 25px; }
-  .homepageRefresh .staffGrid { gap: 12px; }
-  .homepageRefresh .staffCopy { padding: 16px 12px; }
-  .homepageRefresh .staffCopy h3 { font-size: 22px; }
-  .homepageRefresh .staffCareer { font-size: 11px; }
+  .homepageRefresh .staffGrid { max-width: 520px; gap: 20px; }
+  .homepageRefresh .staffCopy { padding: 22px; }
+  .homepageRefresh .staffCopy h3 { font-size: 26px; }
+  .homepageRefresh .staffCareer { font-size: 13px; }
   .homepageRefresh #notice .container { display: block; }
   .homepageRefresh .noticeTools { margin: 14px 0 12px; }
   .homepageRefresh .noticeTools label { width: 100%; }

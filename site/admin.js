@@ -1,5 +1,5 @@
 import { TEAM_HOLIDAYS, matchesHoliday } from './team-holidays.js?v=1.0.0';
-import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=4.2.0';
+import { initSiteEditor, initAdminNavigation } from './admin-editor.js?v=4.3.0';
 import { createPhotoUploader, photoUploadError } from './photo-upload.js?v=3.2.0';
 import { assertSettingsUnchanged } from './settings-compare.js?v=3.1.2';
 import {

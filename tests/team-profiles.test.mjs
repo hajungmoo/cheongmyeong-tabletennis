@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {resolveSettings} from '../site/site-content.js';
-import {youthDisplayName} from '../site/team-profiles.js';
+import {youthDisplayName, HEAD_COACH_PORTRAIT, currentHeadCoachPortrait} from '../site/team-profiles.js';
 import {assertSettingsUnchanged} from '../site/settings-compare.js';
 
 test('existing homepage settings gain four editable youth placeholders without a roster change', () => {
@@ -9,7 +9,7 @@ test('existing homepage settings gain four editable youth placeholders without a
   const resolved=resolveSettings(original);
   assert.equal(resolved.mainTitle,'기존 제목');
   assert.equal(resolved.siteContent.coachImage,'custom-coach.jpg');
-  assert.equal(resolved.siteContent.coachRole,'청명초 메인코치');
+  assert.equal(resolved.siteContent.coachRole,'메인코치');
   assert.equal(resolved.siteContent.youthPlayers.length,4);
   assert.equal(new Set(resolved.siteContent.youthPlayers.map(p=>p.id)).size,4);
   assert.equal(new Set(resolved.siteContent.youthPlayers.map(p=>p.image)).size,4);
@@ -34,6 +34,34 @@ test('public youth names mask actual children while keeping the preparation labe
   for(const name of ['준비중','준비 중','',' '])assert.equal(youthDisplayName(name),'준비중');
   assert.equal(youthDisplayName('김해빈'),'김○빈');
   assert.equal(youthDisplayName('김○빈'),'김○빈');
+});
+
+test('new staff introductions preserve saved photos, careers, order and intentional edits', () => {
+  const original={siteContent:{staffMembers:[
+    {id:'trainer-cho-hyeonseo',name:'조현서',image:'saved-trainer.jpg',career:'기존 경력',visible:false,intro:''},
+    {id:'coach-lee-yuna',name:'이유나',image:'saved-coach.jpg',tenure:'수정된 재직 기간'},
+    {id:'another-coach',name:'새 지도진',image:'another.jpg'},
+  ]}};
+  const before=structuredClone(original);
+  const members=resolveSettings(original).siteContent.staffMembers;
+  assert.deepEqual(members.map(p=>p.image),['saved-trainer.jpg','saved-coach.jpg','another.jpg']);
+  assert.equal(members[0].career,'기존 경력');
+  assert.equal(members[0].visible,false);
+  assert.equal(members[0].intro,'');
+  assert.equal(members[1].tenure,'수정된 재직 기간');
+  assert.ok(members[1].intro.length>0);
+  assert.equal(members[2].intro,undefined);
+  assert.deepEqual(original,before);
+  assert.deepEqual(resolveSettings({siteContent:{staffMembers:members}}).siteContent.staffMembers,members);
+});
+
+test('head-coach portrait update replaces only the previous published image', () => {
+  const previous='https://firebasestorage.googleapis.com/v0/b/cheongmyeong-tabletennis.firebasestorage.app/o/homepage%2Factivities%2F3cd86594-8d9a-4fb8-87e7-571f4f9cba58.jpg?alt=media';
+  assert.equal(resolveSettings({siteContent:{coachImage:previous}}).siteContent.coachImage,HEAD_COACH_PORTRAIT);
+  assert.equal(currentHeadCoachPortrait('site/assets/coach-profile.webp'),HEAD_COACH_PORTRAIT);
+  for(const value of ['new-upload.jpg',previous.replace('3cd86594','new-image'),previous.replace('firebasestorage.googleapis.com','example.com'),'']){
+    assert.equal(currentHeadCoachPortrait(value),value);
+  }
 });
 
 test('a stale youth draft cannot overwrite another admin, while unrelated settings remain saveable', () => {
