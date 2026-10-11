@@ -1,4 +1,5 @@
 import { withTeamHolidays } from './team-holidays.js?v=1.0.0';
+import { showPopupAtTop } from './popup-view.js?v=1.0.0';
 import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.2.0';
 import { newestFirst, scheduleDisplayOrder, mergePublishedRecords } from './homepage-view.js?v=1.0.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
@@ -128,7 +129,7 @@ function applySettings(raw) {
     $('popupTodayHide').hidden=preview;
     const popupKey=[settings.popupTitle,settings.popupContent,popupImage,settings.popupButtonLabel,popupButtonUrl].join('|');
     const mayOpen=preview||!popupDismissedToday(popupKey);
-    if(!$('popupDialog').open&&!shownPopups.has(popupKey)&&mayOpen){shownPopups.add(popupKey);$('popupDialog').showModal();}
+    if(!$('popupDialog').open&&!shownPopups.has(popupKey)&&mayOpen){shownPopups.add(popupKey);showPopupAtTop($('popupDialog'));}
     $('popupDialog').dataset.signature=popupKey;
   }else if($('popupDialog').open)$('popupDialog').close();
   visualFinish.apply(c);
@@ -350,6 +351,7 @@ async function load() {
   }));
   applySettings(previewDraft?{...rawSettings,...previewDraft,siteContent:{...rawSettings.siteContent,...previewDraft.siteContent}}:rawSettings);
   renderPlayers();renderSchedules();renderRecords();renderNotices();
+  document.dispatchEvent(new Event('cm-home-ready'));
   if(failed.length){$('loadState').hidden=false;text('loadStateText','일부 소식을 불러오지 못했습니다. 잠시 후 다시 확인해주세요.');}
   if(preview)window.parent.postMessage({type:'cm-home-preview-ready'},location.origin);
 }
@@ -372,6 +374,7 @@ $('scheduleSearch').addEventListener('input',()=>{scheduleLimit=5;renderSchedule
 $('moreSchedules').addEventListener('click',()=>{scheduleLimit+=5;renderSchedules();});
 $('moreNotices').addEventListener('click',()=>{noticeLimit+=4;renderNotices();});$('moreRecords').addEventListener('click',()=>{recordLimit+=6;renderRecords();});
 $('retryLoad').addEventListener('click',load);$('closePopup').addEventListener('click',()=>$('popupDialog').close());
+$('closePopupTop').addEventListener('click',()=>$('popupDialog').close());
 $('popupTodayHide').addEventListener('click',()=>{
   const signature=$('popupDialog').dataset.signature||'';
   if(signature)dismissPopupForToday(signature);

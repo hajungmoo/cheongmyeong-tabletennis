@@ -13,6 +13,9 @@
 .homepageRefresh .sectionKicker { font-size: 10px; letter-spacing: .16em; }
 .homepageRefresh .btn { border-radius: 8px; min-height: 44px; }
 .homepageRefresh .textLink { font-size: 13px; }
+.homepageRefresh .popupDialog { scroll-behavior: auto; overflow-anchor: none; overscroll-behavior: contain; }
+.homepageRefresh .popupTopClose { position: absolute; top: 12px; right: 12px; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid #d9b76f80; border-radius: 50%; background: #071421e6; color: #fff; font: 400 30px/1 Arial, sans-serif; cursor: pointer; box-shadow: 0 2px 12px #0005; }
+.homepageRefresh .popupTopClose:focus-visible { outline: 2px solid #efc773; outline-offset: 3px; }
 .homepageRefresh .nav { min-height: 76px; gap: 22px; }
 .homepageRefresh .navlinks { gap: 19px; font-size: 12px; }
 .homepageRefresh .navlinks .navAdmin { color: #8d9fb2; font-weight: 500; }
