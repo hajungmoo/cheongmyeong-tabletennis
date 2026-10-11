@@ -1,155 +1,117 @@
-/* Coaching team cards: stable horizontal layout on phones, folds and desktop. */
+/* Staff layout has one owner; no runtime photo styles override these rules. */
 .homepageRefresh .staffGrid {
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) !important;
-  width:100% !important;
-  max-width:920px !important;
-  min-width:0 !important;
-  margin-inline:auto !important;
-  gap:18px !important;
-  align-items:start !important;
-  overflow:visible !important;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: 920px;
+  min-width: 0;
+  margin-inline: auto;
+  gap: 18px;
+  align-items: start;
+  overflow: visible;
 }
 .homepageRefresh .staffCard {
-  display:block !important;
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-  height:auto !important;
-  align-self:start !important;
-  overflow:hidden !important;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  align-self: start;
+  border: 1px solid #b3925745;
+  border-radius: 14px;
+  background: #0b1b2c;
 }
-.homepageRefresh .staffDetails {display:block;width:100%;min-width:0}
+.homepageRefresh .staffDetails { min-width: 0; }
 .homepageRefresh .staffSummary {
-  display:grid !important;
-  grid-template-columns:clamp(190px,26%,240px) minmax(0,1fr) !important;
-  width:100% !important;
-  min-width:0 !important;
-  align-items:stretch !important;
-  list-style:none;
-  cursor:pointer;
+  display: block;
+  min-width: 0;
+  padding: 0;
+  list-style: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
-.homepageRefresh .staffSummary::-webkit-details-marker{display:none}
-.homepageRefresh .staffSummary::marker{content:""}
-.homepageRefresh .staffSummary:focus-visible{outline:2px solid #efc773;outline-offset:-3px;border-radius:10px}
+.homepageRefresh .staffSummary::-webkit-details-marker { display: none; }
+.homepageRefresh .staffSummary::marker { content: ""; }
+.homepageRefresh .staffSummary:focus-visible { outline: 2px solid #efc773; outline-offset: -3px; border-radius: 12px; }
+.homepageRefresh .staffIdentity { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 28px; align-items: center; min-width: 0; padding: 24px; }
 .homepageRefresh .staffPhoto {
-  width:100% !important;
-  min-width:0 !important;
-  height:100% !important;
-  min-height:250px;
-  aspect-ratio:4/5 !important;
-  align-self:stretch;
-  background:#081726;
-  overflow:hidden;
+  position: relative;
+  display: block;
+  width: 160px;
+  height: 200px;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 4 / 5;
+  align-self: start;
+  border-radius: 9px;
+  background: #081726;
+  overflow: hidden;
 }
-.homepageRefresh .staffPhoto img {
-  display:block;
-  width:100% !important;
-  height:100% !important;
-  object-fit:cover !important;
-  object-position:center !important;
-}
-.homepageRefresh .staffPhoto::after{height:16%}
-.homepageRefresh .staffCopy {
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  width:auto !important;
-  min-width:0 !important;
-  padding:24px 28px 18px !important;
-  overflow:hidden;
-}
-.homepageRefresh .staffCopy h3 {
-  margin:0 0 10px !important;
-  font-size:clamp(30px,3.2vw,42px) !important;
-  line-height:1.1 !important;
-  white-space:nowrap !important;
-  word-break:keep-all !important;
-  overflow-wrap:normal !important;
-  writing-mode:horizontal-tb !important;
-}
-.homepageRefresh .staffRole {
-  align-self:flex-start;
-  min-height:28px !important;
-  padding:4px 10px !important;
-  margin:0 0 10px !important;
-  font-size:12px !important;
-  line-height:1.35 !important;
-  letter-spacing:.03em !important;
-  white-space:nowrap !important;
-  word-break:keep-all !important;
-  writing-mode:horizontal-tb !important;
-}
-.homepageRefresh .staffTenure {
-  display:block !important;
-  width:100%;
-  margin:0 !important;
-  font-size:13px !important;
-  line-height:1.6 !important;
-  white-space:normal !important;
-  word-break:keep-all !important;
-  overflow-wrap:normal !important;
-  writing-mode:horizontal-tb !important;
-}
-.homepageRefresh .staffTenure span{display:inline !important}
+.homepageRefresh .staffPhoto img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; min-width: 0; object-fit: cover; object-position: center; }
+.homepageRefresh .staffPhoto::after { display: none; }
+.homepageRefresh .staffPhotoEmpty { position: absolute; inset: 0; display: grid; place-items: center; padding: 10px; color: #9eafc1; text-align: center; }
+.homepageRefresh .staffCopy { min-width: 0; padding: 0; }
+.homepageRefresh .staffCopy h3 { margin: 0 0 12px; font-size: 32px; line-height: 1.25; overflow-wrap: anywhere; }
+.homepageRefresh .staffRole { max-width: 100%; margin: 0 0 10px; font-size: 12px; letter-spacing: .02em; }
+.homepageRefresh .staffTenure { display: block; margin: 0; line-height: 1.6; }
+.homepageRefresh .staffTenure .staffTenureLabel { display: block; margin-bottom: 3px; color: #8fa3b8; font-size: 11px; font-weight: 500; }
+.homepageRefresh .staffTenure .staffTenureValue { display: block; color: #c9d4e1; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .homepageRefresh .staffToggle {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  width:100%;
-  min-height:42px;
-  margin-top:12px;
-  color:#e7c47f;
-  font-size:13px;
-  font-weight:650;
-  white-space:nowrap !important;
-  word-break:keep-all !important;
-  writing-mode:horizontal-tb !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 46px;
+  margin: 0;
+  padding: 11px 24px;
+  border-top: 1px solid #9eafc12b;
+  background: #ffffff03;
+  color: #e7c47f;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.5;
 }
-.homepageRefresh .staffToggleIcon{font-size:20px;line-height:1;transition:transform .2s ease}
-.homepageRefresh .staffToggleOpen{display:none}
-.homepageRefresh .staffDetails[open] .staffToggleClosed{display:none}
-.homepageRefresh .staffDetails[open] .staffToggleOpen{display:inline}
-.homepageRefresh .staffDetails[open] .staffToggleIcon{transform:rotate(180deg)}
-.homepageRefresh .staffDetailsBody{padding:24px 28px;border-top:1px solid #d1a85b40;background:#06131f}
-.homepageRefresh .staffDetailTitle{margin:0 0 12px;color:#e7c47f;font-size:12px;font-weight:750;letter-spacing:.02em}
-.homepageRefresh .staffDetailsBody .staffStatement{font-size:13px;line-height:1.9;margin-bottom:24px}
-.homepageRefresh .staffDetailsBody .staffStatement:last-child{margin-bottom:0}
-.homepageRefresh .staffDetailsBody .staffCareer{margin:0;padding:0;border:0;font-size:13px;line-height:1.85;word-break:keep-all;overflow-wrap:anywhere}
-.homepageRefresh .staffDetailsBody .staffCareer::before{content:none}
-.homepageRefresh .staffDetailsBody .staffCareer li{padding-left:14px}
-.homepageRefresh .staffDetailsBody .staffCareer li+li{margin-top:7px}
-.homepageRefresh .staffDetailsBody .staffCareer li::before{width:4px;height:4px;top:.8em}
-.homepageRefresh .staffNoDetails{margin:0;color:#bdccdd;font-size:13px}
-.homepageRefresh .staffCard:hover{transform:none}
-.homepageRefresh .staffCard:hover .staffPhoto img{transform:none}
+.homepageRefresh .staffToggleIcon { flex: 0 0 16px; width: 16px; height: 16px; transition: transform .2s ease; }
+.homepageRefresh .staffToggleOpen { display: none; }
+.homepageRefresh .staffDetails[open] .staffToggle { background: #c9973e0d; }
+.homepageRefresh .staffDetails[open] .staffToggleClosed { display: none; }
+.homepageRefresh .staffDetails[open] .staffToggleOpen { display: inline; }
+.homepageRefresh .staffDetails[open] .staffToggleIcon { transform: rotate(180deg); }
+.homepageRefresh .staffDetailsBody { min-width: 0; padding: 24px; border-top: 1px solid #d1a85b30; background: #06131f; }
+.homepageRefresh .staffDetailTitle { margin: 0 0 12px; color: #e7c47f; font-size: 12px; font-weight: 750; letter-spacing: .02em; }
+.homepageRefresh .staffDetailsBody .staffStatement { margin-bottom: 26px; font-size: 13px; line-height: 1.9; }
+.homepageRefresh .staffDetailsBody .staffStatement:last-child { margin-bottom: 0; }
+.homepageRefresh .staffDetailsBody .staffCareer { margin: 0; padding: 0; border: 0; font-size: 13px; line-height: 1.85; word-break: keep-all; overflow-wrap: anywhere; }
+.homepageRefresh .staffDetailsBody .staffCareer::before { content: none; }
+.homepageRefresh .staffDetailsBody .staffCareer li { padding-left: 14px; }
+.homepageRefresh .staffDetailsBody .staffCareer li + li { margin-top: 9px; }
+.homepageRefresh .staffDetailsBody .staffCareer li::before { width: 4px; height: 4px; top: .8em; }
+.homepageRefresh .staffDetailsBody .staffCareer .staffCareerDated { display: grid; grid-template-columns: 3.5em minmax(0, 1fr); gap: 8px; padding: 0; }
+.homepageRefresh .staffDetailsBody .staffCareer .staffCareerDated::before { content: none; }
+.homepageRefresh .staffCareerYear { color: #e7c47f; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.homepageRefresh .staffNoDetails { margin: 0; color: #bdccdd; font-size: 13px; }
+.homepageRefresh .staffCard:hover { transform: none; }
+.homepageRefresh .staffCard:hover .staffPhoto img { transform: none; }
 
-@media(max-width:700px){
-  .homepageRefresh .staffGrid{max-width:100% !important;gap:14px !important}
-  .homepageRefresh .staffSummary{grid-template-columns:132px minmax(0,1fr) !important}
-  .homepageRefresh .staffPhoto{min-height:176px}
-  .homepageRefresh .staffCopy{padding:14px 16px 8px !important}
-  .homepageRefresh .staffCopy h3{font-size:27px !important;margin-bottom:8px !important}
-  .homepageRefresh .staffRole{min-height:24px !important;padding:3px 8px !important;margin-bottom:7px !important;font-size:10px !important}
-  .homepageRefresh .staffTenure{font-size:10px !important;line-height:1.55 !important}
-  .homepageRefresh .staffToggle{min-height:38px;margin-top:6px;font-size:11px}
-  .homepageRefresh .staffDetailsBody{padding:20px 18px}
-}
-
-@media(max-width:430px){
-  .homepageRefresh .staffSummary{grid-template-columns:116px minmax(0,1fr) !important}
-  .homepageRefresh .staffPhoto{min-height:158px}
-  .homepageRefresh .staffCopy{padding:12px 13px 6px !important}
-  .homepageRefresh .staffCopy h3{font-size:24px !important}
-  .homepageRefresh .staffTenure{font-size:9.5px !important}
-  .homepageRefresh .staffToggle{font-size:10.5px}
-  .homepageRefresh .staffDetailsBody{padding:18px 16px}
+@media (max-width: 800px) {
+  .homepageRefresh .staffGrid { max-width: 560px; gap: 14px; }
+  .homepageRefresh .staffIdentity { grid-template-columns: 104px minmax(0, 1fr); gap: 16px; padding: 16px; }
+  .homepageRefresh .staffPhoto { width: 104px; height: 130px; }
+  .homepageRefresh .staffCopy h3 { margin-bottom: 10px; font-size: 24px; }
+  .homepageRefresh .staffRole { min-height: 0; margin-bottom: 9px; padding: 4px 8px; font-size: 11px; line-height: 1.4; }
+  .homepageRefresh .staffTenure .staffTenureLabel { font-size: 10px; }
+  .homepageRefresh .staffTenure .staffTenureValue { font-size: 12px; }
+  .homepageRefresh .staffToggle { padding-inline: 16px; }
+  .homepageRefresh .staffDetailsBody { padding: 22px 18px; }
 }
 
-@media(max-width:360px){
-  .homepageRefresh .staffSummary{grid-template-columns:104px minmax(0,1fr) !important}
-  .homepageRefresh .staffPhoto{min-height:146px}
-  .homepageRefresh .staffCopy{padding-inline:11px !important}
-  .homepageRefresh .staffCopy h3{font-size:22px !important}
+@media (max-width: 380px) {
+  .homepageRefresh .staffIdentity { grid-template-columns: 88px minmax(0, 1fr); gap: 12px; padding: 14px; }
+  .homepageRefresh .staffPhoto { width: 88px; height: 110px; }
+  .homepageRefresh .staffCopy h3 { font-size: 22px; }
+  .homepageRefresh .staffTenure .staffTenureValue { font-size: 11px; }
+  .homepageRefresh .staffToggle { padding-inline: 14px; }
+  .homepageRefresh .staffDetailsBody { padding-inline: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepageRefresh .staffToggleIcon { transition: none; }
 }

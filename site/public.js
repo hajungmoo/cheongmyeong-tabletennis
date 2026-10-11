@@ -2,7 +2,7 @@ import { withTeamHolidays } from './team-holidays.js?v=1.0.0';
 import { initActivityGallery, jerseyMarkup, recordMedal, trophyMarkup } from './activity-gallery.js?v=3.2.0';
 import { newestFirst, scheduleDisplayOrder, mergePublishedRecords } from './homepage-view.js?v=1.0.0';
 import { initVisualFinish } from './visual-finish.js?v=2.1.2';
-import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.2';
+import { PLAYER_PORTRAITS, portraitForPlayer, orderPlayersForHomepage } from './player-portraits.js?v=3.2.3';
 import { youthDisplayName, isYouthIllustration, HEAD_COACH_MAIN_PORTRAIT } from './team-profiles.js?v=1.3.0';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
@@ -160,7 +160,30 @@ function renderStaff(content) {
   root.innerHTML=members.map(member=>{
     const src=safeURL(member.image), lines=String(member.career||'').split(/\n/).map(line=>line.trim()).filter(Boolean);
     const intro=String(member.intro||'').split(/\n+/).map(line=>line.trim()).filter(Boolean);
-    return `<article class="staffCard"><details class="staffDetails" name="staff-introductions"><summary class="staffSummary" aria-label="${esc(member.name)} ${esc(member.role)} 소개와 경력"><div class="staffPhoto">${src?`<img src="${esc(src)}" alt="${esc(member.name)} ${esc(member.role)} 프로필" width="600" height="750" loading="lazy" decoding="async">`:'<span class="staffPhotoEmpty">사진 준비중</span>'}</div><div class="staffCopy"><p class="staffRole">${esc(member.role)}</p><h3>${esc(member.name)}</h3>${member.tenure?`<p class="staffTenure"><span>재직</span> ${esc(member.tenure)}</p>`:''}<span class="staffToggle" aria-hidden="true"><span class="staffToggleClosed">멘트·경력 보기</span><span class="staffToggleOpen">멘트·경력 접기</span><span class="staffToggleIcon">⌄</span></span></div></summary><div class="staffDetailsBody">${intro.length?`<h4 class="staffDetailTitle">아이들에게 전하는 약속</h4><blockquote class="staffStatement">${intro.map(line=>`<p>${esc(line)}</p>`).join('')}</blockquote>`:''}${lines.length?`<h4 class="staffDetailTitle">경력 및 지도 이력</h4><ul class="staffCareer">${lines.map(line=>`<li>${esc(line)}</li>`).join('')}</ul>`:''}${!intro.length&&!lines.length?'<p class="staffNoDetails">소개를 준비 중입니다.</p>':''}</div></details></article>`;
+    const career=lines.map(line=>{
+      const dated=line.match(/^(\d{4})년\s+(.+)$/);
+      return dated?`<li class="staffCareerDated"><span class="staffCareerYear">${esc(dated[1])}년</span><span>${esc(dated[2])}</span></li>`:`<li>${esc(line)}</li>`;
+    }).join('');
+    return `<article class="staffCard">
+      <details class="staffDetails" name="staff-introductions">
+        <summary class="staffSummary" aria-label="${esc(member.name)} ${esc(member.role)} 소개와 경력">
+          <div class="staffIdentity">
+            <div class="staffPhoto">${src?`<img src="${esc(src)}" alt="${esc(member.name)} ${esc(member.role)} 프로필" width="600" height="750" loading="lazy" decoding="async">`:'<span class="staffPhotoEmpty">사진 준비중</span>'}</div>
+            <div class="staffCopy">
+              <p class="staffRole">${esc(member.role)}</p>
+              <h3>${esc(member.name)}</h3>
+              ${member.tenure?`<p class="staffTenure"><span class="staffTenureLabel">재직 기간</span><span class="staffTenureValue">${esc(member.tenure)}</span></p>`:''}
+            </div>
+          </div>
+          <span class="staffToggle" aria-hidden="true"><span class="staffToggleClosed">멘트·경력 보기</span><span class="staffToggleOpen">멘트·경력 접기</span><svg class="staffToggleIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="staffDetailsBody">
+          ${intro.length?`<h4 class="staffDetailTitle">아이들에게 전하는 약속</h4><blockquote class="staffStatement">${intro.map(line=>`<p>${esc(line)}</p>`).join('')}</blockquote>`:''}
+          ${lines.length?`<h4 class="staffDetailTitle">경력 및 지도 이력</h4><ul class="staffCareer">${career}</ul>`:''}
+          ${!intro.length&&!lines.length?'<p class="staffNoDetails">소개를 준비 중입니다.</p>':''}
+        </div>
+      </details>
+    </article>`;
   }).join('');
   root.querySelectorAll('img').forEach(img=>{
     const fallback=()=>{if(img.parentElement)img.parentElement.innerHTML='<span class="staffPhotoEmpty">사진 준비중</span>';};
