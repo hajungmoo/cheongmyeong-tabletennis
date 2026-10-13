@@ -7,6 +7,8 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
 .playerChoices{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.matchPlayer{display:flex;align-items:center;flex-wrap:wrap;gap:4px 7px;min-width:0;line-height:1.5}.matchPlayer+.matchPlayer{margin-top:9px}.matchPlayer strong{min-width:0}.opponent .matchPlayer{justify-content:flex-end}.gradeBadge{display:inline-block;border:1px solid #736039;border-radius:5px;background:#2b2416;color:#f0d493;font-size:.75rem;font-weight:650;line-height:1.5;padding:1px 6px;white-space:nowrap}.gradeBadge.missing{color:var(--muted);background:#20231f;border-color:#40463c}
+@media(max-width:480px){.matchPlayer{gap:3px 5px}.gradeBadge{font-size:.6875rem;padding:1px 4px}}
 .recordTabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;padding:6px;border:1px solid var(--line);border-radius:12px;background:#101212}
 .recordTabs button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:12px;border:1px solid transparent;border-radius:8px;background:transparent;color:#bbb9af;font-weight:750}
 .recordTabs button:hover{background:#22231e}

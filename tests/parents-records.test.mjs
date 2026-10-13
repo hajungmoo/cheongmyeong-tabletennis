@@ -66,7 +66,7 @@ test('public report compression keeps new entry timestamps and remains compatibl
   const report=projectPlayer(database(),'child',10);report.player.id='child';
   const packed=await packReports([report]);assert.deepEqual(await unpackReports({version:2,...packed}),[report]);
 });
-function uiHarness(records){
+function uiHarness(records,player={name:'임수아'}){
   const elements=new Map();
   const element=id=>{
     if(!elements.has(id)){const handlers={},attrs={},classes=new Set();elements.set(id,{id,value:['sourceFilter','resultFilter'].includes(id)?'all':'',textContent:'',innerHTML:'',hidden:false,disabled:false,handlers,attrs,classList:{toggle(name,value){if(value)classes.add(name);else classes.delete(name);}},setAttribute(name,value){attrs[name]=value;},replaceChildren(){this.innerHTML='';},focus(){},addEventListener(name,callback){handlers[name]=callback;}});}
@@ -74,7 +74,7 @@ function uiHarness(records){
   };
   const js=readFileSync(new URL('../parents/parents.js',import.meta.url),'utf8').replace(/^import .*$/gm,'');
   const context=vm.createContext({document:{getElementById:element,addEventListener(){}},window:{addEventListener(){}},location:{hash:'',pathname:'/parents/',search:''},history:{replaceState(){}},initializeApp:()=>({}),getFirestore:()=>({}),doc:()=>({}),recordGroup,recordsForView,normalizeName:value=>value,unpackReports,setTimeout,clearTimeout,URL,Intl,Number});
-  vm.runInContext(js+'\nreport=seedReport;renderMatches();',Object.assign(context,{seedReport:{player:{name:'임수아'},matches:records}}));
+  vm.runInContext(js+'\nreport=seedReport;renderMatches();',Object.assign(context,{seedReport:{player,matches:records}}));
   return {element,render:()=>vm.runInContext('renderMatches()',context)};
 }
 test('tab switches reset pagination and show independent counts, summaries and empty states',()=>{
@@ -106,4 +106,47 @@ test('league entry times survive score edits, reset when cleared and include aut
   vm.runInContext("setLeagueResult(1,'')",context);assert.equal(league.games[0].enteredAt,undefined);
   vm.runInContext("toggleLeagueForfeit('child')",context);assert.ok(league.games[0].enteredAt);
   vm.runInContext("toggleLeagueForfeit('child')",context);assert.equal(league.games[0].enteredAt,undefined);
+});
+
+test('grades stay paired with each doubles player on either side, including missing registrations',()=>{
+  const db=database();db.players[1].grade='중1';
+  db.players.push({id:'partner',name:'우리 복식',grade:'2학년',schoolId:'ours'},{id:'guest',name:'상대 복식',grade:'U7',schoolId:'other'});
+  db.matches=[{...db.matches[0],team1:['opponent','guest'],team2:['partner','child']}];
+  const before=structuredClone(db),report=projectPlayer(db,'child',10),row=report.matches[0];
+  assert.equal(report.player.grade,'1학년');
+  assert.deepEqual(row.partner,['우리 복식']);assert.deepEqual(row.partnerGrades,['2학년']);
+  assert.deepEqual(row.opponents,['상대','상대 복식']);assert.deepEqual(row.opponentGrades,['중1','U7']);
+  assert.equal(row.a,0);assert.equal(row.b,3);assert.deepEqual(db,before);
+  db.players=db.players.filter(p=>p.id!=='opponent');
+  assert.deepEqual(projectPlayer(db,'child',10).matches[0].opponentGrades,['','U7']);
+});
+test('one-set and league opponents retain their registered grade',()=>{
+  const db=database();db.players[1].grade='6학년';
+  db.matches=[{...db.matches[0],matchFormat:'1set',points1:11,points2:8}];
+  db.leagues=[{id:'league_grades',matchFormat:'3set',games:[{gameNo:1,p1:'opponent',p2:'child',result:'2-0'}]}];
+  const rows=projectPlayer(db,'child',10).matches;
+  assert.deepEqual(rows.map(row=>row.opponentGrades),[['6학년'],['6학년']]);
+  assert.ok(rows.some(row=>row.source==='one-set'));assert.ok(rows.some(row=>row.source==='league'));
+});
+test('imported opponents use a unique name and matching school alias; ambiguous names stay ungraded',()=>{
+  const db=database();db.players[1].grade='4학년';db.schools[1].aliases=['상대초'];
+  db.schools.push({id:'elsewhere',name:'다른초'});db.players.push({id:'duplicate',name:'상대',grade:'6학년',schoolId:'elsewhere'});
+  db.matches=[];db.competitions=[{id:'grades',name:'대회',matches:[
+    {player1:'임수아',player2:'상대',school2:'상대초',score1:3,score2:1},
+    {player1:'상대',school1:'다른초',player2:'임수아',score1:1,score2:3},
+    {player1:'임수아',player2:'상대',score1:3,score2:1},
+    {player1:'임수아',player2:'상대',school2:'미등록초',score1:3,score2:1}
+  ]}];
+  const rows=projectPlayer(db,'child',10).matches;
+  for(const [index,grade] of ['4학년','6학년','',''].entries())assert.deepEqual(rows.find(row=>row.id==='competition:grades:'+index).opponentGrades,[grade]);
+});
+test('match cards show each name with its grade and safely handle legacy records and untrusted labels',()=>{
+  const record=match(old,{partner:['복식 파트너'],partnerGrades:['2학년'],opponents:['중등 상대','유소년 상대'],opponentGrades:['중1','U7']});
+  const {element}=uiHarness([record],{name:'임수아',grade:1});
+  const html=element('matchList').innerHTML;
+  for(const [name,grade] of [['임수아','1학년'],['복식 파트너','2학년'],['중등 상대','중1'],['유소년 상대','U7']])assert.ok(html.includes(`<strong>${name}</strong><span class="gradeBadge">${grade}</span>`));
+  assert.equal((html.match(/class="matchPlayer"/g)||[]).length,4);
+  assert.match(uiHarness([match(old)]).element('matchList').innerHTML,/학년 미입력/);
+  const unsafe=uiHarness([match(old,{opponents:['<script>'],opponentGrades:['<img onerror=x>']})]).element('matchList').innerHTML;
+  assert.ok(!unsafe.includes('<script>'));assert.ok(!unsafe.includes('<img onerror'));assert.match(unsafe,/&lt;img onerror=x&gt;/);
 });
